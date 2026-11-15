@@ -1,3 +1,7 @@
+@import '@fontsource/montserrat/400.css';
+@import '@fontsource/montserrat/500.css';
+@import '@fontsource/montserrat/600.css';
+@import '@fontsource/montserrat/700.css';
 @import 'tailwindcss';
 
 @source '../../vendor/laravel/framework/src/Illuminate/Pagination/resources/views/*.blade.php';
@@ -6,6 +10,138 @@
 @source '../**/*.js';
 
 @theme {
-    --font-sans: 'Instrument Sans', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji',
-        'Segoe UI Symbol', 'Noto Color Emoji';
+    --font-sans: 'Montserrat', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
+    --color-brand: #789b8a;
+    --color-brand-deep: #5f7f6f;
+    --color-mist: #a9c7d5;
+    --color-peach: #e8b89d;
+    --color-ivory: #f3f1ea;
+    --color-cream: #f8f7f2;
+    --color-slate-text: #34434a;
+    --color-stone: #78858a;
+    --color-leaf: #668c72;
+    --color-brick: #b96d68;
+}
+
+:root {
+    --background: #f3f1ea;
+    --foreground: #34434a;
+    --card: #f8f7f2;
+    --card-foreground: #34434a;
+    --primary: #789b8a;
+    --primary-foreground: #f8f7f2;
+    --secondary: #a9c7d5;
+    --secondary-foreground: #2c3a40;
+    --accent: #e8b89d;
+    --accent-foreground: #4a3025;
+    --muted: #eae7de;
+    --muted-foreground: #78858a;
+    --destructive: #b96d68;
+    --success: #668c72;
+    --border: rgb(52 67 74 / 0.1);
+    --input: #edeae2;
+    --ring: #789b8a;
+    --radius: 1rem;
+}
+
+@theme inline {
+    --color-background: var(--background);
+    --color-foreground: var(--foreground);
+    --color-card: var(--card);
+    --color-card-foreground: var(--card-foreground);
+    --color-primary: var(--primary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-secondary: var(--secondary);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-accent: var(--accent);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-muted: var(--muted);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-destructive: var(--destructive);
+    --color-success: var(--success);
+    --color-border: var(--border);
+    --color-input: var(--input);
+    --color-ring: var(--ring);
+
+    --radius-sm: calc(var(--radius) - 8px);
+    --radius-md: calc(var(--radius) - 4px);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) + 8px);
+}
+
+/* Soft neumorphism: two opposing shadows, used sparingly. */
+@utility neu {
+    box-shadow:
+        -7px -7px 18px rgb(255 255 255 / 0.85),
+        7px 7px 18px rgb(52 67 74 / 0.1);
+}
+
+@utility neu-sm {
+    box-shadow:
+        -4px -4px 10px rgb(255 255 255 / 0.8),
+        4px 4px 10px rgb(52 67 74 / 0.08);
+}
+
+@utility neu-inset {
+    box-shadow:
+        inset 3px 3px 8px rgb(52 67 74 / 0.1),
+        inset -3px -3px 8px rgb(255 255 255 / 0.8);
+}
+
+@utility neu-primary {
+    box-shadow:
+        -4px -4px 12px rgb(255 255 255 / 0.5),
+        5px 5px 14px rgb(95 127 111 / 0.45);
+}
+
+@utility no-scrollbar {
+    scrollbar-width: none;
+    &::-webkit-scrollbar {
+        display: none;
+    }
+}
+
+@layer base {
+    html {
+        -webkit-tap-highlight-color: transparent;
+        scroll-behavior: smooth;
+    }
+
+    body {
+        @apply bg-background font-sans text-foreground antialiased;
+    }
+
+    ::selection {
+        @apply bg-primary/25;
+    }
+
+    input[type='checkbox'] {
+        accent-color: var(--primary);
+    }
+
+    :focus-visible {
+        @apply outline-2 outline-offset-2 outline-ring;
+    }
+
+    [x-cloak] {
+        display: none !important;
+    }
+}
+
+html turbo-progress-bar {
+    height: 2px;
+    background-color: var(--primary);
+}
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        transition-duration: 0.01ms !important;
+    }
 }
