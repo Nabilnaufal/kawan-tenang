@@ -6,7 +6,7 @@
 
     <div class="grid gap-4 xl:grid-cols-[360px_1fr]">
         <div class="min-w-0 space-y-2.5">
-            <div class="flex gap-2 overflow-x-auto pb-1 no-scrollbar" role="tablist" aria-label="Filter sesi">
+            <div class="flex flex-wrap gap-2 pb-1" role="tablist" aria-label="Filter sesi">
                 @foreach (['Semua', 'Aktif', 'Menunggu', 'Selesai'] as $i => $filter)
                     <button
                         type="button"
@@ -40,9 +40,9 @@
                     <span class="min-w-0 flex-1">
                         <span class="flex items-center gap-2">
                             <span class="truncate text-sm font-semibold">{{ $user }}</span>
-                            <span class="ml-auto shrink-0 text-[10px] text-muted-foreground">{{ $time }}</span>
+                            <span class="ml-auto shrink-0 text-xs text-muted-foreground">{{ $time }}</span>
                         </span>
-                        <span class="mt-0.5 block truncate text-[11px] text-muted-foreground">{{ $topic }} · {{ $preview }}</span>
+                        <span class="mt-0.5 block truncate text-xs text-muted-foreground">{{ $topic }} · {{ $preview }}</span>
                         <span class="mt-1.5 flex items-center gap-2">
                             <x-status :tone="$tone">{{ $status }}</x-status>
                             @if ($unread)

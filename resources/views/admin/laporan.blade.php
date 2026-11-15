@@ -11,7 +11,7 @@
                     <x-icon :name="$icon" :size="16" />
                 </span>
                 <p class="mt-3 text-xl font-semibold tracking-tight tabular-nums">{{ $value }}</p>
-                <p class="mt-0.5 text-[11px] text-muted-foreground">{{ $label }}</p>
+                <p class="mt-0.5 text-xs text-muted-foreground">{{ $label }}</p>
             </div>
         @endforeach
     </div>
@@ -22,7 +22,7 @@
                 <h3 class="text-sm font-semibold">Antrean laporan</h3>
                 <div class="flex gap-2">
                     @foreach (['Baru', 'Ditinjau'] as $i => $filter)
-                        <button type="button" @class(['rounded-full px-3 py-1.5 text-[11px] font-semibold', 'bg-primary text-primary-foreground' => $i === 0, 'bg-muted text-muted-foreground' => $i !== 0])>{{ $filter }}</button>
+                        <button type="button" @class(['rounded-full px-3 py-1.5 text-xs font-semibold', 'bg-primary text-primary-foreground' => $i === 0, 'bg-muted text-muted-foreground' => $i !== 0])>{{ $filter }}</button>
                     @endforeach
                 </div>
             </div>
@@ -39,17 +39,17 @@
                         <div class="flex flex-wrap items-start justify-between gap-2">
                             <div class="min-w-0">
                                 <p class="text-xs font-semibold">{{ $reason }}</p>
-                                <p class="mt-0.5 text-[10px] text-muted-foreground">{{ $target }} · dilaporkan {{ $reporter }} · {{ $time }}</p>
+                                <p class="mt-0.5 text-xs text-muted-foreground">{{ $target }} · dilaporkan {{ $reporter }} · {{ $time }}</p>
                             </div>
                             <x-status :tone="$tone">{{ $status }}</x-status>
                         </div>
-                        <p class="mt-2 line-clamp-2 rounded-lg bg-card px-3 py-2 text-[11px] leading-relaxed text-muted-foreground">
+                        <p class="mt-2 line-clamp-2 rounded-lg bg-card px-3 py-2 text-xs leading-relaxed text-muted-foreground">
                             "Aku benar-benar tidak sanggup lagi dengan semua ini, rasanya ingin menghilang saja."
                         </p>
                         <div class="mt-2.5 flex flex-wrap gap-2">
-                            <button type="button" class="rounded-lg bg-primary px-3 py-1.5 text-[11px] font-semibold text-primary-foreground">Tinjau</button>
-                            <button type="button" class="rounded-lg bg-background px-3 py-1.5 text-[11px] font-semibold neu-sm hover:bg-muted">Sembunyikan konten</button>
-                            <button type="button" class="rounded-lg px-3 py-1.5 text-[11px] font-semibold text-muted-foreground hover:bg-muted">Tolak laporan</button>
+                            <button type="button" class="rounded-lg bg-primary px-3 py-1.5 text-xs font-semibold text-primary-foreground">Tinjau</button>
+                            <button type="button" class="rounded-lg bg-background px-3 py-1.5 text-xs font-semibold neu-sm hover:bg-muted">Sembunyikan konten</button>
+                            <button type="button" class="rounded-lg px-3 py-1.5 text-xs font-semibold text-muted-foreground hover:bg-muted">Tolak laporan</button>
                         </div>
                     </article>
                 @endforeach
@@ -59,7 +59,7 @@
         <aside class="space-y-4">
             <section class="rounded-2xl bg-card p-4 neu-sm sm:p-5">
                 <h3 class="text-sm font-semibold">Panduan tindakan</h3>
-                <ul class="mt-3 space-y-2.5 text-[11px] leading-relaxed text-muted-foreground">
+                <ul class="mt-3 space-y-2.5 text-xs leading-relaxed text-muted-foreground">
                     @foreach ([
                         'Sembunyikan konten yang melanggar, jangan hapus permanen sebelum selesai tinjauan.',
                         'Sertakan alasan tindakan agar tercatat pada audit log.',
@@ -79,11 +79,11 @@
                     <x-icon name="clipboard" :size="15" />
                     Audit log
                 </h3>
-                <ul class="mt-3 space-y-2 text-[11px]">
+                <ul class="mt-3 space-y-2 text-xs">
                     @foreach ([['Moderator Rani menyembunyikan komentar #1284', '1 jam lalu'], ['Admin Fajar menolak laporan #4790', '3 jam lalu'], ['Admin Fajar mengubah peran akun #2210', 'Kemarin']] as [$entry, $time])
                         <li class="rounded-lg bg-card/70 px-3 py-2">
                             <p class="text-muted-foreground">{{ $entry }}</p>
-                            <p class="mt-0.5 text-[10px] text-muted-foreground/80">{{ $time }}</p>
+                            <p class="mt-0.5 text-xs text-muted-foreground/80">{{ $time }}</p>
                         </li>
                     @endforeach
                 </ul>

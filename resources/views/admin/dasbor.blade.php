@@ -28,10 +28,10 @@
                     <span class="flex size-8 items-center justify-center rounded-lg {{ $stat['tone'] }}">
                         <x-icon :name="$stat['icon']" :size="16" />
                     </span>
-                    <span class="text-[10px] font-semibold text-muted-foreground">{{ $stat['delta'] }}</span>
+                    <span class="text-xs font-semibold text-muted-foreground">{{ $stat['delta'] }}</span>
                 </div>
                 <p class="mt-3 text-xl font-semibold tracking-tight tabular-nums" data-count="{{ $stat['value'] }}">0</p>
-                <p class="mt-0.5 text-[11px] leading-tight text-muted-foreground">{{ $stat['label'] }}</p>
+                <p class="mt-0.5 text-xs leading-tight text-muted-foreground">{{ $stat['label'] }}</p>
             </div>
         @endforeach
     </div>
@@ -41,9 +41,9 @@
             <div class="flex flex-wrap items-start justify-between gap-3">
                 <div>
                     <h3 class="text-sm font-semibold">Aktivitas 7 hari terakhir</h3>
-                    <p class="mt-0.5 text-[11px] text-muted-foreground">Cerita baru dan pesan konseling per hari.</p>
+                    <p class="mt-0.5 text-xs text-muted-foreground">Cerita baru dan pesan konseling per hari.</p>
                 </div>
-                <div class="flex items-center gap-3 text-[10px] font-medium text-muted-foreground">
+                <div class="flex items-center gap-3 text-xs font-medium text-muted-foreground">
                     <span class="flex items-center gap-1.5"><span class="size-2 rounded-full bg-primary"></span>Cerita</span>
                     <span class="flex items-center gap-1.5"><span class="size-2 rounded-full bg-secondary"></span>Pesan</span>
                 </div>
@@ -55,17 +55,17 @@
 
         <section class="min-w-0 rounded-2xl bg-card p-4 neu-sm sm:p-5">
             <h3 class="text-sm font-semibold">Status sesi konseling</h3>
-            <p class="mt-0.5 text-[11px] text-muted-foreground">Distribusi seluruh sesi bulan ini.</p>
+            <p class="mt-0.5 text-xs text-muted-foreground">Distribusi seluruh sesi bulan ini.</p>
             <div class="relative mx-auto mt-3 h-40 w-40">
                 <canvas id="chartSesi" role="img" aria-label="Diagram donat distribusi status sesi konseling"></canvas>
                 <div class="pointer-events-none absolute inset-0 flex flex-col items-center justify-center">
                     <span class="text-xl font-semibold tracking-tight tabular-nums" data-count="86">0</span>
-                    <span class="text-[10px] text-muted-foreground">total sesi</span>
+                    <span class="text-xs text-muted-foreground">total sesi</span>
                 </div>
             </div>
             <ul class="mt-4 space-y-2">
                 @foreach ([['Aktif', '32', 'bg-primary'], ['Selesai', '41', 'bg-success'], ['Menunggu', '9', 'bg-accent'], ['Ditutup', '4', 'bg-muted-foreground/50']] as [$label, $total, $dot])
-                    <li class="flex items-center gap-2 text-[11px]">
+                    <li class="flex items-center gap-2 text-xs">
                         <span class="size-2 rounded-full {{ $dot }}"></span>
                         <span class="text-muted-foreground">{{ $label }}</span>
                         <span class="ml-auto font-semibold tabular-nums">{{ $total }}</span>
@@ -79,7 +79,7 @@
         <section class="rounded-2xl bg-card p-4 neu-sm sm:p-5">
             <div class="flex items-center justify-between gap-3">
                 <h3 class="text-sm font-semibold">Antrean laporan</h3>
-                <a href="{{ route('admin.laporan') }}" class="text-[11px] font-semibold text-brand-deep hover:underline">Kelola</a>
+                <a href="{{ route('admin.laporan') }}" class="text-xs font-semibold text-brand-deep hover:underline">Kelola</a>
             </div>
             <ul class="mt-3 divide-y divide-border/60">
                 @foreach ([
@@ -93,7 +93,7 @@
                         </span>
                         <div class="min-w-0 flex-1">
                             <p class="truncate text-xs font-semibold">{{ $reason }}</p>
-                            <p class="text-[10px] text-muted-foreground">{{ $target }} · {{ $time }}</p>
+                            <p class="text-xs text-muted-foreground">{{ $target }} · {{ $time }}</p>
                         </div>
                         <x-status :tone="$tone">Baru</x-status>
                     </li>
@@ -116,7 +116,7 @@
                         </span>
                         <div class="min-w-0">
                             <p class="text-xs leading-snug">{{ $text }}</p>
-                            <p class="text-[10px] text-muted-foreground">{{ $time }}</p>
+                            <p class="text-xs text-muted-foreground">{{ $time }}</p>
                         </div>
                     </li>
                 @endforeach

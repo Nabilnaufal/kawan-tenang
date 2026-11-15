@@ -35,7 +35,7 @@
                 <p class="mt-3 text-xl font-semibold tracking-tight tabular-nums">
                     <span data-count="{{ $stat['value'] }}">0</span>{{ $stat['suffix'] ?? '' }}
                 </p>
-                <p class="mt-0.5 text-[11px] leading-tight text-muted-foreground">{{ $stat['label'] }}</p>
+                <p class="mt-0.5 text-xs leading-tight text-muted-foreground">{{ $stat['label'] }}</p>
             </div>
         @endforeach
     </div>
@@ -45,12 +45,12 @@
             <section class="rounded-2xl bg-card p-4 neu-sm sm:p-5">
                 <div class="flex items-center justify-between gap-3">
                     <h3 class="text-sm font-semibold">Sesi yang ditugaskan</h3>
-                    <a href="{{ route('konselor.sesi') }}" class="text-[11px] font-semibold text-brand-deep hover:underline">Lihat semua</a>
+                    <a href="{{ route('konselor.sesi') }}" class="text-xs font-semibold text-brand-deep hover:underline">Lihat semua</a>
                 </div>
 
                 <div class="mt-3 overflow-x-auto">
                     <table class="w-full text-left text-xs">
-                        <thead class="text-[10px] tracking-wide text-muted-foreground uppercase">
+                        <thead class="text-xs tracking-wide text-muted-foreground uppercase">
                             <tr>
                                 <th class="py-2 pr-3 font-medium">Pengguna</th>
                                 <th class="hidden py-2 pr-3 font-medium sm:table-cell">Topik</th>
@@ -88,9 +88,9 @@
                 <div class="flex flex-wrap items-start justify-between gap-3">
                     <div>
                         <h3 class="text-sm font-semibold">Sesi per hari</h3>
-                        <p class="mt-0.5 text-[11px] text-muted-foreground">Tujuh hari terakhir.</p>
+                        <p class="mt-0.5 text-xs text-muted-foreground">Tujuh hari terakhir.</p>
                     </div>
-                    <div class="flex items-center gap-3 text-[10px] font-medium text-muted-foreground">
+                    <div class="flex items-center gap-3 text-xs font-medium text-muted-foreground">
                         <span class="flex items-center gap-1.5"><span class="size-2 rounded-full bg-primary"></span>Selesai</span>
                         <span class="flex items-center gap-1.5"><span class="size-2 rounded-full bg-secondary"></span>Baru</span>
                     </div>
@@ -110,9 +110,9 @@
                             <a href="{{ route('konselor.sesi.show', 1) }}" class="block rounded-xl bg-muted/60 p-3 transition hover:bg-muted">
                                 <span class="flex items-center justify-between gap-2">
                                     <span class="text-xs font-semibold">{{ $user }}</span>
-                                    <span class="text-[10px] text-muted-foreground">{{ $time }}</span>
+                                    <span class="text-xs text-muted-foreground">{{ $time }}</span>
                                 </span>
-                                <span class="mt-0.5 block truncate text-[11px] text-muted-foreground">{{ $preview }}</span>
+                                <span class="mt-0.5 block truncate text-xs text-muted-foreground">{{ $preview }}</span>
                             </a>
                         </li>
                     @endforeach

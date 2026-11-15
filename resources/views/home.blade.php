@@ -25,7 +25,7 @@
             <dl class="grid grid-cols-3 gap-5 border-t border-border/60 pt-5 xl:min-w-[340px] xl:border-t-0 xl:pt-0">
                 @foreach ([['1.284', 'cerita dibagikan'], ['32', 'konselor aktif'], ['98%', 'merasa didengar']] as [$value, $label])
                     <div>
-                        <dt class="text-[11px] leading-tight text-muted-foreground">{{ $label }}</dt>
+                        <dt class="text-xs leading-tight text-muted-foreground">{{ $label }}</dt>
                         <dd class="mt-0.5 text-lg font-semibold tracking-tight tabular-nums" data-count="{{ $value }}">0</dd>
                     </div>
                 @endforeach
@@ -88,7 +88,7 @@
             <div class="rounded-2xl bg-card p-4 neu-sm">
                 <div class="flex items-center justify-between">
                     <h2 class="text-sm font-semibold">Konselor tersedia</h2>
-                    <span class="text-[11px] text-muted-foreground">3 orang</span>
+                    <span class="text-xs text-muted-foreground">3 orang</span>
                 </div>
                 <ul class="mt-3 space-y-3">
                     @foreach ([['Rani', 'Konselor keluarga', true], ['Dimas', 'Konselor kecemasan', true], ['Sari', 'Konselor remaja', false]] as [$name, $role, $online])
@@ -99,9 +99,9 @@
                             </span>
                             <span class="min-w-0 flex-1 leading-tight">
                                 <span class="block truncate text-sm font-medium">Kak {{ $name }}</span>
-                                <span class="block text-[11px] text-muted-foreground">{{ $role }}</span>
+                                <span class="block text-xs text-muted-foreground">{{ $role }}</span>
                             </span>
-                            <span class="text-[11px] font-medium {{ $online ? 'text-success' : 'text-muted-foreground' }}">{{ $online ? 'Online' : 'Offline' }}</span>
+                            <span class="text-xs font-medium {{ $online ? 'text-success' : 'text-muted-foreground' }}">{{ $online ? 'Online' : 'Offline' }}</span>
                         </li>
                     @endforeach
                 </ul>

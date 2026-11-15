@@ -32,14 +32,14 @@
                 <dl class="mt-8 grid grid-cols-3 gap-4 border-t border-primary-foreground/20 pt-6">
                     @foreach ([['1.284', 'cerita'], ['32', 'konselor'], ['4.8', 'rating']] as [$value, $label])
                         <div>
-                            <dt class="text-[11px] text-primary-foreground/70">{{ $label }}</dt>
+                            <dt class="text-xs text-primary-foreground/70">{{ $label }}</dt>
                             <dd class="mt-0.5 text-lg font-semibold">{{ $value }}</dd>
                         </div>
                     @endforeach
                 </dl>
             </div>
 
-            <p class="text-[11px] leading-relaxed text-primary-foreground/70">
+            <p class="text-xs leading-relaxed text-primary-foreground/70">
                 Kawan Tenang bukan layanan gawat darurat. Jika kamu dalam bahaya, hubungi 119 ext. 8 atau 112.
             </p>
         </aside>

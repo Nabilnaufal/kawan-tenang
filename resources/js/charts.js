@@ -27,7 +27,7 @@ const palette = {
 Chart.register(CategoryScale, LinearScale, PointElement, LineElement, LineController, BarController, BarElement, Filler, Tooltip, DoughnutController, ArcElement);
 
 Chart.defaults.font.family = "'Montserrat', ui-sans-serif, system-ui, sans-serif";
-Chart.defaults.font.size = 10;
+Chart.defaults.font.size = 14;
 Chart.defaults.color = palette.muted;
 
 const tooltip = {

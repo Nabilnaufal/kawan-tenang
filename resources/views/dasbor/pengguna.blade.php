@@ -22,7 +22,7 @@
                     <x-icon :name="$stat['icon']" :size="16" />
                 </span>
                 <p class="mt-3 text-xl font-semibold tracking-tight tabular-nums" data-count="{{ $stat['value'] }}">0</p>
-                <p class="mt-0.5 text-[11px] leading-tight text-muted-foreground">{{ $stat['label'] }}</p>
+                <p class="mt-0.5 text-xs leading-tight text-muted-foreground">{{ $stat['label'] }}</p>
             </div>
         @endforeach
     </div>
@@ -33,7 +33,7 @@
             <section class="rounded-2xl bg-card p-4 neu-sm sm:p-5">
                 <div class="flex items-center justify-between gap-3">
                     <h3 class="text-sm font-semibold">Sesi konseling aktif</h3>
-                    <a href="{{ route('konseling.index') }}" class="text-[11px] font-semibold text-brand-deep hover:underline">Semua sesi</a>
+                    <a href="{{ route('konseling.index') }}" class="text-xs font-semibold text-brand-deep hover:underline">Semua sesi</a>
                 </div>
 
                 <a href="{{ route('konseling.show', 1) }}" class="mt-3 flex items-center gap-3 rounded-xl bg-muted/60 p-3 transition hover:bg-muted">
@@ -43,7 +43,7 @@
                     </span>
                     <div class="min-w-0 flex-1">
                         <p class="text-sm font-semibold">Kak Rani</p>
-                        <p class="truncate text-[11px] text-muted-foreground">Boleh, aku coba. Makasih sudah dengerin.</p>
+                        <p class="truncate text-xs text-muted-foreground">Boleh, aku coba. Makasih sudah dengerin.</p>
                     </div>
                     <x-status tone="success">Aktif</x-status>
                 </a>
@@ -75,13 +75,13 @@
                             </span>
                             <div class="min-w-0 flex-1">
                                 <p class="truncate text-xs">{{ $excerpt }}</p>
-                                <p class="mt-1 flex items-center gap-3 text-[10px] text-muted-foreground">
+                                <p class="mt-1 flex items-center gap-3 text-xs text-muted-foreground">
                                     <span>{{ $time }}</span>
                                     <span class="flex items-center gap-1"><x-icon name="heart" :size="11" />{{ $likes }}</span>
                                     <span class="flex items-center gap-1"><x-icon name="chat" :size="11" />{{ $replies }}</span>
                                 </p>
                             </div>
-                            <span class="rounded-full bg-muted px-2 py-0.5 text-[10px] font-medium text-muted-foreground">Anonim</span>
+                            <span class="rounded-full bg-muted px-2 py-0.5 text-xs font-medium text-muted-foreground">Anonim</span>
                         </li>
                     @endforeach
                 </ul>
@@ -129,9 +129,9 @@
                             <span class="flex size-9 items-center justify-center rounded-full bg-primary/15 text-sm font-semibold text-brand-deep">{{ $name[0] }}</span>
                             <span class="min-w-0 flex-1 leading-tight">
                                 <span class="block text-sm font-medium">Kak {{ $name }}</span>
-                                <span class="block text-[11px] text-muted-foreground">{{ $role }}</span>
+                                <span class="block text-xs text-muted-foreground">{{ $role }}</span>
                             </span>
-                            <span class="text-[11px] font-medium {{ $online ? 'text-success' : 'text-muted-foreground' }}">{{ $online ? 'Online' : 'Offline' }}</span>
+                            <span class="text-xs font-medium {{ $online ? 'text-success' : 'text-muted-foreground' }}">{{ $online ? 'Online' : 'Offline' }}</span>
                         </li>
                     @endforeach
                 </ul>

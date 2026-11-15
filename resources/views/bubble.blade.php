@@ -28,13 +28,13 @@
                         ></textarea>
 
                         <div class="mt-3 flex flex-wrap items-center gap-2">
-                            <p class="flex items-center gap-1.5 text-[11px] text-muted-foreground">
+                            <p class="flex items-center gap-1.5 text-xs text-muted-foreground">
                                 <x-icon name="lock" :size="13" />
                                 Diposting sebagai <span class="font-semibold text-foreground">Anonim</span>
                             </p>
 
                             <div class="ml-auto flex items-center gap-3">
-                                <span class="text-[11px] tabular-nums text-muted-foreground" x-text="text.length + '/500'">0/500</span>
+                                <span class="text-xs tabular-nums text-muted-foreground" x-text="text.length + '/500'">0/500</span>
                                 <button
                                     type="submit"
                                     :disabled="text.trim().length === 0"
@@ -50,7 +50,7 @@
             </form>
 
             {{-- Filters --}}
-            <div class="mt-5 flex gap-2 overflow-x-auto pb-1 no-scrollbar" role="tablist" aria-label="Filter cerita">
+            <div class="mt-5 flex flex-wrap gap-2 pb-1" role="tablist" aria-label="Filter cerita">
                 @foreach (['Semua', 'Terbaru', 'Populer', 'Perlu dukungan'] as $i => $filter)
                     <button
                         type="button"
@@ -79,7 +79,7 @@
                                 <x-icon name="user" :size="14" />
                             </span>
                             <div class="rounded-xl bg-muted/70 px-3 py-2">
-                                <p class="text-[11px] font-semibold">Anonim <span class="ml-1 font-normal text-muted-foreground">20 menit lalu</span></p>
+                                <p class="text-xs font-semibold">Anonim <span class="ml-1 font-normal text-muted-foreground">20 menit lalu</span></p>
                                 <p class="mt-0.5 text-xs leading-relaxed">Bangga banget sama kamu. Langkah kecil tetap langkah. 🤍</p>
                             </div>
                         </div>
@@ -88,7 +88,7 @@
                                 <x-icon name="user" :size="14" />
                             </span>
                             <div class="rounded-xl bg-muted/70 px-3 py-2">
-                                <p class="text-[11px] font-semibold">Anonim <span class="ml-1 font-normal text-muted-foreground">12 menit lalu</span></p>
+                                <p class="text-xs font-semibold">Anonim <span class="ml-1 font-normal text-muted-foreground">12 menit lalu</span></p>
                                 <p class="mt-0.5 text-xs leading-relaxed">Aku juga sedang di fase yang sama. Kita pelan-pelan ya.</p>
                             </div>
                         </div>
@@ -100,7 +100,7 @@
                 </x-post>
             </div>
 
-            <p class="mt-5 text-center text-[11px] text-muted-foreground">
+            <p class="mt-5 text-center text-xs text-muted-foreground">
                 Kamu sudah melihat 3 dari 24 cerita.
             </p>
         </div>

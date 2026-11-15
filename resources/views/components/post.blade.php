@@ -26,7 +26,7 @@
                     <x-status tone="info">{{ $tag }}</x-status>
                 @endif
             </div>
-            <p class="mt-1 text-[11px] text-muted-foreground">Identitas disamarkan · hanya kamu yang tahu</p>
+            <p class="mt-1 text-xs text-muted-foreground">Identitas disamarkan · hanya kamu yang tahu</p>
         </div>
 
         <button

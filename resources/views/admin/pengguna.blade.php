@@ -24,7 +24,7 @@
 
     <section class="min-w-0 rounded-2xl bg-card p-4 neu-sm sm:p-5">
         <div class="flex flex-wrap items-center gap-2">
-            <div class="flex gap-2 overflow-x-auto no-scrollbar" role="tablist" aria-label="Filter peran">
+            <div class="flex flex-wrap gap-2" role="tablist" aria-label="Filter peran">
                 @foreach (['Semua', 'Pengguna', 'Konselor', 'Administrator'] as $i => $filter)
                     <button
                         type="button"
@@ -55,14 +55,14 @@
                         </span>
                         <div class="min-w-0 flex-1">
                             <p class="truncate text-sm font-semibold">{{ $name }}</p>
-                            <p class="truncate text-[10px] text-muted-foreground">{{ $email }}</p>
+                            <p class="truncate text-xs text-muted-foreground">{{ $email }}</p>
                         </div>
                         <x-status tone="{{ $statusTone }}">{{ $status }}</x-status>
                     </div>
                     <div class="mt-2 flex flex-wrap items-center gap-2 pl-11">
                         <x-status :tone="$roleTone">{{ $role }}</x-status>
                         <x-status :tone="$verifTone">Verifikasi: {{ $verif }}</x-status>
-                        <button type="button" class="ml-auto rounded-lg px-2.5 py-1.5 text-[11px] font-semibold text-brand-deep hover:bg-muted">Kelola</button>
+                        <button type="button" class="ml-auto rounded-lg bg-muted px-2.5 py-1.5 text-xs font-semibold text-brand-deep hover:bg-muted/70">Kelola</button>
                     </div>
                 </li>
             @endforeach
@@ -71,7 +71,7 @@
         {{-- Desktop table --}}
         <div class="mt-4 hidden overflow-x-auto md:block">
             <table class="w-full min-w-[720px] text-left text-xs">
-                <thead class="text-[10px] tracking-wide text-muted-foreground uppercase">
+                <thead class="text-xs tracking-wide text-muted-foreground uppercase">
                     <tr class="border-b border-border/60">
                         <th class="py-2.5 pr-3 font-medium">Akun</th>
                         <th class="py-2.5 pr-3 font-medium">Peran</th>
@@ -91,7 +91,7 @@
                                     </span>
                                     <div class="min-w-0">
                                         <p class="truncate font-semibold">{{ $name }}</p>
-                                        <p class="truncate text-[10px] text-muted-foreground">{{ $email }}</p>
+                                        <p class="truncate text-xs text-muted-foreground">{{ $email }}</p>
                                     </div>
                                 </div>
                             </td>
@@ -100,7 +100,7 @@
                             <td class="py-3 pr-3 text-muted-foreground">{{ $joined }}</td>
                             <td class="py-3 pr-3"><x-status :tone="$statusTone">{{ $status }}</x-status></td>
                             <td class="py-3 text-right">
-                                <button type="button" class="rounded-lg px-2.5 py-1.5 text-[11px] font-semibold text-brand-deep hover:bg-muted">Kelola</button>
+                                <button type="button" class="rounded-lg px-2.5 py-1.5 text-xs font-semibold text-brand-deep hover:bg-muted">Kelola</button>
                             </td>
                         </tr>
                     @endforeach
@@ -108,7 +108,7 @@
             </table>
         </div>
 
-        <div class="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-border/60 pt-3 text-[11px] text-muted-foreground">
+        <div class="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-border/60 pt-3 text-xs text-muted-foreground">
             <p>Menampilkan 7 dari 1.284 akun</p>
             <div class="flex items-center gap-1">
                 <button type="button" class="rounded-lg px-2.5 py-1.5 font-medium hover:bg-muted" disabled>Sebelumnya</button>

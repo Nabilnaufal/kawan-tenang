@@ -44,14 +44,14 @@
                 </span>
                 <div>
                     <p class="text-xs font-semibold">Menunggu hasil pemeriksaan</p>
-                    <p class="text-[11px] text-muted-foreground">Biasanya selesai dalam 1–2 menit. Halaman ini akan diperbarui otomatis.</p>
+                    <p class="text-xs text-muted-foreground">Biasanya selesai dalam 1–2 menit. Halaman ini akan diperbarui otomatis.</p>
                 </div>
             </div>
 
             <dl class="relative mt-6 grid grid-cols-2 gap-4 border-t border-border/60 pt-4 sm:grid-cols-3">
                 @foreach ([['Penyedia', 'Didit'], ['Metode', 'Passive liveness'], ['Data disimpan', 'Status & waktu']] as [$label, $value])
                     <div>
-                        <dt class="text-[10px] tracking-wide text-muted-foreground uppercase">{{ $label }}</dt>
+                        <dt class="text-xs tracking-wide text-muted-foreground uppercase">{{ $label }}</dt>
                         <dd class="mt-0.5 text-xs font-semibold">{{ $value }}</dd>
                     </div>
                 @endforeach
@@ -79,7 +79,7 @@
                         </button>
                     </div>
 
-                    <ul class="mt-4 space-y-2.5 text-[11px] leading-relaxed text-muted-foreground">
+                    <ul class="mt-4 space-y-2.5 text-xs leading-relaxed text-muted-foreground">
                         @foreach ([
                             'Tujuan: memastikan akun dijalankan oleh orang hidup, bukan foto atau rekaman.',
                             'Data: gambar wajah diproses oleh Didit sebagai penyedia pihak ketiga.',
@@ -93,7 +93,7 @@
                         @endforeach
                     </ul>
 
-                    <label class="mt-4 flex items-start gap-2.5 rounded-xl bg-input p-3 text-[11px] leading-relaxed neu-inset">
+                    <label class="mt-4 flex items-start gap-2.5 rounded-xl bg-input p-3 text-xs leading-relaxed neu-inset">
                         <input type="checkbox" x-model="agree" class="mt-0.5 size-4 rounded border-border text-primary focus:ring-ring">
                         <span>Aku memahami tujuan, penyedia, dan cara data wajah diproses.</span>
                     </label>
@@ -123,13 +123,13 @@
                 ] as $i => [$step, $detail])
                     <li class="flex gap-3">
                         <span @class([
-                            'flex size-7 shrink-0 items-center justify-center rounded-full text-[11px] font-bold',
+                            'flex size-7 shrink-0 items-center justify-center rounded-full text-xs font-bold',
                             'bg-primary text-primary-foreground' => $i === 0,
                             'bg-muted text-muted-foreground' => $i > 0,
                         ])>{{ $i + 1 }}</span>
                         <div class="min-w-0">
                             <p class="text-xs font-semibold">{{ $step }}</p>
-                            <p class="mt-0.5 text-[11px] leading-relaxed text-muted-foreground">{{ $detail }}</p>
+                            <p class="mt-0.5 text-xs leading-relaxed text-muted-foreground">{{ $detail }}</p>
                         </div>
                     </li>
                 @endforeach
@@ -143,12 +143,12 @@
                 <x-icon name="lock" :size="15" />
                 Apa yang tidak kami simpan
             </h3>
-            <ul class="mt-3 space-y-2 text-[11px] leading-relaxed text-muted-foreground">
+            <ul class="mt-3 space-y-2 text-xs leading-relaxed text-muted-foreground">
                 <li>Foto selfie mentah dan template biometrik.</li>
                 <li>Data wajah di luar kebutuhan verifikasi.</li>
                 <li>Isi percakapan konseling di log sistem.</li>
             </ul>
-            <p class="mt-3 text-[11px] leading-relaxed text-muted-foreground">
+            <p class="mt-3 text-xs leading-relaxed text-muted-foreground">
                 Kamu dapat mengajukan penghapusan data verifikasi melalui halaman pengaturan profil.
             </p>
         </section>
@@ -158,10 +158,10 @@
                 <x-icon name="alert" :size="15" />
                 Verifikasi bukan syarat bantuan
             </h3>
-            <p class="mt-2 text-[11px] leading-relaxed">
+            <p class="mt-2 text-xs leading-relaxed">
                 Kamu tetap dapat memakai Bubble Publik dan menghubungi layanan darurat tanpa verifikasi wajah. Jangan menunda bantuan hanya karena proses ini.
             </p>
-            <a href="tel:119" class="mt-3 inline-flex items-center gap-2 rounded-xl bg-card px-4 py-2 text-[11px] font-semibold">
+            <a href="tel:119" class="mt-3 inline-flex items-center gap-2 rounded-xl bg-card px-4 py-2 text-xs font-semibold">
                 <x-icon name="life-buoy" :size="13" />
                 Hubungi 119 ext. 8
             </a>

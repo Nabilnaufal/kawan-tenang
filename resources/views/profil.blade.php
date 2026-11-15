@@ -13,7 +13,7 @@
                 </span>
                 <div class="min-w-0">
                     <h3 class="truncate text-base font-semibold">Kawan Anonim</h3>
-                    <p class="text-[11px] text-muted-foreground">Bergabung sejak November 2026</p>
+                    <p class="text-xs text-muted-foreground">Bergabung sejak November 2026</p>
                 </div>
             </div>
 
@@ -57,15 +57,15 @@
                 <h3 class="text-sm font-semibold">Informasi akun</h3>
                 <form class="mt-4 grid gap-3 sm:grid-cols-2" @submit.prevent>
                     <div>
-                        <label for="nama" class="mb-1.5 block text-[11px] font-medium text-muted-foreground">Nama</label>
+                        <label for="nama" class="mb-1.5 block text-xs font-medium text-muted-foreground">Nama</label>
                         <input id="nama" type="text" value="Kawan Anonim" class="w-full rounded-xl bg-input px-3.5 py-2.5 text-sm neu-inset focus:outline-none">
                     </div>
                     <div>
-                        <label for="email" class="mb-1.5 block text-[11px] font-medium text-muted-foreground">Email</label>
+                        <label for="email" class="mb-1.5 block text-xs font-medium text-muted-foreground">Email</label>
                         <input id="email" type="email" value="kawan@mail.com" class="w-full rounded-xl bg-input px-3.5 py-2.5 text-sm neu-inset focus:outline-none">
                     </div>
                     <div class="sm:col-span-2">
-                        <label for="sandi" class="mb-1.5 block text-[11px] font-medium text-muted-foreground">Kata sandi baru</label>
+                        <label for="sandi" class="mb-1.5 block text-xs font-medium text-muted-foreground">Kata sandi baru</label>
                         <input id="sandi" type="password" placeholder="••••••••" class="w-full rounded-xl bg-input px-3.5 py-2.5 text-sm neu-inset focus:outline-none">
                     </div>
                     <div class="flex items-center justify-end gap-2 sm:col-span-2">
@@ -82,14 +82,14 @@
                     <label class="flex cursor-pointer items-center gap-3 py-3">
                         <span class="min-w-0 flex-1">
                             <span class="block text-xs font-medium">Selalu tampil anonim</span>
-                            <span class="block text-[11px] text-muted-foreground">Nama asli tidak pernah ditampilkan di ruang publik.</span>
+                            <span class="block text-xs text-muted-foreground">Nama asli tidak pernah ditampilkan di ruang publik.</span>
                         </span>
                         <input type="checkbox" x-model="anon" checked class="size-4 shrink-0 rounded border-border text-primary focus:ring-ring">
                     </label>
                     <label class="flex cursor-pointer items-center gap-3 py-3">
                         <span class="min-w-0 flex-1">
                             <span class="block text-xs font-medium">Notifikasi sesi konseling</span>
-                            <span class="block text-[11px] text-muted-foreground">Beri tahu saat konselor membalas pesan.</span>
+                            <span class="block text-xs text-muted-foreground">Beri tahu saat konselor membalas pesan.</span>
                         </span>
                         <input type="checkbox" x-model="notify" checked class="size-4 shrink-0 rounded border-border text-primary focus:ring-ring">
                     </label>
@@ -118,12 +118,12 @@
                             </span>
                             <span class="min-w-0 flex-1">
                                 <span class="block truncate text-xs font-medium">{{ $device }}</span>
-                                <span class="block text-[10px] text-muted-foreground">{{ $meta }}</span>
+                                <span class="block text-xs text-muted-foreground">{{ $meta }}</span>
                             </span>
                             @if ($current)
                                 <x-status tone="success">Ini</x-status>
                             @else
-                                <button type="button" class="text-[11px] font-semibold text-destructive">Keluar</button>
+                                <button type="button" class="text-xs font-semibold text-destructive">Keluar</button>
                             @endif
                         </li>
                     @endforeach

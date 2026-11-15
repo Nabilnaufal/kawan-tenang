@@ -14,7 +14,7 @@
                             <input type="radio" name="role" value="{{ $value }}" x-model="role" class="mt-0.5 size-4 border-border text-primary">
                             <span>
                                 <span class="block font-semibold">{{ $label }}</span>
-                                <span class="block text-[11px] text-muted-foreground">{{ $hint }}</span>
+                                <span class="block text-xs text-muted-foreground">{{ $hint }}</span>
                             </span>
                         </label>
                     @endforeach
@@ -54,7 +54,7 @@
                 </div>
             </div>
 
-            <label class="flex items-start gap-2.5 text-[11px] leading-relaxed text-muted-foreground">
+            <label class="flex items-start gap-2.5 text-xs leading-relaxed text-muted-foreground">
                 <input type="checkbox" required class="mt-0.5 size-4 rounded border-border text-primary">
                 <span>
                     Saya menyetujui <a href="#" class="font-semibold text-brand-deep hover:underline">Kebijakan Privasi</a> dan

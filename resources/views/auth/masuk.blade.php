@@ -25,7 +25,7 @@
             <div>
                 <div class="mb-1.5 flex items-center justify-between">
                     <label for="password" class="block text-xs font-medium text-muted-foreground">Kata sandi</label>
-                    <a href="{{ route('lupa-sandi') }}" class="text-[11px] font-semibold text-brand-deep hover:underline">Lupa sandi?</a>
+                    <a href="{{ route('lupa-sandi') }}" class="text-xs font-semibold text-brand-deep hover:underline">Lupa sandi?</a>
                 </div>
                 <div x-data="{ show: false }" class="flex items-center gap-2 rounded-xl bg-input px-3.5 py-3 neu-inset">
                     <x-icon name="lock" :size="16" class="text-muted-foreground" />
@@ -60,12 +60,12 @@
             <a href="{{ route('daftar') }}" class="font-semibold text-brand-deep hover:underline">Daftar sekarang</a>
         </p>
 
-        <p class="mt-6 flex items-start gap-2 rounded-xl bg-muted/60 p-3 text-[11px] leading-relaxed text-muted-foreground">
+        <p class="mt-6 flex items-start gap-2 rounded-xl bg-muted/60 p-3 text-xs leading-relaxed text-muted-foreground">
             <x-icon name="lock" :size="13" class="mt-0.5" />
             Nama dan email tidak pernah ditampilkan di Bubble Publik. Identitas publik selalu "Anonim".
         </p>
 
-        <p class="mt-6 border-t border-border/60 pt-4 text-center text-[11px] text-muted-foreground">
+        <p class="mt-6 border-t border-border/60 pt-4 text-center text-xs text-muted-foreground">
             Tampilan peran:
             <a href="{{ route('konselor.dasbor') }}" class="font-semibold text-brand-deep hover:underline">Konselor</a>
             <span class="mx-1">·</span>

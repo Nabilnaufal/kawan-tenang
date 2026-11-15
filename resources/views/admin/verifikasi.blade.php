@@ -11,7 +11,7 @@
                     <x-icon :name="$icon" :size="16" />
                 </span>
                 <p class="mt-3 text-xl font-semibold tracking-tight tabular-nums" data-count="{{ $value }}">0</p>
-                <p class="mt-0.5 text-[11px] text-muted-foreground">{{ $label }}</p>
+                <p class="mt-0.5 text-xs text-muted-foreground">{{ $label }}</p>
             </div>
         @endforeach
     </div>
@@ -21,14 +21,14 @@
             <h3 class="text-sm font-semibold">Antrean verifikasi</h3>
             <div class="flex gap-2">
                 @foreach (['Semua', 'Menunggu', 'Gagal'] as $i => $filter)
-                    <button type="button" @class(['rounded-full px-3 py-1.5 text-[11px] font-semibold', 'bg-primary text-primary-foreground' => $i === 0, 'bg-muted text-muted-foreground' => $i !== 0])>{{ $filter }}</button>
+                    <button type="button" @class(['rounded-full px-3 py-1.5 text-xs font-semibold', 'bg-primary text-primary-foreground' => $i === 0, 'bg-muted text-muted-foreground' => $i !== 0])>{{ $filter }}</button>
                 @endforeach
             </div>
         </div>
 
         <div class="mt-4 overflow-x-auto">
             <table class="w-full text-left text-xs">
-                <thead class="text-[10px] tracking-wide text-muted-foreground uppercase">
+                <thead class="text-xs tracking-wide text-muted-foreground uppercase">
                     <tr class="border-b border-border/60">
                         <th class="hidden py-2.5 pr-3 font-medium sm:table-cell">ID sesi</th>
                         <th class="py-2.5 pr-3 font-medium">Akun</th>
@@ -48,14 +48,14 @@
                         ['#DVT-88182', 'Fajar Hidayat', 'Didit', 'Passive liveness', '14 Nov, 11.03', 'Perlu ditinjau', 'info'],
                     ] as [$session, $account, $provider, $method, $time, $status, $tone])
                         <tr class="align-middle">
-                            <td class="hidden py-3 pr-3 font-mono text-[11px] font-medium sm:table-cell">{{ $session }}</td>
+                            <td class="hidden py-3 pr-3 font-mono text-xs font-medium sm:table-cell">{{ $session }}</td>
                             <td class="py-3 pr-3 font-medium">{{ $account }}</td>
                             <td class="hidden py-3 pr-3 text-muted-foreground sm:table-cell">{{ $provider }}</td>
                             <td class="hidden py-3 pr-3 text-muted-foreground sm:table-cell">{{ $method }}</td>
                             <td class="hidden py-3 pr-3 text-muted-foreground sm:table-cell">{{ $time }}</td>
                             <td class="py-3 pr-3"><x-status :tone="$tone">{{ $status }}</x-status></td>
                             <td class="py-3 text-right">
-                                <button type="button" class="rounded-lg px-2.5 py-1.5 text-[11px] font-semibold text-brand-deep hover:bg-muted">Tinjau</button>
+                                <button type="button" class="rounded-lg px-2.5 py-1.5 text-xs font-semibold text-brand-deep hover:bg-muted">Tinjau</button>
                             </td>
                         </tr>
                     @endforeach
@@ -64,7 +64,7 @@
         </div>
     </section>
 
-    <p class="mt-3 flex items-start gap-2 px-1 text-[11px] leading-relaxed text-muted-foreground">
+    <p class="mt-3 flex items-start gap-2 px-1 text-xs leading-relaxed text-muted-foreground">
         <x-icon name="lock" :size="13" class="mt-0.5 shrink-0" />
         Status hanya diperbarui dari webhook penyedia yang tervalidasi. Timeout atau kegagalan vendor tidak dianggap berhasil.
     </p>

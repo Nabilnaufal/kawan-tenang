@@ -4,7 +4,7 @@
     $menus = [
         'pengguna' => [
             ['label' => 'Beranda', 'href' => route('home'), 'icon' => 'home', 'active' => request()->routeIs('home')],
-            ['label' => 'Bubble Publik', 'href' => route('bubble'), 'icon' => 'bubble', 'active' => request()->routeIs('bubble')],
+            ['label' => 'Bubble', 'href' => route('bubble'), 'icon' => 'bubble', 'active' => request()->routeIs('bubble')],
             ['label' => 'Konseling', 'href' => route('konseling.index'), 'icon' => 'chat', 'active' => request()->routeIs('konseling.*')],
             ['label' => 'Verifikasi', 'href' => route('verifikasi'), 'icon' => 'shield', 'active' => request()->routeIs('verifikasi')],
             ['label' => 'Dasbor', 'href' => route('dasbor'), 'icon' => 'chart', 'active' => request()->routeIs('dasbor')],
@@ -53,7 +53,7 @@
                 </span>
                 <span class="leading-tight">
                     <span class="block font-semibold tracking-tight">Kawan Tenang</span>
-                    <span class="block text-[11px] text-muted-foreground">{{ $roleLabel }}</span>
+                    <span class="block text-xs text-muted-foreground">{{ $roleLabel }}</span>
                 </span>
             </a>
 
@@ -81,7 +81,7 @@
                     </span>
                     <span class="min-w-0 leading-tight">
                         <span class="block truncate text-sm font-medium">Kawan Anonim</span>
-                        <span class="block text-[11px] text-muted-foreground">{{ $roleLabel }}</span>
+                        <span class="block text-xs text-muted-foreground">{{ $roleLabel }}</span>
                     </span>
                     <x-icon name="chevron-right" :size="15" class="ml-auto text-muted-foreground" />
                 </a>
@@ -149,7 +149,7 @@
                 <a
                     href="{{ $item['href'] }}"
                     @class([
-                        'flex flex-col items-center gap-1 py-2 text-[10px] font-medium transition',
+                        'flex flex-col items-center gap-1 py-2 text-xs font-medium transition',
                         'text-foreground' => $item['active'],
                         'text-muted-foreground' => ! $item['active'],
                     ])
