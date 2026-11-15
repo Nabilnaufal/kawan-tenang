@@ -74,17 +74,7 @@
                 @endforeach
             </nav>
 
-            <div class="mt-auto space-y-3">
-                <a href="tel:119" class="block rounded-2xl bg-card p-4 neu-sm">
-                    <span class="flex size-8 items-center justify-center rounded-full bg-accent/40 text-accent-foreground">
-                        <x-icon name="life-buoy" :size="16" />
-                    </span>
-                    <span class="mt-3 block text-sm font-semibold">Butuh bantuan segera?</span>
-                    <span class="mt-1 block text-xs leading-relaxed text-muted-foreground">
-                        Kawan Tenang bukan layanan darurat. Hubungi 119 ext. 8 atau 112.
-                    </span>
-                </a>
-
+            <div class="mt-auto">
                 <a href="{{ $profileUrl }}" class="flex items-center gap-3 rounded-xl px-2 py-2 hover:bg-card">
                     <span class="flex size-9 items-center justify-center rounded-full bg-secondary/60 text-secondary-foreground">
                         <x-icon name="user" :size="17" />
