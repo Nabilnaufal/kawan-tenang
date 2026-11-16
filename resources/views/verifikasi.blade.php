@@ -6,7 +6,7 @@
 
     <div class="grid gap-4 lg:grid-cols-[1.4fr_1fr]">
         {{-- Status --}}
-        <section class="relative overflow-hidden rounded-3xl bg-card p-5 neu sm:p-6" x-data="{ open: false, waiting: false, agree: false }">
+        <section class="relative overflow-hidden rounded-[1.4rem] bg-card p-5 neu sm:p-6" x-data="{ open: false, waiting: false, agree: false }">
             <div class="pointer-events-none absolute -top-10 -right-8 size-40 rounded-full bg-secondary/25 blur-2xl" aria-hidden="true"></div>
 
             <div class="relative flex flex-wrap items-start gap-4">
@@ -26,20 +26,20 @@
                 <div class="relative mt-5 flex flex-col gap-2 sm:flex-row">
                     <button
                         type="button"
-                        class="inline-flex items-center justify-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground neu-primary transition hover:bg-brand-deep"
+                        class="btn-lime text-xs"
                         @click="open = true"
                     >
                         <x-icon name="face" :size="15" />
                         Mulai verifikasi
                     </button>
-                    <a href="#privasi" class="inline-flex items-center justify-center gap-2 rounded-xl bg-background px-4 py-2.5 text-xs font-semibold neu-sm transition hover:bg-muted">
+                    <a href="#privasi" class="inline-flex items-center justify-center gap-2 rounded-full bg-background px-4 py-2.5 text-xs font-semibold neu-sm transition hover:bg-muted">
                         Pelajari prosesnya
                     </a>
                 </div>
             </template>
 
             <div x-show="waiting" x-cloak class="relative mt-5 flex items-center gap-3 rounded-xl bg-secondary/30 p-3">
-                <span class="flex size-8 items-center justify-center rounded-full bg-card text-brand-deep">
+                <span class="flex size-8 items-center justify-center rounded-full bg-card text-foreground">
                     <x-icon name="clock" :size="16" />
                 </span>
                 <div>
@@ -62,13 +62,13 @@
                 x-show="open"
                 x-cloak
                 x-transition.opacity
-                class="fixed inset-0 z-50 flex items-end justify-center bg-slate-text/35 p-4 backdrop-blur-sm sm:items-center"
+                class="fixed inset-0 z-50 flex items-end justify-center bg-foreground/40 p-4 backdrop-blur-sm sm:items-center"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="verif-title"
                 @keydown.escape.window="open = false"
             >
-                <div class="w-full max-w-lg rounded-2xl bg-card p-5 neu" @click.outside="open = false">
+                <div class="w-full max-w-lg rounded-[1.4rem] bg-card p-5 neu" @click.outside="open = false">
                     <div class="flex items-start justify-between gap-4">
                         <div>
                             <h2 id="verif-title" class="text-base font-semibold">Persetujuan pemrosesan data</h2>
@@ -102,7 +102,7 @@
                         <button type="button" class="rounded-xl px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted" @click="open = false">Nanti saja</button>
                         <button
                             type="button"
-                            class="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition disabled:opacity-40"
+                            class="rounded-full bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground transition disabled:opacity-40"
                             :disabled="! agree"
                             @click="open = false; waiting = true"
                         >Setuju & lanjutkan</button>
@@ -161,7 +161,7 @@
             <p class="mt-2 text-xs leading-relaxed">
                 Kamu tetap dapat memakai Bubble Publik dan menghubungi layanan darurat tanpa verifikasi wajah. Jangan menunda bantuan hanya karena proses ini.
             </p>
-            <a href="tel:119" class="mt-3 inline-flex items-center gap-2 rounded-xl bg-card px-4 py-2 text-xs font-semibold">
+            <a href="tel:119" class="mt-3 inline-flex items-center gap-2 rounded-full bg-card px-4 py-2 text-xs font-semibold">
                 <x-icon name="life-buoy" :size="13" />
                 Hubungi 119 ext. 8
             </a>
