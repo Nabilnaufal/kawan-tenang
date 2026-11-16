@@ -28,6 +28,7 @@ import {
     LogOut,
     Mail,
     MessageCircle,
+    Moon,
     MessagesSquare,
     Phone,
     Plus,
@@ -36,6 +37,7 @@ import {
     Send,
     Settings,
     ShieldCheck,
+    Sun,
     TriangleAlert,
     User,
     UserCheck,
@@ -71,6 +73,7 @@ const icons = {
     LogOut,
     Mail,
     MessageCircle,
+    Moon,
     MessagesSquare,
     Phone,
     Plus,
@@ -79,6 +82,7 @@ const icons = {
     Send,
     Settings,
     ShieldCheck,
+    Sun,
     TriangleAlert,
     User,
     UserCheck,
@@ -88,6 +92,12 @@ const icons = {
 
 window.Alpine = Alpine;
 Alpine.start();
+
+window.toggleTheme = () => {
+    const dark = document.documentElement.classList.toggle('dark');
+    localStorage.setItem('kt-theme', dark ? 'dark' : 'light');
+    initCharts();
+};
 
 const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 const numberFormat = new Intl.NumberFormat('id-ID');

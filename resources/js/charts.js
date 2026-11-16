@@ -13,39 +13,37 @@ import {
     Tooltip,
 } from 'chart.js';
 
-const palette = {
-    primary: '#789B8A',
-    secondary: '#A9C7D5',
-    accent: '#E8B89D',
-    success: '#668C72',
-    muted: '#78858A',
-    surface: '#F8F7F2',
-    text: '#34434A',
-    grid: 'rgba(52, 67, 74, 0.08)',
-};
-
 Chart.register(CategoryScale, LinearScale, PointElement, LineElement, LineController, BarController, BarElement, Filler, Tooltip, DoughnutController, ArcElement);
 
 Chart.defaults.font.family = "'Montserrat', ui-sans-serif, system-ui, sans-serif";
 Chart.defaults.font.size = 14;
-Chart.defaults.color = palette.muted;
 
-const tooltip = {
-    backgroundColor: palette.surface,
-    titleColor: palette.text,
-    bodyColor: palette.muted,
-    borderColor: 'rgba(52, 67, 74, 0.12)',
-    borderWidth: 1,
-    cornerRadius: 10,
-    padding: 10,
-    displayColors: true,
-    boxWidth: 8,
-    boxHeight: 8,
-    usePointStyle: true,
-};
+const css = (name, fallback) => getComputedStyle(document.documentElement).getPropertyValue(name).trim() || fallback;
 
-/** Draws whichever charts are on the current page. Safe to call after every navigation. */
+/** Draws whichever charts are on the current page. Safe to call after navigation or a theme change. */
 export function initCharts() {
+    const ink = css('--foreground', '#171b1d');
+    const card = css('--card', '#ffffff');
+    const lime = css('--secondary', '#c9f24d');
+    const muted = css('--muted-foreground', '#6f7678');
+    const line = css('--border', 'rgba(23,27,29,0.08)');
+
+    Chart.defaults.color = muted;
+
+    const tooltip = {
+        backgroundColor: card,
+        titleColor: ink,
+        bodyColor: muted,
+        borderColor: line,
+        borderWidth: 1,
+        cornerRadius: 12,
+        padding: 10,
+        displayColors: true,
+        boxWidth: 8,
+        boxHeight: 8,
+        usePointStyle: true,
+    };
+
     const activityCanvas = document.getElementById('chartAktivitas');
 
     if (activityCanvas) {
@@ -53,8 +51,8 @@ export function initCharts() {
 
         const context = activityCanvas.getContext('2d');
         const gradient = context.createLinearGradient(0, 0, 0, activityCanvas.parentElement?.clientHeight || 240);
-        gradient.addColorStop(0, 'rgba(120, 155, 138, 0.35)');
-        gradient.addColorStop(1, 'rgba(120, 155, 138, 0)');
+        gradient.addColorStop(0, `${ink}2e`);
+        gradient.addColorStop(1, `${ink}00`);
 
         new Chart(activityCanvas, {
             type: 'line',
@@ -64,19 +62,19 @@ export function initCharts() {
                     {
                         label: 'Cerita',
                         data: [12, 18, 9, 22, 17, 26, 21],
-                        borderColor: palette.primary,
+                        borderColor: ink,
                         backgroundColor: gradient,
                         fill: true,
                         tension: 0.4,
                         borderWidth: 2,
                         pointRadius: 0,
                         pointHoverRadius: 4,
-                        pointHoverBackgroundColor: palette.primary,
+                        pointHoverBackgroundColor: ink,
                     },
                     {
                         label: 'Pesan',
                         data: [30, 34, 28, 41, 38, 46, 40],
-                        borderColor: palette.secondary,
+                        borderColor: lime,
                         borderWidth: 2,
                         borderDash: [5, 5],
                         tension: 0.4,
@@ -98,7 +96,7 @@ export function initCharts() {
                     },
                     y: {
                         beginAtZero: true,
-                        grid: { color: palette.grid },
+                        grid: { color: line },
                         border: { display: false },
                         ticks: { maxTicksLimit: 4, padding: 8 },
                     },
@@ -119,10 +117,10 @@ export function initCharts() {
                 datasets: [
                     {
                         data: [32, 41, 9, 4],
-                        backgroundColor: [palette.primary, palette.success, palette.accent, 'rgba(120, 133, 138, 0.35)'],
+                        backgroundColor: [ink, lime, '#a8b09c', `${muted}55`],
                         borderWidth: 0,
-                        borderRadius: 6,
-                        spacing: 2,
+                        borderRadius: 8,
+                        spacing: 3,
                     },
                 ],
             },
@@ -130,7 +128,7 @@ export function initCharts() {
                 responsive: true,
                 maintainAspectRatio: false,
                 animation: false,
-                cutout: '74%',
+                cutout: '76%',
                 plugins: { legend: { display: false }, tooltip },
             },
         });
@@ -149,14 +147,14 @@ export function initCharts() {
                     {
                         label: 'Selesai',
                         data: [4, 6, 3, 7, 5, 8, 6],
-                        backgroundColor: palette.primary,
+                        backgroundColor: ink,
                         borderRadius: 6,
                         maxBarThickness: 18,
                     },
                     {
                         label: 'Baru',
                         data: [2, 3, 1, 4, 2, 3, 2],
-                        backgroundColor: palette.secondary,
+                        backgroundColor: lime,
                         borderRadius: 6,
                         maxBarThickness: 18,
                     },
@@ -171,10 +169,11 @@ export function initCharts() {
                     x: {
                         grid: { display: false },
                         border: { display: false },
+                        ticks: { maxRotation: 0, minRotation: 0, autoSkip: false },
                     },
                     y: {
                         beginAtZero: true,
-                        grid: { color: palette.grid },
+                        grid: { color: line },
                         border: { display: false },
                         ticks: { maxTicksLimit: 4, padding: 8 },
                     },
