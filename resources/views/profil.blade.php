@@ -6,9 +6,9 @@
 
     <div class="grid gap-4 lg:grid-cols-[1fr_1.5fr]">
         {{-- Identity --}}
-        <section class="self-start rounded-2xl bg-card p-5 neu-sm">
+        <section class="self-start rounded-[1.4rem] bg-card p-5 neu-sm">
             <div class="flex items-center gap-4">
-                <span class="flex size-16 items-center justify-center rounded-full bg-secondary/50 text-secondary-foreground">
+                <span class="flex size-16 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
                     <x-icon name="user" :size="28" />
                 </span>
                 <div class="min-w-0">
@@ -44,7 +44,7 @@
             </dl>
 
             @if (($role ?? 'pengguna') === 'pengguna')
-                <a href="{{ route('verifikasi') }}" class="mt-5 flex items-center justify-center gap-2 rounded-xl bg-background px-4 py-2.5 text-xs font-semibold neu-sm transition hover:bg-muted">
+                <a href="{{ route('verifikasi') }}" class="mt-5 flex items-center justify-center gap-2 rounded-full bg-background px-4 py-2.5 text-xs font-semibold neu-sm transition hover:bg-muted">
                     <x-icon name="face" :size="14" />
                     Verifikasi wajah
                 </a>
@@ -53,7 +53,7 @@
 
         <div class="space-y-4">
             {{-- Account form --}}
-            <section class="rounded-2xl bg-card p-5 neu-sm">
+            <section class="rounded-[1.4rem] bg-card p-5 neu-sm">
                 <h3 class="text-sm font-semibold">Informasi akun</h3>
                 <form class="mt-4 grid gap-3 sm:grid-cols-2" @submit.prevent>
                     <div>
@@ -70,13 +70,13 @@
                     </div>
                     <div class="flex items-center justify-end gap-2 sm:col-span-2">
                         <button type="button" class="rounded-xl px-4 py-2 text-xs font-medium text-muted-foreground hover:bg-muted">Batal</button>
-                        <button type="submit" class="rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground">Simpan perubahan</button>
+                        <button type="submit" class="rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground">Simpan perubahan</button>
                     </div>
                 </form>
             </section>
 
             {{-- Privacy --}}
-            <section class="rounded-2xl bg-card p-5 neu-sm" x-data="{ anon: true, notify: true }">
+            <section class="rounded-[1.4rem] bg-card p-5 neu-sm" x-data="{ anon: true, notify: true }">
                 <h3 class="text-sm font-semibold">Privasi & notifikasi</h3>
                 <div class="mt-3 divide-y divide-border/60">
                     <label class="flex cursor-pointer items-center gap-3 py-3">
@@ -96,11 +96,11 @@
                 </div>
 
                 <div class="mt-3 flex flex-col gap-2 sm:flex-row">
-                    <button type="button" class="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-background px-4 py-2.5 text-xs font-semibold neu-sm hover:bg-muted">
+                    <button type="button" class="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-background px-4 py-2.5 text-xs font-semibold neu-sm hover:bg-muted">
                         <x-icon name="download" :size="14" />
                         Unduh data saya
                     </button>
-                    <button type="button" class="inline-flex flex-1 items-center justify-center gap-2 rounded-xl bg-destructive/10 px-4 py-2.5 text-xs font-semibold text-destructive hover:bg-destructive/15">
+                    <button type="button" class="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-destructive/10 px-4 py-2.5 text-xs font-semibold text-destructive hover:bg-destructive/15">
                         <x-icon name="x" :size="14" />
                         Hapus data verifikasi
                     </button>
@@ -108,7 +108,7 @@
             </section>
 
             {{-- Sessions --}}
-            <section class="rounded-2xl bg-card p-5 neu-sm">
+            <section class="rounded-[1.4rem] bg-card p-5 neu-sm">
                 <h3 class="text-sm font-semibold">Perangkat yang masuk</h3>
                 <ul class="mt-3 space-y-2.5">
                     @foreach ([['Chrome · Linux', 'Aktif sekarang · Jakarta', true], ['Safari · iPhone', '2 hari lalu · Bandung', false]] as [$device, $meta, $current])
