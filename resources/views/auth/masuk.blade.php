@@ -25,7 +25,7 @@
             <div>
                 <div class="mb-1.5 flex items-center justify-between">
                     <label for="password" class="block text-xs font-medium text-muted-foreground">Kata sandi</label>
-                    <a href="{{ route('lupa-sandi') }}" class="text-xs font-semibold text-brand-deep hover:underline">Lupa sandi?</a>
+                    <a href="{{ route('lupa-sandi') }}" class="text-xs font-semibold text-foreground hover:underline">Lupa sandi?</a>
                 </div>
                 <div x-data="{ show: false }" class="flex items-center gap-2 rounded-xl bg-input px-3.5 py-3 neu-inset">
                     <x-icon name="lock" :size="16" class="text-muted-foreground" />
@@ -49,7 +49,7 @@
                 Ingat saya di perangkat ini
             </label>
 
-            <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground neu-primary transition hover:bg-brand-deep">
+            <button type="submit" class="btn-lime w-full py-3">
                 Masuk
                 <x-icon name="arrow-right" :size="15" />
             </button>
@@ -57,7 +57,7 @@
 
         <p class="mt-5 text-center text-xs text-muted-foreground">
             Belum punya akun?
-            <a href="{{ route('daftar') }}" class="font-semibold text-brand-deep hover:underline">Daftar sekarang</a>
+            <a href="{{ route('daftar') }}" class="font-semibold text-foreground hover:underline">Daftar sekarang</a>
         </p>
 
         <p class="mt-6 flex items-start gap-2 rounded-xl bg-muted/60 p-3 text-xs leading-relaxed text-muted-foreground">
@@ -67,9 +67,9 @@
 
         <p class="mt-6 border-t border-border/60 pt-4 text-center text-xs text-muted-foreground">
             Tampilan peran:
-            <a href="{{ route('konselor.dasbor') }}" class="font-semibold text-brand-deep hover:underline">Konselor</a>
+            <a href="{{ route('konselor.dasbor') }}" class="font-semibold text-foreground hover:underline">Konselor</a>
             <span class="mx-1">·</span>
-            <a href="{{ route('admin.dasbor') }}" class="font-semibold text-brand-deep hover:underline">Administrator</a>
+            <a href="{{ route('admin.dasbor') }}" class="font-semibold text-foreground hover:underline">Administrator</a>
         </p>
     </div>
 </x-layouts.guest>

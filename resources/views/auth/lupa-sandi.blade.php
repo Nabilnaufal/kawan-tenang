@@ -14,7 +14,7 @@
                 </div>
             </div>
 
-            <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground neu-primary transition hover:bg-brand-deep">
+            <button type="submit" class="btn-lime w-full py-3">
                 <x-icon name="send" :size="15" />
                 Kirim tautan reset
             </button>
@@ -22,7 +22,7 @@
 
         <p class="mt-5 text-center text-xs text-muted-foreground">
             Ingat sandimu?
-            <a href="{{ route('masuk') }}" class="font-semibold text-brand-deep hover:underline">Kembali masuk</a>
+            <a href="{{ route('masuk') }}" class="font-semibold text-foreground hover:underline">Kembali masuk</a>
         </p>
     </div>
 </x-layouts.guest>

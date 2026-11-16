@@ -57,12 +57,12 @@
             <label class="flex items-start gap-2.5 text-xs leading-relaxed text-muted-foreground">
                 <input type="checkbox" required class="mt-0.5 size-4 rounded border-border text-primary">
                 <span>
-                    Saya menyetujui <a href="#" class="font-semibold text-brand-deep hover:underline">Kebijakan Privasi</a> dan
-                    <a href="#" class="font-semibold text-brand-deep hover:underline">Aturan Komunitas</a>.
+                    Saya menyetujui <a href="#" class="font-semibold text-foreground hover:underline">Kebijakan Privasi</a> dan
+                    <a href="#" class="font-semibold text-foreground hover:underline">Aturan Komunitas</a>.
                 </span>
             </label>
 
-            <button type="submit" class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary px-4 py-3 text-sm font-semibold text-primary-foreground neu-primary transition hover:bg-brand-deep">
+            <button type="submit" class="btn-lime w-full py-3">
                 Buat akun
                 <x-icon name="arrow-right" :size="15" />
             </button>
@@ -70,7 +70,7 @@
 
         <p class="mt-5 text-center text-xs text-muted-foreground">
             Sudah punya akun?
-            <a href="{{ route('masuk') }}" class="font-semibold text-brand-deep hover:underline">Masuk</a>
+            <a href="{{ route('masuk') }}" class="font-semibold text-foreground hover:underline">Masuk</a>
         </p>
     </div>
 </x-layouts.guest>
