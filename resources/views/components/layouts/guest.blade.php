@@ -7,7 +7,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
     <meta name="theme-color" content="#ECEEE9">
     <title>{{ $title ? $title . ' — Kawan Tenang' : 'Kawan Tenang' }}</title>
-    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <script>
         if (localStorage.getItem('kt-theme') === 'dark' || (!localStorage.getItem('kt-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
@@ -20,14 +22,9 @@
         <div class="grid w-full max-w-5xl overflow-hidden rounded-[2rem] bg-card lg:grid-cols-[1.02fr_1fr] neu">
             {{-- Brand panel --}}
             <aside class="relative hidden flex-col justify-between bg-primary p-8 text-primary-foreground lg:flex">
-                <a href="{{ route('home') }}" class="flex items-center gap-3">
-                    <span class="flex size-11 items-center justify-center rounded-2xl bg-secondary text-secondary-foreground">
-                        <x-icon name="heart" :size="20" />
-                    </span>
-                    <span class="leading-tight">
-                        <span class="block text-sm font-semibold tracking-tight">Kawan Tenang</span>
-                        <span class="block text-[0.7rem] tracking-[0.16em] uppercase opacity-60">Ruang aman</span>
-                    </span>
+                <a href="{{ route('home') }}" class="inline-flex flex-col items-start gap-2">
+                    <img src="/assets/kawan-tenang-logo.png" alt="Kawan Tenang" width="160" height="78" class="h-auto w-40">
+                    <span class="text-[0.7rem] tracking-[0.16em] uppercase opacity-60">Ruang aman</span>
                 </a>
 
                 <div class="mt-10">
@@ -66,11 +63,8 @@
             {{-- Form panel --}}
             <main class="flex min-w-0 flex-col px-5 py-6 sm:px-9 sm:py-8">
                 <div class="flex items-center justify-between gap-3">
-                    <a href="{{ route('home') }}" class="flex items-center gap-2 lg:hidden">
-                        <span class="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-                            <x-icon name="heart" :size="18" />
-                        </span>
-                        <span class="text-sm font-semibold tracking-tight">Kawan Tenang</span>
+                    <a href="{{ route('home') }}" class="flex items-center lg:hidden">
+                        <img src="/assets/kawan-tenang-logo.png" alt="Kawan Tenang" width="76" height="37" class="h-10 w-auto">
                     </a>
 
                     <div class="ml-auto flex items-center gap-2">

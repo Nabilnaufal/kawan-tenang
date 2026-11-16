@@ -46,7 +46,9 @@
     <meta name="theme-color" content="#ECEEE9">
     <title>{{ $title ? $title . ' — Kawan Tenang' : 'Kawan Tenang' }}</title>
     <meta name="description" content="Kawan Tenang adalah ruang aman untuk bercerita secara anonim dan berkonseling privat dengan konselor.">
-    <link rel="icon" href="/favicon.ico">
+    <link rel="icon" href="/favicon.ico" sizes="any">
+    <link rel="icon" type="image/png" href="/favicon-32.png" sizes="32x32">
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png">
     <script>
         if (localStorage.getItem('kt-theme') === 'dark' || (!localStorage.getItem('kt-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
@@ -62,14 +64,9 @@
     <div class="mx-auto flex min-h-screen w-full items-start gap-4 p-3 sm:p-4 xl:gap-5 xl:p-5">
         {{-- Desktop sidebar --}}
         <aside class="sticky top-5 hidden h-[calc(100dvh-2.5rem)] w-[268px] shrink-0 flex-col overflow-y-auto rounded-[1.75rem] bg-card px-4 py-5 lg:flex no-scrollbar neu">
-            <a href="{{ $homeUrl }}" class="flex items-center gap-3 px-2">
-                <span class="flex size-11 items-center justify-center rounded-2xl bg-primary text-primary-foreground">
-                    <x-icon name="heart" :size="20" />
-                </span>
-                <span class="leading-tight">
-                    <span class="block text-sm font-semibold tracking-tight">Kawan Tenang</span>
-                    <span class="label-cap block text-[0.65rem]">{{ $roleLabel }}</span>
-                </span>
+            <a href="{{ $homeUrl }}" class="flex flex-col gap-2 px-2">
+                <img src="/assets/kawan-tenang-logo.png" alt="Kawan Tenang" width="144" height="70" class="h-auto w-36">
+                <span class="label-cap block text-[0.65rem]">{{ $roleLabel }}</span>
             </a>
 
             <p class="label-cap mt-7 mb-2 px-3">Menu utama</p>
@@ -125,11 +122,8 @@
             {{-- Top bar --}}
             <header class="sticky top-0 z-30 -mx-3 mb-4 px-3 pt-2 pb-2 sm:-mx-4 sm:px-4 xl:-mx-5 xl:px-5">
                 <div class="flex items-center gap-3 rounded-full bg-background/80 py-1 backdrop-blur-xl">
-                    <a href="{{ $homeUrl }}" class="flex items-center gap-2 lg:hidden">
-                        <span class="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-                            <x-icon name="heart" :size="18" />
-                        </span>
-                        <span class="text-sm font-semibold tracking-tight">Kawan Tenang</span>
+                    <a href="{{ $homeUrl }}" class="flex items-center lg:hidden">
+                        <img src="/assets/kawan-tenang-logo.png" alt="Kawan Tenang" width="84" height="41" class="h-11 w-auto">
                     </a>
 
                     <span class="hidden items-center gap-2 rounded-full bg-card px-3 py-1.5 text-[0.75rem] font-semibold text-muted-foreground lg:inline-flex">
