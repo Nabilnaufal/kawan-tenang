@@ -2,15 +2,15 @@
 
 @php
     $tones = [
-        'neutral' => 'bg-muted text-muted-foreground',
-        'success' => 'bg-success/15 text-[#44624e]',
-        'warning' => 'bg-accent/35 text-accent-foreground',
-        'danger' => 'bg-destructive/15 text-[#8d4a46]',
-        'info' => 'bg-secondary/45 text-secondary-foreground',
+        'neutral' => 'bg-muted-foreground/50',
+        'success' => 'bg-success',
+        'warning' => 'bg-[#c9971f]',
+        'danger' => 'bg-destructive',
+        'info' => 'bg-[#4c7dbf]',
     ];
 @endphp
 
-<span {{ $attributes->class(['inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-xs font-semibold', $tones[$tone] ?? $tones['neutral']]) }}>
-    <span class="size-1.5 rounded-full bg-current opacity-70" aria-hidden="true"></span>
+<span {{ $attributes->class(['inline-flex items-center gap-1.5 rounded-full border border-border bg-card px-2.5 py-1 text-[0.78rem] font-medium text-foreground']) }}>
+    <span class="size-1.5 rounded-full {{ $tones[$tone] ?? $tones['neutral'] }}" aria-hidden="true"></span>
     {{ $slot }}
 </span>

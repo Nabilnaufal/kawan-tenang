@@ -5,61 +5,88 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="#F3F1EA">
+    <meta name="theme-color" content="#ECEEE9">
     <title>{{ $title ? $title . ' — Kawan Tenang' : 'Kawan Tenang' }}</title>
     <link rel="icon" href="/favicon.ico">
+    <script>
+        if (localStorage.getItem('kt-theme') === 'dark' || (!localStorage.getItem('kt-theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+    </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body class="min-h-full">
-    <div class="flex min-h-screen w-full">
-        {{-- Brand panel --}}
-        <aside class="relative hidden w-[38%] max-w-[520px] flex-col justify-between bg-brand-deep p-10 text-primary-foreground lg:flex">
-            <a href="{{ route('home') }}" class="flex items-center gap-3">
-                <span class="flex size-10 items-center justify-center rounded-2xl bg-primary-foreground/15">
-                    <x-icon name="heart" :size="20" />
-                </span>
-                <span class="text-sm font-semibold tracking-tight">Kawan Tenang</span>
-            </a>
+    <div class="flex min-h-screen items-center justify-center p-3 sm:p-6">
+        <div class="grid w-full max-w-5xl overflow-hidden rounded-[2rem] bg-card lg:grid-cols-[1.02fr_1fr] neu">
+            {{-- Brand panel --}}
+            <aside class="relative hidden flex-col justify-between bg-primary p-8 text-primary-foreground lg:flex">
+                <a href="{{ route('home') }}" class="flex items-center gap-3">
+                    <span class="flex size-11 items-center justify-center rounded-2xl bg-secondary text-secondary-foreground">
+                        <x-icon name="heart" :size="20" />
+                    </span>
+                    <span class="leading-tight">
+                        <span class="block text-sm font-semibold tracking-tight">Kawan Tenang</span>
+                        <span class="block text-[0.7rem] tracking-[0.16em] uppercase opacity-60">Ruang aman</span>
+                    </span>
+                </a>
 
-            <div class="max-w-sm">
-                <h1 class="text-3xl leading-tight font-semibold tracking-tight">
-                    Ruang aman untuk bercerita, tanpa takut dikenali.
-                </h1>
-                <p class="mt-4 text-sm leading-relaxed text-primary-foreground/80">
-                    Bagikan cerita secara anonim, atau bicara empat mata dengan konselor yang siap mendengarkan.
-                </p>
+                <div class="mt-10">
+                    <span class="inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 px-3 py-1.5 text-[0.75rem] font-medium">
+                        <x-icon name="lock" :size="13" />
+                        Anonim secara default
+                    </span>
 
-                <dl class="mt-8 grid grid-cols-3 gap-4 border-t border-primary-foreground/20 pt-6">
+                    <h1 class="mt-5 text-3xl leading-tight font-semibold tracking-tight">
+                        Bercerita tanpa takut dikenali.
+                    </h1>
+                    <p class="mt-3 max-w-sm text-sm leading-relaxed text-primary-foreground/70">
+                        Bagikan cerita secara anonim, atau bicara empat mata dengan konselor yang siap mendengarkan.
+                    </p>
+
+                    <a href="{{ route('home') }}" class="mt-7 inline-flex items-center justify-center gap-2 rounded-full bg-secondary px-5 py-2.5 text-sm font-bold text-secondary-foreground transition hover:opacity-90">
+                        Lihat beranda
+                        <x-icon name="arrow-right" :size="16" />
+                    </a>
+                </div>
+
+                <div class="mt-10 grid grid-cols-3 gap-2 rounded-2xl border border-primary-foreground/15 p-4">
                     @foreach ([['1.284', 'cerita'], ['32', 'konselor'], ['4.8', 'rating']] as [$value, $label])
                         <div>
-                            <dt class="text-xs text-primary-foreground/70">{{ $label }}</dt>
-                            <dd class="mt-0.5 text-lg font-semibold">{{ $value }}</dd>
+                            <p class="text-lg font-semibold">{{ $value }}</p>
+                            <p class="text-[0.72rem] uppercase tracking-[0.12em] text-primary-foreground/60">{{ $label }}</p>
                         </div>
                     @endforeach
-                </dl>
-            </div>
+                </div>
 
-            <p class="text-xs leading-relaxed text-primary-foreground/70">
-                Kawan Tenang bukan layanan gawat darurat. Jika kamu dalam bahaya, hubungi 119 ext. 8 atau 112.
-            </p>
-        </aside>
+                <p class="mt-6 text-[0.72rem] leading-relaxed text-primary-foreground/50">
+                    Kawan Tenang bukan layanan gawat darurat. Jika kamu dalam bahaya, hubungi 119 ext. 8 atau 112.
+                </p>
+            </aside>
 
-        {{-- Form panel --}}
-        <main class="flex min-w-0 flex-1 flex-col px-5 py-6 sm:px-8 lg:px-12">
-            <div class="flex items-center justify-between lg:justify-end">
-                <a href="{{ route('home') }}" class="flex items-center gap-2 lg:hidden">
-                    <span class="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
-                        <x-icon name="heart" :size="18" />
-                    </span>
-                    <span class="text-sm font-semibold tracking-tight">Kawan Tenang</span>
-                </a>
-                <a href="{{ route('home') }}" class="text-xs font-medium text-muted-foreground hover:text-foreground">Kembali ke beranda</a>
-            </div>
+            {{-- Form panel --}}
+            <main class="flex min-w-0 flex-col px-5 py-6 sm:px-9 sm:py-8">
+                <div class="flex items-center justify-between gap-3">
+                    <a href="{{ route('home') }}" class="flex items-center gap-2 lg:hidden">
+                        <span class="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+                            <x-icon name="heart" :size="18" />
+                        </span>
+                        <span class="text-sm font-semibold tracking-tight">Kawan Tenang</span>
+                    </a>
 
-            <div class="mx-auto flex w-full max-w-md flex-1 flex-col justify-center py-10">
-                {{ $slot }}
-            </div>
-        </main>
+                    <div class="ml-auto flex items-center gap-2">
+                        <a href="{{ route('home') }}" class="hidden text-xs font-medium text-muted-foreground hover:text-foreground sm:block">Kembali ke beranda</a>
+                        <button type="button" class="icon-btn" onclick="window.toggleTheme()" aria-label="Ganti tema">
+                            <x-icon name="sun" :size="18" class="hidden dark:block" />
+                            <x-icon name="moon" :size="18" class="dark:hidden" />
+                        </button>
+                    </div>
+                </div>
+
+                <div class="mx-auto flex w-full max-w-md flex-1 flex-col justify-center py-8">
+                    {{ $slot }}
+                </div>
+            </main>
+        </div>
     </div>
 </body>
 </html>

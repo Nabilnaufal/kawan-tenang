@@ -10,11 +10,11 @@
 @endphp
 
 <article
-    class="rounded-2xl bg-card p-4 neu-sm sm:p-5"
+    class="rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5"
     x-data="{ liked: false, likes: {{ (int) $likes }}, showComments: false, report: false, sent: false, reason: 'Ujaran kebencian' }"
 >
     <div class="flex items-start gap-3">
-        <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary/50 text-secondary-foreground" aria-hidden="true">
+        <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground" aria-hidden="true">
             <x-icon name="user" :size="18" />
         </span>
 
@@ -106,13 +106,13 @@
         x-show="report"
         x-cloak
         x-transition.opacity
-        class="fixed inset-0 z-50 flex items-end justify-center bg-slate-text/35 p-4 backdrop-blur-sm sm:items-center"
+        class="fixed inset-0 z-50 flex items-end justify-center bg-foreground/40 p-4 backdrop-blur-sm sm:items-center"
         role="dialog"
         aria-modal="true"
         aria-labelledby="{{ $id }}-title"
         @keydown.escape.window="report = false"
     >
-        <div class="w-full max-w-md rounded-2xl bg-card p-5 neu" @click.outside="report = false">
+        <div class="w-full max-w-md rounded-[1.4rem] bg-card p-5 neu" @click.outside="report = false">
             <div class="flex items-start justify-between gap-4">
                 <div>
                     <h2 id="{{ $id }}-title" class="text-base font-semibold">Laporkan postingan</h2>
@@ -142,7 +142,7 @@
 
                     <div class="flex justify-end gap-2 pt-1">
                         <button type="button" class="rounded-xl px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted" @click="report = false">Batal</button>
-                        <button type="submit" class="rounded-xl bg-destructive px-4 py-2 text-sm font-semibold text-white">Kirim laporan</button>
+                        <button type="submit" class="rounded-full bg-destructive px-4 py-2 text-sm font-semibold text-white">Kirim laporan</button>
                     </div>
                 </form>
             </template>

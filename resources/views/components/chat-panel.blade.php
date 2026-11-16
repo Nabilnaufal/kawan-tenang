@@ -9,9 +9,9 @@
     $initial = mb_substr(preg_replace('/^Anonim\s*/', '', str_replace('Kak ', '', $name)), 0, 1);
 @endphp
 
-<section class="flex h-[calc(100dvh-13.5rem)] min-h-[420px] flex-col overflow-hidden rounded-2xl bg-card neu-sm lg:h-[calc(100dvh-13rem)]">
+<section class="flex h-[calc(100dvh-13.5rem)] min-h-[420px] flex-col overflow-hidden rounded-[1.4rem] bg-card neu-sm lg:h-[calc(100dvh-13rem)]">
     <header class="flex shrink-0 items-center gap-3 border-b border-border/60 px-4 py-3">
-        <span class="relative flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/15 text-sm font-semibold text-brand-deep">
+        <span class="relative flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/15 text-sm font-semibold text-foreground">
             @if ($anonymous)
                 <x-icon name="user" :size="17" />
             @else
@@ -34,7 +34,7 @@
         <p class="text-center text-xs text-muted-foreground">Hari ini</p>
 
         <div class="flex items-start gap-2">
-            <span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/15 text-xs font-semibold text-brand-deep">
+            <span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/15 text-xs font-semibold text-foreground">
                 @if ($anonymous)
                     <x-icon name="user" :size="13" />
                 @else
@@ -59,7 +59,7 @@
         </div>
 
         <div class="flex items-start gap-2">
-            <span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/15 text-xs font-semibold text-brand-deep">
+            <span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/15 text-xs font-semibold text-foreground">
                 @if ($anonymous)
                     <x-icon name="user" :size="13" />
                 @else
