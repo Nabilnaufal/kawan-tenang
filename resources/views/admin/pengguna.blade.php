@@ -16,25 +16,23 @@
             <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Manajemen pengguna</h2>
             <p class="mt-1 text-sm text-muted-foreground">Kelola akun pengguna, konselor, dan administrator.</p>
         </div>
-        <button type="button" class="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground neu-primary hover:bg-brand-deep">
+        <button type="button" class="btn-lime text-xs">
             <x-icon name="plus" :size="14" />
             Tambah akun
         </button>
     </div>
 
-    <section class="min-w-0 rounded-2xl bg-card p-4 neu-sm sm:p-5">
+    <section class="min-w-0 rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5">
         <div class="flex flex-wrap items-center gap-2">
-            <div class="flex flex-wrap gap-2" role="tablist" aria-label="Filter peran">
+            <div class="flex flex-wrap gap-2" role="tablist" aria-label="Filter peran" x-data="{ tab: 0 }">
                 @foreach (['Semua', 'Pengguna', 'Konselor', 'Administrator'] as $i => $filter)
                     <button
                         type="button"
                         role="tab"
-                        @class([
-                            'shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold transition',
-                            'bg-primary text-primary-foreground' => $i === 0,
-                            'bg-muted text-muted-foreground hover:text-foreground' => $i !== 0,
-                        ])
-                        aria-selected="{{ $i === 0 ? 'true' : 'false' }}"
+                        @click="tab = {{ $i }}"
+                        :aria-selected="tab === {{ $i }}"
+                        :class="tab === {{ $i }} ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:text-foreground'"
+                        class="shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold transition"
                     >{{ $filter }}</button>
                 @endforeach
             </div>
@@ -50,7 +48,7 @@
             @foreach ($accounts as [$name, $email, $role, $roleTone, $verif, $verifTone, $joined, $status, $statusTone])
                 <li class="py-3">
                     <div class="flex items-center gap-2.5">
-                        <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-secondary/50 text-secondary-foreground">
+                        <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
                             <x-icon name="user" :size="15" />
                         </span>
                         <div class="min-w-0 flex-1">
@@ -62,7 +60,7 @@
                     <div class="mt-2 flex flex-wrap items-center gap-2 pl-11">
                         <x-status :tone="$roleTone">{{ $role }}</x-status>
                         <x-status :tone="$verifTone">Verifikasi: {{ $verif }}</x-status>
-                        <button type="button" class="ml-auto rounded-lg bg-muted px-2.5 py-1.5 text-xs font-semibold text-brand-deep hover:bg-muted/70">Kelola</button>
+                        <button type="button" class="ml-auto rounded-lg bg-muted px-2.5 py-1.5 text-xs font-semibold text-foreground hover:bg-muted/70">Kelola</button>
                     </div>
                 </li>
             @endforeach
@@ -86,7 +84,7 @@
                         <tr class="align-middle">
                             <td class="py-3 pr-3">
                                 <div class="flex items-center gap-2.5">
-                                    <span class="flex size-8 shrink-0 items-center justify-center rounded-full bg-secondary/50 text-secondary-foreground">
+                                    <span class="flex size-8 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
                                         <x-icon name="user" :size="14" />
                                     </span>
                                     <div class="min-w-0">
@@ -100,7 +98,7 @@
                             <td class="py-3 pr-3 text-muted-foreground">{{ $joined }}</td>
                             <td class="py-3 pr-3"><x-status :tone="$statusTone">{{ $status }}</x-status></td>
                             <td class="py-3 text-right">
-                                <button type="button" class="rounded-lg px-2.5 py-1.5 text-xs font-semibold text-brand-deep hover:bg-muted">Kelola</button>
+                                <button type="button" class="rounded-lg px-2.5 py-1.5 text-xs font-semibold text-foreground hover:bg-muted">Kelola</button>
                             </td>
                         </tr>
                     @endforeach

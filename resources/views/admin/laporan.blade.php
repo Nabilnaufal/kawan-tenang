@@ -5,8 +5,8 @@
     </div>
 
     <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
-        @foreach ([['Baru', '7', 'flag', 'bg-accent/35 text-accent-foreground'], ['Ditinjau', '4', 'eye', 'bg-secondary/45 text-secondary-foreground'], ['Ditindaklanjuti', '18', 'check-circle', 'bg-success/15 text-success'], ['Ditolak', '6', 'x', 'bg-muted text-muted-foreground']] as [$label, $value, $icon, $tone])
-            <div class="rounded-2xl bg-card p-4 neu-sm">
+        @foreach ([['Baru', '7', 'flag', 'bg-accent/35 text-accent-foreground'], ['Ditinjau', '4', 'eye', 'bg-secondary text-secondary-foreground'], ['Ditindaklanjuti', '18', 'check-circle', 'bg-success/15 text-success'], ['Ditolak', '6', 'x', 'bg-muted text-muted-foreground']] as [$label, $value, $icon, $tone])
+            <div class="rounded-[1.4rem] bg-card p-4 neu-sm">
                 <span class="flex size-8 items-center justify-center rounded-lg {{ $tone }}">
                     <x-icon :name="$icon" :size="16" />
                 </span>
@@ -17,12 +17,12 @@
     </div>
 
     <div class="mt-4 grid gap-4 xl:grid-cols-[1.8fr_1fr]">
-        <section class="min-w-0 rounded-2xl bg-card p-4 neu-sm sm:p-5">
+        <section class="min-w-0 rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5">
             <div class="flex flex-wrap items-center justify-between gap-2">
                 <h3 class="text-sm font-semibold">Antrean laporan</h3>
-                <div class="flex gap-2">
+                <div class="flex gap-2" x-data="{ tab: 0 }">
                     @foreach (['Baru', 'Ditinjau'] as $i => $filter)
-                        <button type="button" @class(['rounded-full px-3 py-1.5 text-xs font-semibold', 'bg-primary text-primary-foreground' => $i === 0, 'bg-muted text-muted-foreground' => $i !== 0])>{{ $filter }}</button>
+                        <button type="button" @click="tab = {{ $i }}" :class="tab === {{ $i }} ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'" class="rounded-full px-3 py-1.5 text-xs font-semibold">{{ $filter }}</button>
                     @endforeach
                 </div>
             </div>
@@ -57,7 +57,7 @@
         </section>
 
         <aside class="space-y-4">
-            <section class="rounded-2xl bg-card p-4 neu-sm sm:p-5">
+            <section class="rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5">
                 <h3 class="text-sm font-semibold">Panduan tindakan</h3>
                 <ul class="mt-3 space-y-2.5 text-xs leading-relaxed text-muted-foreground">
                     @foreach ([

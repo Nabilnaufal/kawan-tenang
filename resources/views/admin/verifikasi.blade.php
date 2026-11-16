@@ -5,8 +5,8 @@
     </div>
 
     <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
-        @foreach ([['Berhasil', '612', 'check-circle', 'bg-success/15 text-success'], ['Menunggu', '9', 'clock', 'bg-accent/35 text-accent-foreground'], ['Gagal', '14', 'x', 'bg-destructive/12 text-[#8d4a46]'], ['Belum verifikasi', '649', 'user', 'bg-muted text-muted-foreground']] as [$label, $value, $icon, $tone])
-            <div class="rounded-2xl bg-card p-4 neu-sm">
+        @foreach ([['Berhasil', '612', 'check-circle', 'bg-success/15 text-success'], ['Menunggu', '9', 'clock', 'bg-accent/35 text-accent-foreground'], ['Gagal', '14', 'x', 'bg-destructive/15 text-destructive'], ['Belum verifikasi', '649', 'user', 'bg-muted text-muted-foreground']] as [$label, $value, $icon, $tone])
+            <div class="rounded-[1.4rem] bg-card p-4 neu-sm">
                 <span class="flex size-8 items-center justify-center rounded-lg {{ $tone }}">
                     <x-icon :name="$icon" :size="16" />
                 </span>
@@ -16,12 +16,12 @@
         @endforeach
     </div>
 
-    <section class="mt-4 min-w-0 rounded-2xl bg-card p-4 neu-sm sm:p-5">
+    <section class="mt-4 min-w-0 rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5">
         <div class="flex flex-wrap items-center justify-between gap-3">
             <h3 class="text-sm font-semibold">Antrean verifikasi</h3>
-            <div class="flex gap-2">
+            <div class="flex gap-2" x-data="{ tab: 0 }">
                 @foreach (['Semua', 'Menunggu', 'Gagal'] as $i => $filter)
-                    <button type="button" @class(['rounded-full px-3 py-1.5 text-xs font-semibold', 'bg-primary text-primary-foreground' => $i === 0, 'bg-muted text-muted-foreground' => $i !== 0])>{{ $filter }}</button>
+                    <button type="button" @click="tab = {{ $i }}" :class="tab === {{ $i }} ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'" class="rounded-full px-3 py-1.5 text-xs font-semibold">{{ $filter }}</button>
                 @endforeach
             </div>
         </div>
@@ -55,7 +55,7 @@
                             <td class="hidden py-3 pr-3 text-muted-foreground sm:table-cell">{{ $time }}</td>
                             <td class="py-3 pr-3"><x-status :tone="$tone">{{ $status }}</x-status></td>
                             <td class="py-3 text-right">
-                                <button type="button" class="rounded-lg px-2.5 py-1.5 text-xs font-semibold text-brand-deep hover:bg-muted">Tinjau</button>
+                                <button type="button" class="rounded-lg px-2.5 py-1.5 text-xs font-semibold text-foreground hover:bg-muted">Tinjau</button>
                             </td>
                         </tr>
                     @endforeach
