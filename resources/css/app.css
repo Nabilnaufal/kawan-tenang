@@ -9,6 +9,8 @@
 @source '../**/*.blade.php';
 @source '../**/*.js';
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @theme {
     --font-sans: 'Montserrat', ui-sans-serif, system-ui, sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji';
     --text-xs: 1rem;
@@ -25,37 +27,63 @@
     --text-2xl--line-height: 2.375rem;
     --text-3xl: 2.1875rem;
     --text-3xl--line-height: 2.625rem;
-    --color-brand: #789b8a;
-    --color-brand-deep: #5f7f6f;
-    --color-mist: #a9c7d5;
-    --color-peach: #e8b89d;
-    --color-ivory: #f3f1ea;
-    --color-cream: #f8f7f2;
-    --color-slate-text: #34434a;
-    --color-stone: #78858a;
-    --color-leaf: #668c72;
-    --color-brick: #b96d68;
+    --color-brand: #c9f24d;
+    --color-brand-deep: #0c0f11;
+    --color-mist: #dfe4da;
+    --color-peach: #d8e8b4;
+    --color-ivory: #eceee9;
+    --color-cream: #f4f5ef;
+    --color-slate-text: #14181a;
+    --color-stone: #6f7678;
+    --color-leaf: #2f7d5c;
+    --color-brick: #cf4747;
 }
 
 :root {
-    --background: #f3f1ea;
-    --foreground: #34434a;
-    --card: #f8f7f2;
-    --card-foreground: #34434a;
-    --primary: #789b8a;
-    --primary-foreground: #f8f7f2;
-    --secondary: #a9c7d5;
-    --secondary-foreground: #2c3a40;
-    --accent: #e8b89d;
-    --accent-foreground: #4a3025;
-    --muted: #eae7de;
-    --muted-foreground: #78858a;
-    --destructive: #b96d68;
-    --success: #668c72;
-    --border: rgb(52 67 74 / 0.1);
-    --input: #edeae2;
-    --ring: #789b8a;
-    --radius: 1rem;
+    color-scheme: light;
+    --background: #e9e7e1;
+    --foreground: #131619;
+    --card: #faf7ef;
+    --card-foreground: #131619;
+    --primary: #15181b;
+    --primary-foreground: #faf7ef;
+    --secondary: #c9f24d;
+    --secondary-foreground: #161b08;
+    --accent: #f0ebdf;
+    --accent-foreground: #3a3321;
+    --muted: #f1ede3;
+    --muted-foreground: #5c615f;
+    --destructive: #d0433f;
+    --success: #2f7d5c;
+    --border: rgb(19 22 25 / 0.12);
+    --input: #fdfbf5;
+    --ring: #15181b;
+    --radius: 1.25rem;
+    --card-border: #15181b;
+    --hard-shadow: #15181b;
+}
+
+.dark {
+    color-scheme: dark;
+    --background: #111416;
+    --foreground: #f3f0e6;
+    --card: #1a1e20;
+    --card-foreground: #f3f0e6;
+    --primary: #f3f0e6;
+    --primary-foreground: #131619;
+    --secondary: #c9f24d;
+    --secondary-foreground: #161b08;
+    --accent: #262b26;
+    --accent-foreground: #e3e6cc;
+    --muted: #222729;
+    --muted-foreground: #a9afac;
+    --destructive: #e06a6a;
+    --success: #6fbf95;
+    --border: rgb(243 240 230 / 0.14);
+    --input: #1f2426;
+    --ring: #c9f24d;
+    --card-border: rgb(243 240 230 / 0.16);
+    --hard-shadow: rgb(0 0 0 / 0.55);
 }
 
 @theme inline {
@@ -83,35 +111,78 @@
     --radius-xl: calc(var(--radius) + 8px);
 }
 
-/* Soft neumorphism: two opposing shadows, used sparingly. */
+/* Neo-brutalist elevation from the reference: ink outline + hard offset shadow. */
 @utility neu {
-    box-shadow:
-        -7px -7px 18px rgb(255 255 255 / 0.85),
-        7px 7px 18px rgb(52 67 74 / 0.1);
+    border: 2px solid var(--card-border);
+    box-shadow: 4px 4px 0 var(--hard-shadow);
 }
 
 @utility neu-sm {
-    box-shadow:
-        -4px -4px 10px rgb(255 255 255 / 0.8),
-        4px 4px 10px rgb(52 67 74 / 0.08);
+    border: 2px solid var(--card-border);
+    box-shadow: 3px 3px 0 var(--hard-shadow);
 }
 
 @utility neu-inset {
-    box-shadow:
-        inset 3px 3px 8px rgb(52 67 74 / 0.1),
-        inset -3px -3px 8px rgb(255 255 255 / 0.8);
+    border: 1.5px solid var(--card-border);
 }
 
 @utility neu-primary {
-    box-shadow:
-        -4px -4px 12px rgb(255 255 255 / 0.5),
-        5px 5px 14px rgb(95 127 111 / 0.45);
+    box-shadow: none;
+}
+
+@utility hard-shadow {
+    box-shadow: 4px 4px 0 var(--hard-shadow);
 }
 
 @utility no-scrollbar {
     scrollbar-width: none;
     &::-webkit-scrollbar {
         display: none;
+    }
+}
+
+@layer components {
+    .icon-btn {
+        @apply flex size-11 shrink-0 items-center justify-center rounded-full bg-card text-foreground transition hover:bg-muted;
+        border: 1.5px solid var(--card-border);
+    }
+
+    .btn-ink {
+        @apply inline-flex items-center justify-center gap-2 rounded-full bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:opacity-90;
+        border: 2px solid var(--primary);
+    }
+
+    .btn-lime {
+        @apply inline-flex items-center justify-center gap-2 rounded-full bg-secondary px-5 py-2.5 text-sm font-bold text-secondary-foreground transition;
+        border: 2px solid var(--card-border);
+        box-shadow: 4px 4px 0 var(--hard-shadow);
+    }
+
+    .btn-lime:hover {
+        transform: translate(2px, 2px);
+        box-shadow: 2px 2px 0 var(--hard-shadow);
+    }
+
+    .btn-lime:active {
+        transform: translate(4px, 4px);
+        box-shadow: none;
+    }
+
+    .btn-soft {
+        @apply inline-flex items-center justify-center gap-2 rounded-full bg-card px-5 py-2.5 text-sm font-semibold text-foreground transition hover:bg-muted;
+        border: 2px solid var(--card-border);
+    }
+
+    .label-cap {
+        @apply text-[0.75rem] font-semibold tracking-[0.16em] uppercase;
+        color: var(--muted-foreground);
+    }
+
+    .card-ink {
+        /* Stays dark in both themes, like the reference's ink panels. */
+        --primary-foreground: #f7f5ec;
+        background: #15181b;
+        color: var(--primary-foreground);
     }
 }
 
@@ -126,10 +197,12 @@
     }
 
     ::selection {
-        @apply bg-primary/25;
+        background: var(--secondary);
+        color: var(--secondary-foreground);
     }
 
-    input[type='checkbox'] {
+    input[type='checkbox'],
+    input[type='radio'] {
         accent-color: var(--primary);
     }
 
@@ -143,8 +216,8 @@
 }
 
 html turbo-progress-bar {
-    height: 2px;
-    background-color: var(--primary);
+    height: 3px;
+    background-color: var(--secondary);
 }
 
 @media (prefers-reduced-motion: reduce) {
