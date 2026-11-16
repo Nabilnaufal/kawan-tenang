@@ -30,6 +30,11 @@ export function initCharts() {
 
     Chart.defaults.color = muted;
 
+    // Charts redraw on theme changes too; reduced-motion users get the final frame only.
+    const animation = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        ? false
+        : { duration: 900, easing: 'easeOutQuart' };
+
     const tooltip = {
         backgroundColor: card,
         titleColor: ink,
@@ -86,7 +91,7 @@ export function initCharts() {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                animation: false,
+                animation,
                 interaction: { mode: 'index', intersect: false },
                 plugins: { legend: { display: false }, tooltip },
                 scales: {
@@ -127,7 +132,7 @@ export function initCharts() {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                animation: false,
+                animation: animation && { ...animation, animateRotate: true },
                 cutout: '76%',
                 plugins: { legend: { display: false }, tooltip },
             },
@@ -163,7 +168,7 @@ export function initCharts() {
             options: {
                 responsive: true,
                 maintainAspectRatio: false,
-                animation: false,
+                animation,
                 plugins: { legend: { display: false }, tooltip },
                 scales: {
                     x: {
