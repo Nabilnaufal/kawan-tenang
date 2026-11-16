@@ -8,7 +8,7 @@
         <div x-data="{ open: false, sent: false, topic: 'Kecemasan' }">
             <button
                 type="button"
-                class="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2.5 text-xs font-semibold text-primary-foreground neu-primary transition hover:bg-brand-deep"
+                class="btn-lime text-xs"
                 @click="open = true"
             >
                 <x-icon name="plus" :size="15" />
@@ -19,13 +19,13 @@
                 x-show="open"
                 x-cloak
                 x-transition.opacity
-                class="fixed inset-0 z-50 flex items-end justify-center bg-slate-text/35 p-4 backdrop-blur-sm sm:items-center"
+                class="fixed inset-0 z-50 flex items-end justify-center bg-foreground/40 p-4 backdrop-blur-sm sm:items-center"
                 role="dialog"
                 aria-modal="true"
                 aria-labelledby="sesi-title"
                 @keydown.escape.window="open = false"
             >
-                <div class="w-full max-w-md rounded-2xl bg-card p-5 neu" @click.outside="open = false">
+                <div class="w-full max-w-md rounded-[1.4rem] bg-card p-5 neu" @click.outside="open = false">
                     <div class="flex items-start justify-between gap-4">
                         <div>
                             <h2 id="sesi-title" class="text-base font-semibold">Ajukan sesi konseling</h2>
@@ -57,7 +57,7 @@
 
                             <div class="flex justify-end gap-2 pt-1">
                                 <button type="button" class="rounded-xl px-4 py-2 text-sm font-medium text-muted-foreground hover:bg-muted" @click="open = false">Batal</button>
-                                <button type="submit" class="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground">Kirim pengajuan</button>
+                                <button type="submit" class="btn-lime">Kirim pengajuan</button>
                             </div>
                         </form>
                     </template>
@@ -84,8 +84,8 @@
                 <span class="text-xs text-muted-foreground">3 sesi</span>
             </div>
 
-            <a href="{{ route('konseling.show', 1) }}" class="flex items-start gap-3 rounded-2xl bg-card p-3.5 neu-sm ring-1 ring-primary/25">
-                <span class="relative flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/15 text-sm font-semibold text-brand-deep">
+            <a href="{{ route('konseling.show', 1) }}" class="flex items-start gap-3 rounded-[1.4rem] bg-card p-3.5 neu-sm ring-1 ring-primary/25">
+                <span class="relative flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/15 text-sm font-semibold text-foreground">
                     R
                     <span class="absolute -right-0.5 -bottom-0.5 size-2.5 rounded-full border-2 border-card bg-success"></span>
                 </span>
@@ -102,8 +102,8 @@
                 </span>
             </a>
 
-            <a href="{{ route('konseling.show', 2) }}" class="flex items-start gap-3 rounded-2xl bg-card p-3.5 neu-sm transition hover:bg-cream">
-                <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary/50 text-sm font-semibold text-secondary-foreground">D</span>
+            <a href="{{ route('konseling.show', 2) }}" class="flex items-start gap-3 rounded-[1.4rem] bg-card p-3.5 neu-sm transition hover:bg-muted">
+                <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary text-sm font-semibold text-secondary-foreground">D</span>
                 <span class="min-w-0 flex-1">
                     <span class="flex items-center gap-2">
                         <span class="truncate text-sm font-semibold">Kak Dimas</span>
@@ -134,7 +134,7 @@
         </div>
 
         {{-- Desktop chat preview --}}
-        <div class="hidden lg:block">
+        <div class="hidden min-w-0 lg:block">
             <x-chat-panel name="Kak Rani" role="Konselor keluarga" state="Sesi aktif" />
         </div>
     </div>
