@@ -6,17 +6,15 @@
 
     <div class="grid gap-4 xl:grid-cols-[360px_1fr]">
         <div class="min-w-0 space-y-2.5">
-            <div class="flex flex-wrap gap-2 pb-1" role="tablist" aria-label="Filter sesi">
+            <div class="flex flex-wrap gap-2 pb-1" role="tablist" aria-label="Filter sesi" x-data="{ tab: 0 }">
                 @foreach (['Semua', 'Aktif', 'Menunggu', 'Selesai'] as $i => $filter)
                     <button
                         type="button"
                         role="tab"
-                        @class([
-                            'shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold transition',
-                            'bg-primary text-primary-foreground' => $i === 0,
-                            'bg-card text-muted-foreground hover:text-foreground' => $i !== 0,
-                        ])
-                        aria-selected="{{ $i === 0 ? 'true' : 'false' }}"
+                        @click="tab = {{ $i }}"
+                        :aria-selected="tab === {{ $i }}"
+                        :class="tab === {{ $i }} ? 'bg-primary text-primary-foreground' : 'bg-card text-muted-foreground hover:text-foreground'"
+                        class="shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold transition"
                     >{{ $filter }}</button>
                 @endforeach
             </div>
@@ -30,11 +28,11 @@
                 <a
                     href="{{ route('konselor.sesi.show', $id) }}"
                     @class([
-                        'flex items-start gap-3 rounded-2xl bg-card p-3.5 neu-sm transition hover:bg-cream',
+                        'flex items-start gap-3 rounded-[1.4rem] bg-card p-3.5 neu-sm transition hover:bg-muted',
                         'ring-1 ring-primary/25' => $loop->first,
                     ])
                 >
-                    <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary/50 text-secondary-foreground">
+                    <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
                         <x-icon name="user" :size="17" />
                     </span>
                     <span class="min-w-0 flex-1">
