@@ -8,12 +8,12 @@
         <div class="min-w-0">
             {{-- Composer --}}
             <form
-                class="rounded-2xl bg-card p-4 neu sm:p-5"
+                class="rounded-[1.4rem] bg-card p-4 neu sm:p-5"
                 x-data="{ text: '' }"
                 @submit.prevent="text = ''"
             >
                 <div class="flex gap-3">
-                    <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary/50 text-secondary-foreground" aria-hidden="true">
+                    <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground" aria-hidden="true">
                         <x-icon name="user" :size="18" />
                     </span>
                     <div class="min-w-0 flex-1">
@@ -38,7 +38,7 @@
                                 <button
                                     type="submit"
                                     :disabled="text.trim().length === 0"
-                                    class="inline-flex items-center gap-2 rounded-xl bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground transition enabled:hover:bg-brand-deep disabled:opacity-40"
+                                    class="btn-lime px-4 py-2 text-xs disabled:opacity-40"
                                 >
                                     <x-icon name="send" :size="14" />
                                     Kirim
@@ -50,17 +50,15 @@
             </form>
 
             {{-- Filters --}}
-            <div class="mt-5 flex flex-wrap gap-2 pb-1" role="tablist" aria-label="Filter cerita">
+            <div class="mt-5 flex flex-wrap gap-2 pb-1" role="tablist" aria-label="Filter cerita" x-data="{ tab: 0 }">
                 @foreach (['Semua', 'Terbaru', 'Populer', 'Perlu dukungan'] as $i => $filter)
                     <button
                         type="button"
                         role="tab"
-                        @class([
-                            'shrink-0 rounded-full px-4 py-2 text-xs font-semibold transition',
-                            'bg-primary text-primary-foreground' => $i === 0,
-                            'bg-card text-muted-foreground hover:text-foreground' => $i !== 0,
-                        ])
-                        aria-selected="{{ $i === 0 ? 'true' : 'false' }}"
+                        @click="tab = {{ $i }}"
+                        :aria-selected="tab === {{ $i }}"
+                        :class="tab === {{ $i }} ? 'bg-primary text-primary-foreground' : 'bg-card text-muted-foreground hover:text-foreground'"
+                        class="shrink-0 rounded-full px-4 py-2 text-xs font-semibold transition"
                     >{{ $filter }}</button>
                 @endforeach
             </div>
@@ -75,7 +73,7 @@
                     Hari ini aku berhasil bangun pagi dan keluar rumah walau rasanya berat. Kecil, tapi aku mau mengapresiasi diriku sendiri.
                     <x-slot:comments>
                         <div class="flex items-start gap-2.5">
-                            <span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary/50 text-secondary-foreground">
+                            <span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
                                 <x-icon name="user" :size="14" />
                             </span>
                             <div class="rounded-xl bg-muted/70 px-3 py-2">
@@ -84,7 +82,7 @@
                             </div>
                         </div>
                         <div class="flex items-start gap-2.5">
-                            <span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary/50 text-secondary-foreground">
+                            <span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
                                 <x-icon name="user" :size="14" />
                             </span>
                             <div class="rounded-xl bg-muted/70 px-3 py-2">
@@ -107,7 +105,7 @@
 
         {{-- Aside --}}
         <aside class="hidden space-y-3 xl:block">
-            <div class="rounded-2xl bg-card p-5 neu-sm">
+            <div class="rounded-[1.4rem] bg-card p-5 neu-sm">
                 <h2 class="text-sm font-semibold">Panduan Bubble</h2>
                 <ul class="mt-3 space-y-2.5 text-xs leading-relaxed text-muted-foreground">
                     @foreach ([
@@ -129,7 +127,7 @@
                 <p class="mt-1 text-xs leading-relaxed text-muted-foreground">
                     Cerita yang terlalu berat bisa kamu lanjutkan secara privat dengan konselor.
                 </p>
-                <a href="{{ route('konseling.index') }}" class="mt-3 flex items-center justify-center gap-2 rounded-xl bg-card px-4 py-2.5 text-xs font-semibold neu-sm transition hover:bg-muted">
+                <a href="{{ route('konseling.index') }}" class="mt-3 flex items-center justify-center gap-2 rounded-full bg-card px-4 py-2.5 text-xs font-semibold neu-sm transition hover:bg-muted">
                     <x-icon name="chat" :size="14" />
                     Mulai konseling
                 </a>
