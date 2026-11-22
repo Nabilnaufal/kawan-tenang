@@ -3,7 +3,7 @@
 <div x-data="pemindaiWajah" @tutup-kamera.window="tutup()" {{ $attributes->class('rounded-2xl bg-input p-3 neu-inset') }}>
     <input type="hidden" name="{{ $name }}" x-ref="input">
 
-    <template x-if="! aktif">
+    <div x-show="! aktif">
         <div class="flex flex-col items-center gap-3 py-4 text-center">
             <span class="flex size-14 items-center justify-center rounded-full bg-accent/40 text-accent-foreground">
                 <x-icon name="face" :size="26" />
@@ -16,9 +16,9 @@
                 Buka kamera
             </button>
         </div>
-    </template>
+    </div>
 
-    <template x-if="aktif">
+    <div x-show="aktif">
         <div class="space-y-3">
             <div class="relative mx-auto aspect-[4/3] w-full max-w-sm overflow-hidden rounded-2xl bg-foreground">
                 <video x-ref="video" autoplay playsinline muted width="640" height="480" class="size-full scale-x-[-1] object-cover"></video>
@@ -35,7 +35,7 @@
                 </button>
             </div>
         </div>
-    </template>
+    </div>
 
     <p x-show="pesan" x-cloak class="mt-2 text-center text-xs font-medium" :class="deskriptor.length ? 'text-success' : 'text-destructive'" x-text="pesan"></p>
 
