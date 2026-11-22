@@ -1,4 +1,7 @@
-@props(['title' => null, 'role' => 'pengguna'])
+@php
+    $title = $__env->yieldContent('title');
+    $role = $__env->yieldContent('role') ?: 'pengguna';
+@endphp
 
 @php
     $primary = [
@@ -169,7 +172,7 @@
             </header>
 
             <main id="konten" class="w-full flex-1">
-                {{ $slot }}
+                @yield('content')
             </main>
         </div>
     </div>

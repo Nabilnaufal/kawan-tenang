@@ -1,4 +1,7 @@
-<x-layouts.app title="Profil" :role="$role ?? 'pengguna'">
+@extends('layouts.app')
+@section('title', 'Profil')
+@section('role', $role ?? 'pengguna')
+@section('content')
     <div class="mb-5">
         <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Profil & Privasi</h2>
         <p class="mt-1 text-sm text-muted-foreground">Kelola akun, identitas publik, dan izin data.</p>
@@ -131,4 +134,4 @@
             </section>
         </div>
     </div>
-</x-layouts.app>
+@endsection

@@ -1,4 +1,7 @@
-<x-layouts.app title="Dasbor Admin" role="admin">
+@extends('layouts.app')
+@section('title', 'Dasbor Admin')
+@section('role', 'admin')
+@section('content')
     <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
         <div>
             <div class="flex flex-wrap items-center gap-2">
@@ -237,4 +240,4 @@
             </section>
         </div>
     </div>
-</x-layouts.app>
+@endsection

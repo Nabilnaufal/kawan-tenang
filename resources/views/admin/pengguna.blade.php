@@ -1,4 +1,7 @@
-<x-layouts.app title="Manajemen Pengguna" role="admin">
+@extends('layouts.app')
+@section('title', 'Manajemen Pengguna')
+@section('role', 'admin')
+@section('content')
 @php
     $accounts = [
         ['Kawan Anonim', 'kawan@mail.com', 'Pengguna', 'neutral', 'Berhasil', 'success', '12 Nov 2026', 'Aktif', 'success'],
@@ -117,4 +120,4 @@
             </div>
         </div>
     </section>
-</x-layouts.app>
+@endsection

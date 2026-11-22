@@ -1,4 +1,7 @@
-<x-layouts.app title="Laporan & Moderasi" role="admin">
+@extends('layouts.app')
+@section('title', 'Laporan & Moderasi')
+@section('role', 'admin')
+@section('content')
     <div class="mb-5"><h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Laporan & moderasi</h2><p class="mt-1 text-sm text-muted-foreground">Tinjau laporan komunitas. Identitas pelapor tetap anonim.</p></div>
 
     @if (session('status'))<p class="mb-4 rounded-xl bg-success/10 p-3 text-xs font-medium text-success">{{ session('status') }}</p>@endif
@@ -19,4 +22,4 @@
         </div>
         <div class="mt-4">{{ $reports->links() }}</div>
     </section>
-</x-layouts.app>
+@endsection

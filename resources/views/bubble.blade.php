@@ -1,4 +1,6 @@
-<x-layouts.app title="Bubble Publik">
+@extends('layouts.app')
+@section('title', 'Bubble Publik')
+@section('content')
     <div class="mb-5">
         <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Bubble Publik</h2>
         <p class="mt-1 text-sm text-muted-foreground">Ruang berbagi cerita dengan identitas anonim. Nama dan emailmu tidak pernah ditampilkan.</p>
@@ -130,4 +132,4 @@
             </div>
         </aside>
     </div>
-</x-layouts.app>
+@endsection

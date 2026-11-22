@@ -1,4 +1,6 @@
-<x-layouts.app title="Beranda">
+@extends('layouts.app')
+@section('title', 'Beranda')
+@section('content')
     {{-- Hero --}}
     <section class="card-ink relative overflow-hidden rounded-[1.75rem] p-5 sm:p-8">
         <div class="flex flex-col gap-7 xl:flex-row xl:items-end xl:justify-between">
@@ -135,4 +137,4 @@
             </div>
         </aside>
     </div>
-</x-layouts.app>
+@endsection

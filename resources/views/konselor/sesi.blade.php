@@ -1,4 +1,7 @@
-<x-layouts.app title="Sesi Konseling" role="konselor">
+@extends('layouts.app')
+@section('title', 'Sesi Konseling')
+@section('role', 'konselor')
+@section('content')
     <div class="mb-5">
         <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Sesi saya</h2>
         <p class="mt-1 text-sm text-muted-foreground">Hanya sesi yang ditugaskan kepadamu yang tampil di sini.</p>
@@ -56,4 +59,4 @@
             <x-chat-panel name="Anonim #2418" role="Topik: Kecemasan" state="Sesi aktif" :anonymous="true" />
         </div>
     </div>
-</x-layouts.app>
+@endsection

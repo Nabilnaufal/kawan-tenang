@@ -1,4 +1,6 @@
-<x-layouts.guest title="Masuk">
+@extends('layouts.guest')
+@section('title', 'Masuk')
+@section('content')
     <div x-data="{ faceOpen: false, tutup() { this.$dispatch('tutup-kamera'); this.faceOpen = false; } }" @keydown.escape.window="tutup()">
         <h2 class="text-2xl font-semibold tracking-tight">Masuk ke akunmu</h2>
         <p class="mt-1.5 text-sm text-muted-foreground">Ruang amanmu tetap anonim dan privat.</p>
@@ -126,4 +128,4 @@
             </div>
         </div>
     </div>
-</x-layouts.guest>
+@endsection

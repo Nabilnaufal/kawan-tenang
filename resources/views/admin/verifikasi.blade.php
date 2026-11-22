@@ -1,4 +1,7 @@
-<x-layouts.app title="Verifikasi Akun" role="admin">
+@extends('layouts.app')
+@section('title', 'Verifikasi Akun')
+@section('role', 'admin')
+@section('content')
     <div class="mb-5">
         <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Status verifikasi akun</h2>
         <p class="mt-1 text-sm text-muted-foreground">Hasil verifikasi liveness dari penyedia. Data wajah tidak disimpan di sistem ini.</p>
@@ -68,4 +71,4 @@
         <x-icon name="lock" :size="13" class="mt-0.5 shrink-0" />
         Status hanya diperbarui dari webhook penyedia yang tervalidasi. Timeout atau kegagalan vendor tidak dianggap berhasil.
     </p>
-</x-layouts.app>
+@endsection

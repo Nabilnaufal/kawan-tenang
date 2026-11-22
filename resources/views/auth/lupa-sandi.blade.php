@@ -1,4 +1,6 @@
-<x-layouts.guest title="Lupa Sandi">
+@extends('layouts.guest')
+@section('title', 'Lupa Sandi')
+@section('content')
     <div>
         <h2 class="text-2xl font-semibold tracking-tight">Lupa kata sandi</h2>
         <p class="mt-1.5 text-sm text-muted-foreground">Masukkan email akunmu. Kami kirim tautan untuk membuat sandi baru.</p>
@@ -25,4 +27,4 @@
             <a href="{{ route('masuk') }}" class="font-semibold text-foreground hover:underline">Kembali masuk</a>
         </p>
     </div>
-</x-layouts.guest>
+@endsection

@@ -1,4 +1,4 @@
-@props(['title' => null])
+@php($title = $__env->yieldContent('title'))
 
 <!DOCTYPE html>
 <html lang="id" class="h-full">
@@ -77,7 +77,7 @@
                 </div>
 
                 <div class="mx-auto flex w-full max-w-md flex-1 flex-col justify-center py-8">
-                    {{ $slot }}
+                    @yield('content')
                 </div>
             </main>
         </div>

@@ -1,4 +1,6 @@
-<x-layouts.app title="Konseling">
+@extends('layouts.app')
+@section('title', 'Konseling')
+@section('content')
     <div class="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
             <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Konseling Privat</h2>
@@ -139,4 +141,4 @@
             <x-chat-panel name="Kak Rani" role="Konselor keluarga" state="Sesi aktif" />
         </div>
     </div>
-</x-layouts.app>
+@endsection

@@ -1,4 +1,7 @@
-<x-layouts.app title="Sesi Konseling" role="konselor">
+@extends('layouts.app')
+@section('title', 'Sesi Konseling')
+@section('role', 'konselor')
+@section('content')
     <div class="mb-4 flex items-center gap-3">
         <a href="{{ route('konselor.sesi') }}" class="flex size-9 items-center justify-center rounded-xl bg-card text-muted-foreground neu-sm transition hover:text-foreground" aria-label="Kembali ke daftar sesi">
             <x-icon name="chevron-right" :size="18" class="rotate-180" />
@@ -16,4 +19,4 @@
         <x-icon name="lock" :size="13" class="mt-0.5 shrink-0" />
         Identitas asli pengguna tidak ditampilkan. Catatan konseling internal terpisah dari percakapan ini.
     </p>
-</x-layouts.app>
+@endsection

@@ -2,7 +2,9 @@
     $awal = $errors->has('setuju') || $errors->has('wajah') ? 3 : ($errors->hasAny(['email', 'password']) ? 2 : 1);
 @endphp
 
-<x-layouts.guest title="Daftar">
+@extends('layouts.guest')
+@section('title', 'Daftar')
+@section('content')
     <div x-data="daftarWizard({{ $awal }})">
         <h2 class="text-2xl font-semibold tracking-tight">Buat akun Kawan Tenang</h2>
         <p class="mt-1.5 text-sm text-muted-foreground">Tiga langkah singkat, kurang dari satu menit.</p>
@@ -150,4 +152,4 @@
             <a href="{{ route('masuk') }}" class="font-semibold text-foreground hover:underline">Masuk</a>
         </p>
     </div>
-</x-layouts.guest>
+@endsection

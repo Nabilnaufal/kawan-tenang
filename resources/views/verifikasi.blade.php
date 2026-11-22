@@ -1,4 +1,6 @@
-<x-layouts.app title="Verifikasi Akun">
+@extends('layouts.app')
+@section('title', 'Verifikasi Akun')
+@section('content')
     <div class="mb-5">
         <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Verifikasi Akun</h2>
         <p class="mt-1 text-sm text-muted-foreground">Pemeriksaan liveness untuk membantu menjaga komunitas tetap aman.</p>
@@ -167,4 +169,4 @@
             </a>
         </section>
     </div>
-</x-layouts.app>
+@endsection
