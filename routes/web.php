@@ -1,13 +1,14 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BubbleController;
 use App\Http\Controllers\CounselingController;
-use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 // Autentikasi
 Route::get('/masuk', [AuthController::class, 'formMasuk'])->name('masuk');
+Route::redirect('/login', '/masuk')->name('login');
 Route::get('/daftar', [AuthController::class, 'formDaftar'])->name('daftar');
 Route::view('/lupa-sandi', 'auth.lupa-sandi')->name('lupa-sandi');
 Route::post('/masuk', [AuthController::class, 'masuk'])->name('masuk.store');
@@ -25,6 +26,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/bubble/{post}/komentar', [BubbleController::class, 'komentar'])->name('bubble.komentar');
     Route::post('/bubble/{post}/suka', [BubbleController::class, 'suka'])->name('bubble.suka');
     Route::post('/bubble/{post}/lapor', [BubbleController::class, 'lapor'])->name('bubble.lapor');
+    Route::view('/verifikasi', 'verifikasi')->name('verifikasi');
+    Route::view('/dasbor', 'dasbor.pengguna')->name('dasbor');
+    Route::view('/profil', 'profil', ['role' => 'pengguna'])->name('profil');
 });
 Route::middleware('auth')->prefix('konseling')->name('konseling.')->group(function () {
     Route::get('/', [CounselingController::class, 'index'])->name('index');
@@ -33,12 +37,8 @@ Route::middleware('auth')->prefix('konseling')->name('konseling.')->group(functi
     Route::post('/{session}/pesan', [CounselingController::class, 'message'])->name('message');
     Route::post('/{session}/selesai', [CounselingController::class, 'close'])->name('close');
 });
-Route::view('/verifikasi', 'verifikasi')->name('verifikasi');
-Route::view('/dasbor', 'dasbor.pengguna')->name('dasbor');
-Route::view('/profil', 'profil', ['role' => 'pengguna'])->name('profil');
-
 // Area konselor
-Route::prefix('konselor')->name('konselor.')->group(function () {
+Route::middleware(['auth', 'role:konselor'])->prefix('konselor')->name('konselor.')->group(function () {
     Route::view('/', 'konselor.dasbor')->name('dasbor');
     Route::view('/sesi', 'konselor.sesi')->name('sesi');
     Route::view('/sesi/{id}', 'konselor.sesi-show')->name('sesi.show');
