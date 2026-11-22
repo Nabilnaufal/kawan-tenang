@@ -139,6 +139,12 @@ Alpine.data('pemindaiWajah', () => ({
     memuat: false,
     pesan: '',
     deskriptor: [],
+    video() {
+        return this.$root.querySelector('video');
+    },
+    input() {
+        return this.$root.querySelector('input[type="hidden"]');
+    },
     async buka() {
         this.aktif = true;
         this.pesan = '';
@@ -146,14 +152,14 @@ Alpine.data('pemindaiWajah', () => ({
         await this.$nextTick();
 
         try {
-            await mulaiKamera(this.$refs.video);
+            await mulaiKamera(this.video());
         } catch (error) {
             this.tutup();
             this.pesan = pesanKamera(error);
         }
     },
     tutup() {
-        hentikanKamera(this.$refs.video);
+        hentikanKamera(this.video());
         this.aktif = false;
     },
     async pindai() {
@@ -161,9 +167,9 @@ Alpine.data('pemindaiWajah', () => ({
         this.pesan = '';
 
         try {
-            this.deskriptor = await pindaiWajah(this.$refs.video);
-            this.$refs.input.value = JSON.stringify(this.deskriptor);
-            this.$refs.input.dispatchEvent(new Event('input', { bubbles: true }));
+            this.deskriptor = await pindaiWajah(this.video());
+            this.input().value = JSON.stringify(this.deskriptor);
+            this.input().dispatchEvent(new Event('input', { bubbles: true }));
             this.tutup();
             this.pesan = 'Wajah berhasil dipindai.';
             this.$dispatch('wajah-siap', { deskriptor: this.deskriptor });

@@ -19,6 +19,10 @@ function muatModel() {
 }
 
 export async function mulaiKamera(video) {
+    if (! video) {
+        throw new Error('Elemen preview kamera belum siap. Tutup dialog lalu buka kembali.');
+    }
+
     if (! navigator.mediaDevices?.getUserMedia) {
         throw new Error('Browser ini tidak mendukung akses kamera.');
     }
