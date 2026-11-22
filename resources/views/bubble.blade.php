@@ -7,11 +7,14 @@
     <div class="grid gap-5 xl:grid-cols-[2.4fr_1fr]">
         <div class="min-w-0">
             {{-- Composer --}}
+            @auth
             <form
                 class="rounded-[1.4rem] bg-card p-4 neu sm:p-5"
                 x-data="{ text: '' }"
-                @submit.prevent="text = ''"
+                action="{{ route('bubble.store') }}"
+                method="POST"
             >
+                @csrf
                 <div class="flex gap-3">
                     <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground" aria-hidden="true">
                         <x-icon name="user" :size="18" />
@@ -20,6 +23,7 @@
                         <label for="cerita" class="sr-only">Ceritamu</label>
                         <textarea
                             id="cerita"
+                            name="body"
                             rows="3"
                             maxlength="500"
                             x-model="text"
@@ -48,6 +52,13 @@
                     </div>
                 </div>
             </form>
+            @else
+                <div class="rounded-[1.4rem] bg-card p-5 neu sm:p-6">
+                    <p class="text-sm font-semibold">Ingin berbagi cerita?</p>
+                    <p class="mt-1 text-xs text-muted-foreground">Masuk dulu agar ceritamu bisa tersimpan secara anonim.</p>
+                    <a href="{{ route('masuk') }}" class="btn-lime mt-4 text-xs">Masuk untuk menulis</a>
+                </div>
+            @endauth
 
             {{-- Filters --}}
             <div class="mt-5 flex flex-wrap gap-2 pb-1" role="tablist" aria-label="Filter cerita" x-data="{ tab: 0 }">
@@ -65,42 +76,17 @@
 
             {{-- Feed --}}
             <div class="mt-4 space-y-3">
-                <x-post :likes="37" :replies="6" time="8 menit lalu" tag="Perlu dukungan">
-                    Aku takut banget besok presentasi. Sudah seminggu nggak bisa tidur nyenyak dan kepala terus penuh. Ada yang punya cara biar lebih tenang?
-                </x-post>
-
-                <x-post :likes="24" :replies="4" time="42 menit lalu">
-                    Hari ini aku berhasil bangun pagi dan keluar rumah walau rasanya berat. Kecil, tapi aku mau mengapresiasi diriku sendiri.
-                    <x-slot:comments>
-                        <div class="flex items-start gap-2.5">
-                            <span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
-                                <x-icon name="user" :size="14" />
-                            </span>
-                            <div class="rounded-xl bg-muted/70 px-3 py-2">
-                                <p class="text-xs font-semibold">Anonim <span class="ml-1 font-normal text-muted-foreground">20 menit lalu</span></p>
-                                <p class="mt-0.5 text-xs leading-relaxed">Bangga banget sama kamu. Langkah kecil tetap langkah. 🤍</p>
-                            </div>
-                        </div>
-                        <div class="flex items-start gap-2.5">
-                            <span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
-                                <x-icon name="user" :size="14" />
-                            </span>
-                            <div class="rounded-xl bg-muted/70 px-3 py-2">
-                                <p class="text-xs font-semibold">Anonim <span class="ml-1 font-normal text-muted-foreground">12 menit lalu</span></p>
-                                <p class="mt-0.5 text-xs leading-relaxed">Aku juga sedang di fase yang sama. Kita pelan-pelan ya.</p>
-                            </div>
-                        </div>
-                    </x-slot:comments>
-                </x-post>
-
-                <x-post :likes="58" :replies="12" time="2 jam lalu">
-                    Mengingatkan diri sendiri: kamu tidak harus punya alasan besar untuk merasa lelah. Istirahat itu bukan kemalasan.
-                </x-post>
+                @forelse ($posts as $post)
+                    <x-post :post="$post" />
+                @empty
+                    <div class="rounded-[1.4rem] bg-card p-6 text-center neu-sm"><p class="text-sm font-semibold">Belum ada cerita</p><p class="mt-1 text-xs text-muted-foreground">Jadilah orang pertama yang berbagi hari ini.</p></div>
+                @endforelse
             </div>
 
             <p class="mt-5 text-center text-xs text-muted-foreground">
-                Kamu sudah melihat 3 dari 24 cerita.
+                Menampilkan {{ $posts->count() }} dari {{ $posts->total() }} cerita.
             </p>
+            <div class="mt-4">{{ $posts->links() }}</div>
         </div>
 
         {{-- Aside --}}

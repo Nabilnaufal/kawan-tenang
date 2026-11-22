@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BubbleController;
 use Illuminate\Support\Facades\Route;
 
 // Autentikasi
@@ -15,7 +16,14 @@ Route::post('/lupa-sandi', fn () => redirect()->route('masuk'))->name('lupa-sand
 
 // Area pengguna
 Route::view('/', 'home')->name('home');
-Route::view('/bubble', 'bubble')->name('bubble');
+Route::get('/bubble', [BubbleController::class, 'index'])->name('bubble');
+
+Route::middleware('auth')->group(function () {
+    Route::post('/bubble', [BubbleController::class, 'store'])->name('bubble.store');
+    Route::post('/bubble/{post}/komentar', [BubbleController::class, 'komentar'])->name('bubble.komentar');
+    Route::post('/bubble/{post}/suka', [BubbleController::class, 'suka'])->name('bubble.suka');
+    Route::post('/bubble/{post}/lapor', [BubbleController::class, 'lapor'])->name('bubble.lapor');
+});
 Route::view('/konseling', 'konseling.index')->name('konseling.index');
 Route::view('/konseling/{id}', 'konseling.show')->name('konseling.show');
 Route::view('/verifikasi', 'verifikasi')->name('verifikasi');
