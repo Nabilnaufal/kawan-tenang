@@ -1,6 +1,28 @@
-@props(['post'])
+@props([
+    'post' => null,
+    'time' => 'Baru saja',
+    'likes' => 12,
+    'replies' => 3,
+    'tag' => null,
+])
 
-@php($id = 'post-' . $post->id)
+@php
+    if (! $post) {
+        $post = new \Illuminate\Support\Fluent([
+            'id' => uniqid(),
+            'body' => trim((string) $slot),
+            'tag' => $tag,
+            'likes_count' => $likes,
+            'comments_count' => $replies,
+            'liked' => false,
+            'comments' => collect(),
+            'created_at' => now(),
+        ]);
+    }
+
+    $waktu = $post->exists ?? false ? $post->created_at->diffForHumans() : $time;
+    $id = 'post-' . $post->id;
+@endphp
 
 <article class="rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5" x-data="{ liked: {{ ($post->liked ?? false) ? 'true' : 'false' }}, likes: {{ $post->likes_count }}, showComments: false, report: false, sent: false, reason: 'Ujaran kebencian' }">
     <div class="flex items-start gap-3">
@@ -8,7 +30,7 @@
         <div class="min-w-0 flex-1">
             <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
                 <span class="text-sm font-semibold">Anonim</span>
-                <span class="text-xs text-muted-foreground">{{ $post->created_at->diffForHumans() }}</span>
+                <span class="text-xs text-muted-foreground">{{ $waktu }}</span>
                 @if ($post->tag)<x-status tone="info">{{ $post->tag }}</x-status>@endif
             </div>
             <p class="mt-1 text-xs text-muted-foreground">Identitas disamarkan · hanya kamu yang tahu</p>
