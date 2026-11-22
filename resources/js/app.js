@@ -46,6 +46,7 @@ import {
     createIcons,
 } from 'lucide';
 import { initCharts } from './charts';
+import { hentikanKamera, mulaiKamera, pindaiWajah } from './wajah';
 
 const icons = {
     ArrowRight,
@@ -91,6 +92,88 @@ const icons = {
 };
 
 window.Alpine = Alpine;
+
+Alpine.data('daftarWizard', (awal = 1) => ({
+    step: awal,
+    wajahSiap: false,
+    pesan: '',
+    password: '',
+    konfirmasi: '',
+    lanjut() {
+        const wajib = [...this.$el.querySelectorAll(`[data-langkah="${this.step}"] [required]`)];
+
+        if (! wajib.every((input) => input.reportValidity())) {
+            return;
+        }
+
+        if (this.step === 2 && this.password !== this.konfirmasi) {
+            this.pesan = 'Ulangi kata sandi tidak sama.';
+            return;
+        }
+
+        this.pesan = '';
+        this.$dispatch('tutup-kamera');
+        this.step++;
+    },
+    kembali() {
+        this.pesan = '';
+        this.$dispatch('tutup-kamera');
+        this.step--;
+    },
+    kirim(event) {
+        if (this.step < 3) {
+            event.preventDefault();
+            this.lanjut();
+            return;
+        }
+
+        if (! this.wajahSiap) {
+            event.preventDefault();
+            this.pesan = 'Pindai wajah dulu di langkah 3.';
+        }
+    },
+}));
+
+Alpine.data('pemindaiWajah', () => ({
+    aktif: false,
+    memuat: false,
+    pesan: '',
+    deskriptor: [],
+    async buka() {
+        this.aktif = true;
+        this.pesan = '';
+
+        await this.$nextTick();
+
+        try {
+            await mulaiKamera(this.$refs.video);
+        } catch {
+            this.pesan = 'Kamera tidak bisa dibuka. Izinkan akses kamera lalu coba lagi.';
+        }
+    },
+    tutup() {
+        hentikanKamera(this.$refs.video);
+        this.aktif = false;
+    },
+    async pindai() {
+        this.memuat = true;
+        this.pesan = '';
+
+        try {
+            this.deskriptor = await pindaiWajah(this.$refs.video);
+            this.$refs.input.value = JSON.stringify(this.deskriptor);
+            this.$refs.input.dispatchEvent(new Event('input', { bubbles: true }));
+            this.tutup();
+            this.pesan = 'Wajah berhasil dipindai.';
+            this.$dispatch('wajah-siap', { deskriptor: this.deskriptor });
+        } catch (error) {
+            this.pesan = error.message;
+        } finally {
+            this.memuat = false;
+        }
+    },
+}));
+
 Alpine.start();
 
 window.toggleTheme = () => {

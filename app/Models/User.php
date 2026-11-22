@@ -20,8 +20,13 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
+        'nim',
+        'prodi',
+        'role',
         'email',
         'password',
+        'face_descriptor',
+        'face_registered_at',
     ];
 
     /**
@@ -32,6 +37,7 @@ class User extends Authenticatable
     protected $hidden = [
         'password',
         'remember_token',
+        'face_descriptor',
     ];
 
     /**
@@ -44,6 +50,8 @@ class User extends Authenticatable
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'face_descriptor' => 'encrypted:array',
+            'face_registered_at' => 'datetime',
         ];
     }
 }

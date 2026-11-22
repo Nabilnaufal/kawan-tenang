@@ -155,6 +155,15 @@
                         <a href="{{ $profileUrl }}" class="flex size-11 items-center justify-center rounded-full bg-secondary text-secondary-foreground" aria-label="Profil saya">
                             <x-icon name="user" :size="19" />
                         </a>
+
+                        @auth
+                            <form method="POST" action="{{ route('keluar') }}">
+                                @csrf
+                                <button type="submit" class="icon-btn" aria-label="Keluar">
+                                    <x-icon name="logout" :size="18" />
+                                </button>
+                            </form>
+                        @endauth
                     </div>
                 </div>
             </header>

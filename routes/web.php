@@ -1,13 +1,16 @@
 <?php
 
+use App\Http\Controllers\AuthController;
 use Illuminate\Support\Facades\Route;
 
 // Autentikasi
-Route::view('/masuk', 'auth.masuk')->name('masuk');
-Route::view('/daftar', 'auth.daftar')->name('daftar');
+Route::get('/masuk', [AuthController::class, 'formMasuk'])->name('masuk');
+Route::get('/daftar', [AuthController::class, 'formDaftar'])->name('daftar');
 Route::view('/lupa-sandi', 'auth.lupa-sandi')->name('lupa-sandi');
-Route::post('/masuk', fn () => redirect()->route('dasbor'))->name('masuk.store');
-Route::post('/daftar', fn () => redirect()->route('dasbor'))->name('daftar.store');
+Route::post('/masuk', [AuthController::class, 'masuk'])->name('masuk.store');
+Route::post('/masuk/wajah', [AuthController::class, 'masukWajah'])->middleware('throttle:10,1')->name('masuk.wajah');
+Route::post('/daftar', [AuthController::class, 'daftar'])->middleware('throttle:10,1')->name('daftar.store');
+Route::post('/keluar', [AuthController::class, 'keluar'])->name('keluar');
 Route::post('/lupa-sandi', fn () => redirect()->route('masuk'))->name('lupa-sandi.store');
 
 // Area pengguna
