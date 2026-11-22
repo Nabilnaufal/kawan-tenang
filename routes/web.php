@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BubbleController;
 use App\Http\Controllers\CounselingController;
+use App\Http\Controllers\AdminController;
 use Illuminate\Support\Facades\Route;
 
 // Autentikasi
@@ -45,10 +46,11 @@ Route::prefix('konselor')->name('konselor.')->group(function () {
 });
 
 // Area administrator
-Route::prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::view('/', 'admin.dasbor')->name('dasbor');
-    Route::view('/pengguna', 'admin.pengguna')->name('pengguna');
-    Route::view('/laporan', 'admin.laporan')->name('laporan');
+    Route::get('/pengguna', [AdminController::class, 'pengguna'])->name('pengguna');
+    Route::get('/laporan', [AdminController::class, 'laporan'])->name('laporan');
+    Route::patch('/laporan/{report}', [AdminController::class, 'updateLaporan'])->name('laporan.update');
     Route::view('/verifikasi', 'admin.verifikasi')->name('verifikasi');
     Route::view('/profil', 'profil', ['role' => 'admin'])->name('profil');
 });
