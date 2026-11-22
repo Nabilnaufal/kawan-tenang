@@ -20,6 +20,7 @@
         ]);
     }
 
+    $persistent = $post instanceof \App\Models\Post;
     $waktu = $post->exists ?? false ? $post->created_at->diffForHumans() : $time;
     $id = 'post-' . $post->id;
 @endphp
@@ -42,9 +43,13 @@
 
     <div class="mt-4 flex items-center gap-1 border-t border-border/60 pt-3 text-xs font-medium text-muted-foreground">
         @auth
+        @if ($persistent)
             <button type="button" class="flex items-center gap-1.5 rounded-lg px-2 py-1.5 hover:bg-muted" :class="liked ? 'text-destructive' : ''" :aria-pressed="liked" @click="fetch('{{ route('bubble.suka', $post) }}', { method: 'POST', headers: { 'X-CSRF-TOKEN': '{{ csrf_token() }}', 'Accept': 'application/json' } }).then(r => r.json()).then(data => { liked = data.liked; likes = data.likes })">
                 <x-icon name="heart" :size="16" x-bind:fill="liked ? 'currentColor' : 'none'" /><span x-text="likes">{{ $post->likes_count }}</span><span class="sr-only">suka</span>
             </button>
+        @else
+            <span class="flex items-center gap-1.5 px-2 py-1.5"><x-icon name="heart" :size="16" />{{ $post->likes_count }}</span>
+        @endif
         @else
             <span class="flex items-center gap-1.5 px-2 py-1.5"><x-icon name="heart" :size="16" />{{ $post->likes_count }}</span>
         @endauth
@@ -60,11 +65,14 @@
         @empty
             <p class="text-xs text-muted-foreground">Belum ada komentar. Jadi kawan pertama yang mendukung.</p>
         @endforelse
+        @if ($persistent)
         @auth
             <form class="flex items-center gap-2" method="POST" action="{{ route('bubble.komentar', $post) }}">@csrf<input type="text" name="body" required maxlength="300" placeholder="Tulis dukungan sebagai Anonim…" aria-label="Tulis komentar" class="min-w-0 flex-1 rounded-xl bg-input px-3 py-2 text-xs neu-inset focus:outline-none"><button type="submit" class="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground" aria-label="Kirim komentar"><x-icon name="send" :size="15" /></button></form>
         @endauth
+        @endif
     </div>
 
+    @if ($persistent)
     @auth
     <div x-show="report" x-cloak x-transition.opacity class="fixed inset-0 z-50 flex items-end justify-center bg-foreground/40 p-4 backdrop-blur-sm sm:items-center" role="dialog" aria-modal="true" @keydown.escape.window="report = false">
         <div class="w-full max-w-md rounded-[1.4rem] bg-card p-5 neu" @click.outside="report = false">
@@ -74,4 +82,5 @@
         </div>
     </div>
     @endauth
+    @endif
 </article>
