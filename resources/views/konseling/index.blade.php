@@ -37,9 +37,10 @@
                     </div>
 
                     <template x-if="! sent">
-                        <form class="mt-4 space-y-3" @submit.prevent="sent = true">
+                        <form class="mt-4 space-y-3" method="POST" action="{{ route('konseling.store') }}" @submit="sent = true">
+                            @csrf
                             <label for="topik" class="block text-xs font-medium text-muted-foreground">Topik utama</label>
-                            <select id="topik" x-model="topic" class="w-full rounded-xl bg-input px-3 py-2.5 text-sm neu-inset focus:outline-none">
+                            <select id="topik" name="topic" x-model="topic" required class="w-full rounded-xl bg-input px-3 py-2.5 text-sm neu-inset focus:outline-none">
                                 <option>Kecemasan</option>
                                 <option>Tekanan akademik</option>
                                 <option>Masalah keluarga</option>
@@ -48,7 +49,7 @@
                             </select>
 
                             <label for="catatan" class="block text-xs font-medium text-muted-foreground">Ceritakan singkat (opsional)</label>
-                            <textarea id="catatan" rows="3" class="w-full rounded-xl bg-input px-3 py-2.5 text-sm neu-inset focus:outline-none" placeholder="Apa yang ingin kamu bahas?"></textarea>
+                            <textarea id="catatan" name="note" maxlength="2000" rows="3" class="w-full rounded-xl bg-input px-3 py-2.5 text-sm neu-inset focus:outline-none" placeholder="Apa yang ingin kamu bahas?"></textarea>
 
                             <p class="flex items-start gap-2 rounded-xl bg-muted/70 p-3 text-xs leading-relaxed text-muted-foreground">
                                 <x-icon name="lock" :size="13" class="mt-0.5" />

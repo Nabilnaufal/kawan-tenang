@@ -4,14 +4,14 @@
             <x-icon name="chevron-right" :size="18" class="rotate-180" />
         </a>
         <div>
-            <h2 class="text-lg font-semibold tracking-tight">Sesi dengan Kak Rani</h2>
-            <p class="text-xs text-muted-foreground">Dimulai hari ini · ID sesi #KT-2418</p>
+            <h2 class="text-lg font-semibold tracking-tight">Sesi {{ $session->counselor?->name ?? 'menunggu konselor' }}</h2>
+            <p class="text-xs text-muted-foreground">{{ $session->topic }} · ID sesi #KT-{{ $session->id }}</p>
         </div>
-        <x-status tone="success" class="ml-auto">Aktif</x-status>
+        <x-status :tone="$session->status === 'aktif' ? 'success' : 'warning'" class="ml-auto">{{ ucfirst($session->status) }}</x-status>
     </div>
 
     <div>
-        <x-chat-panel name="Kak Rani" role="Konselor keluarga" state="Sesi aktif" />
+        <x-chat-panel :session="$session" name="{{ $session->counselor?->name ?? 'Menunggu konselor' }}" role="Konselor" :state="ucfirst($session->status)" />
     </div>
 
     <p class="mt-3 flex items-start gap-2 px-1 text-xs leading-relaxed text-muted-foreground">

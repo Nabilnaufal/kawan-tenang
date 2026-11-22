@@ -51,6 +51,16 @@ class User extends Authenticatable
         return $this->hasMany(Comment::class);
     }
 
+    public function counselingSessions(): HasMany
+    {
+        return $this->hasMany(CounselingSession::class);
+    }
+
+    public function assignedSessions(): HasMany
+    {
+        return $this->hasMany(CounselingSession::class, 'counselor_id');
+    }
+
     /**
      * Get the attributes that should be cast.
      *

@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BubbleController;
+use App\Http\Controllers\CounselingController;
 use Illuminate\Support\Facades\Route;
 
 // Autentikasi
@@ -24,8 +25,13 @@ Route::middleware('auth')->group(function () {
     Route::post('/bubble/{post}/suka', [BubbleController::class, 'suka'])->name('bubble.suka');
     Route::post('/bubble/{post}/lapor', [BubbleController::class, 'lapor'])->name('bubble.lapor');
 });
-Route::view('/konseling', 'konseling.index')->name('konseling.index');
-Route::view('/konseling/{id}', 'konseling.show')->name('konseling.show');
+Route::middleware('auth')->prefix('konseling')->name('konseling.')->group(function () {
+    Route::get('/', [CounselingController::class, 'index'])->name('index');
+    Route::post('/', [CounselingController::class, 'store'])->name('store');
+    Route::get('/{session}', [CounselingController::class, 'show'])->name('show');
+    Route::post('/{session}/pesan', [CounselingController::class, 'message'])->name('message');
+    Route::post('/{session}/selesai', [CounselingController::class, 'close'])->name('close');
+});
 Route::view('/verifikasi', 'verifikasi')->name('verifikasi');
 Route::view('/dasbor', 'dasbor.pengguna')->name('dasbor');
 Route::view('/profil', 'profil', ['role' => 'pengguna'])->name('profil');
