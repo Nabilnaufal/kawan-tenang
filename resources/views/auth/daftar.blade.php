@@ -8,15 +8,17 @@
         <p class="mt-1.5 text-sm text-muted-foreground">Tiga langkah singkat, kurang dari satu menit.</p>
 
         {{-- Langkah --}}
-        <ol class="mt-5 grid grid-cols-3 gap-2" aria-label="Langkah pendaftaran">
+        <ol class="relative mt-6 flex items-start" aria-label="Langkah pendaftaran">
+            <span class="pointer-events-none absolute top-3 left-[16%] right-[16%] h-px bg-border" aria-hidden="true"></span>
+            <span class="pointer-events-none absolute top-3 left-[16%] h-px bg-primary transition-all duration-300" :style="`width: ${Math.max(0, Math.min(1, (step - 1) / 2)) * 68}%`" aria-hidden="true"></span>
             @foreach ([['Data diri', 'Nama, NIM, prodi'], ['Akun', 'Email & sandi'], ['Wajah', 'Pindai wajah']] as $i => [$judul, $ket])
-                <li class="rounded-xl bg-input p-2.5 text-center neu-inset" :class="step >= {{ $i + 1 }} ? 'ring-2 ring-primary' : 'opacity-60'">
-                    <span class="mx-auto flex size-6 items-center justify-center rounded-full text-[0.7rem] font-bold" :class="step > {{ $i + 1 }} ? 'bg-success text-white' : 'bg-muted text-muted-foreground'">
+                <li class="relative z-10 flex min-w-0 flex-1 flex-col items-center text-center" :class="step < {{ $i + 1 }} ? 'opacity-45' : ''">
+                    <span class="flex size-6 items-center justify-center rounded-full border border-border bg-background text-[0.7rem] font-bold" :class="step > {{ $i + 1 }} ? 'border-success bg-success text-white' : (step === {{ $i + 1 }} ? 'border-primary bg-primary text-primary-foreground' : 'text-muted-foreground')">
                         <span x-show="step <= {{ $i + 1 }}">{{ $i + 1 }}</span>
                         <span x-show="step > {{ $i + 1 }}" x-cloak>✓</span>
                     </span>
-                    <span class="mt-1 block text-[0.7rem] font-semibold">{{ $judul }}</span>
-                    <span class="block text-[0.62rem] leading-tight text-muted-foreground">{{ $ket }}</span>
+                    <span class="mt-2 block text-[0.68rem] font-semibold">{{ $judul }}</span>
+                    <span class="mt-0.5 block text-[0.58rem] leading-tight text-muted-foreground">{{ $ket }}</span>
                 </li>
             @endforeach
         </ol>
