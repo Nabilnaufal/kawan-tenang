@@ -21,7 +21,7 @@
     <template x-if="aktif">
         <div class="space-y-3">
             <div class="relative mx-auto aspect-[4/3] w-full max-w-sm overflow-hidden rounded-2xl bg-foreground">
-                <video x-ref="video" autoplay playsinline muted class="size-full scale-x-[-1] object-cover"></video>
+                <video x-ref="video" autoplay playsinline muted width="640" height="480" class="size-full scale-x-[-1] object-cover"></video>
                 <span class="pointer-events-none absolute inset-0 m-auto h-[72%] w-[52%] rounded-[50%] border-2 border-dashed border-secondary/80" aria-hidden="true"></span>
             </div>
 

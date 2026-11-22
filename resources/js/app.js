@@ -46,7 +46,7 @@ import {
     createIcons,
 } from 'lucide';
 import { initCharts } from './charts';
-import { hentikanKamera, mulaiKamera, pindaiWajah } from './wajah';
+import { hentikanKamera, mulaiKamera, pesanKamera, pindaiWajah } from './wajah';
 
 const icons = {
     ArrowRight,
@@ -147,8 +147,9 @@ Alpine.data('pemindaiWajah', () => ({
 
         try {
             await mulaiKamera(this.$refs.video);
-        } catch {
-            this.pesan = 'Kamera tidak bisa dibuka. Izinkan akses kamera lalu coba lagi.';
+        } catch (error) {
+            this.tutup();
+            this.pesan = pesanKamera(error);
         }
     },
     tutup() {
@@ -167,7 +168,7 @@ Alpine.data('pemindaiWajah', () => ({
             this.pesan = 'Wajah berhasil dipindai.';
             this.$dispatch('wajah-siap', { deskriptor: this.deskriptor });
         } catch (error) {
-            this.pesan = error.message;
+            this.pesan = pesanKamera(error);
         } finally {
             this.memuat = false;
         }
