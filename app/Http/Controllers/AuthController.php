@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Support\Wajah;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -59,7 +60,7 @@ class AuthController extends Controller
             'password.confirmed' => 'Ulangi kata sandi tidak sama.',
         ]);
 
-        $wajah = $this->deskriptor($data['wajah']);
+        $wajah = Wajah::deskriptor($data['wajah']);
 
         $user = User::create([
             'name' => $data['nama'],
@@ -87,13 +88,13 @@ class AuthController extends Controller
             'wajah.json' => 'Data wajah tidak valid. Pindai ulang.',
         ]);
 
-        $wajah = $this->deskriptor($data['wajah']);
+        $wajah = Wajah::deskriptor($data['wajah']);
 
         // shortcut: pencocokan 1:N ke semua descriptor; ganti ke pencarian vektor
         // (mis. pgvector/faiss) saat jumlah pengguna sudah besar.
         $terdekat = User::whereNotNull('face_descriptor')
             ->get()
-            ->map(fn (User $user) => [$user, $this->jarak($user->face_descriptor, $wajah)])
+            ->map(fn (User $user) => [$user, Wajah::jarak($user->face_descriptor, $wajah)])
             ->sortBy(fn (array $baris) => $baris[1])
             ->first();
 
@@ -127,33 +128,4 @@ class AuthController extends Controller
         };
     }
 
-    /** Validasi isi descriptor lalu ubah ke 128 angka. */
-    private function deskriptor(string $json): array
-    {
-        $wajah = json_decode($json, true);
-
-        if (! is_array($wajah) || count($wajah) !== 128 || count(array_filter($wajah, 'is_numeric')) !== 128) {
-            throw ValidationException::withMessages([
-                'wajah' => 'Data wajah tidak valid. Pindai ulang.',
-            ]);
-        }
-
-        return array_map('floatval', $wajah);
-    }
-
-    /** Jarak Euclidean antara dua descriptor wajah 128 dimensi. */
-    private function jarak(array $a, array $b): float
-    {
-        if (count($a) !== count($b)) {
-            return INF;
-        }
-
-        $jumlah = 0.0;
-
-        foreach ($a as $i => $nilai) {
-            $jumlah += ($nilai - $b[$i]) ** 2;
-        }
-
-        return sqrt($jumlah);
-    }
 }
