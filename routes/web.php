@@ -52,10 +52,12 @@ Route::middleware(['auth', 'role:konselor'])->prefix('konselor')->name('konselor
 
 // Area administrator
 Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
-    Route::view('/', 'admin.dasbor')->name('dasbor');
+    Route::get('/', [AdminController::class, 'dashboard'])->name('dasbor');
     Route::get('/pengguna', [AdminController::class, 'pengguna'])->name('pengguna');
+    Route::patch('/pengguna/{user}/peran', [AdminController::class, 'updateRole'])->name('pengguna.peran');
     Route::get('/laporan', [AdminController::class, 'laporan'])->name('laporan');
     Route::patch('/laporan/{report}', [AdminController::class, 'updateLaporan'])->name('laporan.update');
-    Route::view('/verifikasi', 'admin.verifikasi')->name('verifikasi');
+    Route::get('/verifikasi', [AdminController::class, 'verifikasi'])->name('verifikasi');
+    Route::delete('/verifikasi/{user}', [AdminController::class, 'resetWajah'])->name('verifikasi.reset');
     Route::view('/profil', 'profil', ['role' => 'admin'])->name('profil');
 });

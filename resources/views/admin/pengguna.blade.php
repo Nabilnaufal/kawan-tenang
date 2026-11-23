@@ -2,88 +2,61 @@
 @section('title', 'Manajemen Pengguna')
 @section('role', 'admin')
 @section('content')
-@php
-    $accounts = [
-        ['Kawan Anonim', 'kawan@mail.com', 'Pengguna', 'neutral', 'Berhasil', 'success', '12 Nov 2026', 'Aktif', 'success'],
-        ['Rani Puspita', 'rani@kawan.id', 'Konselor', 'info', 'Berhasil', 'success', '4 Okt 2026', 'Aktif', 'success'],
-        ['Dimas Ardi', 'dimas@kawan.id', 'Konselor', 'info', 'Berhasil', 'success', '4 Okt 2026', 'Aktif', 'success'],
-        ['Sari Wulandari', 'sari@kawan.id', 'Konselor', 'info', 'Menunggu', 'warning', '9 Nov 2026', 'Aktif', 'success'],
-        ['Bagas Nugroho', 'bagas@mail.com', 'Pengguna', 'neutral', 'Belum', 'danger', '10 Nov 2026', 'Aktif', 'success'],
-        ['Ayu Lestari', 'ayu@mail.com', 'Pengguna', 'neutral', 'Berhasil', 'success', '2 Nov 2026', 'Nonaktif', 'neutral'],
-        ['Fajar Hidayat', 'fajar@kawan.id', 'Administrator', 'warning', 'Berhasil', 'success', '1 Sep 2026', 'Aktif', 'success'],
-    ];
-@endphp
+    @php
+        $roleTone = ['pengguna' => 'neutral', 'konselor' => 'info', 'admin' => 'warning'];
+        $roleLabel = ['pengguna' => 'Pengguna', 'konselor' => 'Konselor', 'admin' => 'Administrator'];
+    @endphp
 
     <div class="mb-5 flex flex-wrap items-end justify-between gap-3">
         <div>
             <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Manajemen pengguna</h2>
             <p class="mt-1 text-sm text-muted-foreground">Kelola akun pengguna, konselor, dan administrator.</p>
         </div>
-        <button type="button" class="btn-lime text-xs">
-            <x-icon name="plus" :size="14" />
-            Tambah akun
-        </button>
+        <span class="rounded-full bg-card px-3 py-1.5 text-xs font-semibold text-muted-foreground neu-sm">{{ $users->total() }} akun</span>
     </div>
+
+    @if (session('status'))
+        <p class="mb-4 rounded-xl bg-success/10 p-3 text-xs font-medium text-success">{{ session('status') }}</p>
+    @endif
 
     <section class="min-w-0 rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5">
         <div class="flex flex-wrap items-center gap-2">
-            <div class="flex flex-wrap gap-2" role="tablist" aria-label="Filter peran" x-data="{ tab: 0 }">
-                @foreach (['Semua', 'Pengguna', 'Konselor', 'Administrator'] as $i => $filter)
-                    <button
-                        type="button"
-                        role="tab"
-                        @click="tab = {{ $i }}"
-                        :aria-selected="tab === {{ $i }}"
-                        :class="tab === {{ $i }} ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:text-foreground'"
-                        class="shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold transition"
-                    >{{ $filter }}</button>
+            <div class="flex flex-wrap gap-2" aria-label="Filter peran">
+                @foreach (['semua' => 'Semua', 'pengguna' => 'Pengguna', 'konselor' => 'Konselor', 'admin' => 'Administrator'] as $value => $label)
+                    <a
+                        href="{{ route('admin.pengguna', array_filter(['role' => $value, 'q' => $search])) }}"
+                        @class([
+                            'shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold transition',
+                            'bg-primary text-primary-foreground' => $role === $value,
+                            'bg-muted text-muted-foreground hover:text-foreground' => $role !== $value,
+                        ])
+                        @if ($role === $value) aria-current="page" @endif
+                    >{{ $label }}</a>
                 @endforeach
             </div>
 
-            <label class="ml-auto flex w-full items-center gap-2 rounded-xl bg-input px-3 py-2 text-xs text-muted-foreground neu-inset sm:w-64">
+            <form method="GET" action="{{ route('admin.pengguna') }}" class="ml-auto flex w-full items-center gap-2 rounded-xl bg-input px-3 py-2 text-xs text-muted-foreground neu-inset sm:w-64">
+                @if ($role !== 'semua')
+                    <input type="hidden" name="role" value="{{ $role }}">
+                @endif
                 <x-icon name="search" :size="15" />
-                <input type="search" placeholder="Cari nama atau email" aria-label="Cari pengguna" class="min-w-0 flex-1 bg-transparent text-foreground placeholder:text-muted-foreground focus:outline-none">
-            </label>
+                <input type="search" name="q" value="{{ $search }}" placeholder="Cari nama, email, atau NIM" aria-label="Cari pengguna" class="min-w-0 flex-1 bg-transparent text-foreground placeholder:text-muted-foreground focus:outline-none">
+            </form>
         </div>
 
-        {{-- Mobile list --}}
-        <ul class="mt-4 divide-y divide-border/60 md:hidden">
-            @foreach ($accounts as [$name, $email, $role, $roleTone, $verif, $verifTone, $joined, $status, $statusTone])
-                <li class="py-3">
-                    <div class="flex items-center gap-2.5">
-                        <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
-                            <x-icon name="user" :size="15" />
-                        </span>
-                        <div class="min-w-0 flex-1">
-                            <p class="truncate text-sm font-semibold">{{ $name }}</p>
-                            <p class="truncate text-xs text-muted-foreground">{{ $email }}</p>
-                        </div>
-                        <x-status tone="{{ $statusTone }}">{{ $status }}</x-status>
-                    </div>
-                    <div class="mt-2 flex flex-wrap items-center gap-2 pl-11">
-                        <x-status :tone="$roleTone">{{ $role }}</x-status>
-                        <x-status :tone="$verifTone">Verifikasi: {{ $verif }}</x-status>
-                        <button type="button" class="ml-auto rounded-lg bg-muted px-2.5 py-1.5 text-xs font-semibold text-foreground hover:bg-muted/70">Kelola</button>
-                    </div>
-                </li>
-            @endforeach
-        </ul>
-
-        {{-- Desktop table --}}
-        <div class="mt-4 hidden overflow-x-auto md:block">
-            <table class="w-full min-w-[720px] text-left text-xs">
+        <div class="mt-4 overflow-x-auto">
+            <table class="w-full min-w-[760px] text-left text-xs">
                 <thead class="text-xs tracking-wide text-muted-foreground uppercase">
                     <tr class="border-b border-border/60">
                         <th class="py-2.5 pr-3 font-medium">Akun</th>
                         <th class="py-2.5 pr-3 font-medium">Peran</th>
                         <th class="py-2.5 pr-3 font-medium">Verifikasi</th>
                         <th class="py-2.5 pr-3 font-medium">Bergabung</th>
-                        <th class="py-2.5 pr-3 font-medium">Status</th>
-                        <th class="py-2.5 font-medium"></th>
+                        <th class="py-2.5 font-medium">Ubah peran</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-border/60">
-                    @foreach ($accounts as [$name, $email, $role, $roleTone, $verif, $verifTone, $joined, $status, $statusTone])
+                    @forelse ($users as $user)
                         <tr class="align-middle">
                             <td class="py-3 pr-3">
                                 <div class="flex items-center gap-2.5">
@@ -91,33 +64,49 @@
                                         <x-icon name="user" :size="14" />
                                     </span>
                                     <div class="min-w-0">
-                                        <p class="truncate font-semibold">{{ $name }}</p>
-                                        <p class="truncate text-xs text-muted-foreground">{{ $email }}</p>
+                                        <p class="truncate font-semibold">{{ $user->name }}</p>
+                                        <p class="truncate text-xs text-muted-foreground">{{ $user->email }}</p>
                                     </div>
                                 </div>
                             </td>
-                            <td class="py-3 pr-3"><x-status :tone="$roleTone">{{ $role }}</x-status></td>
-                            <td class="py-3 pr-3"><x-status :tone="$verifTone">{{ $verif }}</x-status></td>
-                            <td class="py-3 pr-3 text-muted-foreground">{{ $joined }}</td>
-                            <td class="py-3 pr-3"><x-status :tone="$statusTone">{{ $status }}</x-status></td>
+                            <td class="py-3 pr-3"><x-status :tone="$roleTone[$user->role] ?? 'neutral'">{{ $roleLabel[$user->role] ?? $user->role }}</x-status></td>
+                            <td class="py-3 pr-3">
+                                @if ($user->face_registered_at)
+                                    <x-status tone="success">Terdaftar</x-status>
+                                @else
+                                    <x-status tone="danger">Belum</x-status>
+                                @endif
+                            </td>
+                            <td class="py-3 pr-3 text-muted-foreground">{{ $user->created_at->translatedFormat('d M Y') }}</td>
                             <td class="py-3 text-right">
-                                <button type="button" class="rounded-lg px-2.5 py-1.5 text-xs font-semibold text-foreground hover:bg-muted">Kelola</button>
+                                @if ($user->is(auth()->user()))
+                                    <span class="text-xs text-muted-foreground">Akun sendiri</span>
+                                @else
+                                    <form method="POST" action="{{ route('admin.pengguna.peran', $user) }}" class="flex items-center justify-end gap-2">
+                                        @csrf
+                                        @method('PATCH')
+                                        <select name="role" class="rounded-lg bg-input px-2.5 py-1.5 text-xs neu-inset">
+                                            @foreach ($roleLabel as $value => $label)
+                                                <option value="{{ $value }}" @selected($user->role === $value)>{{ $label }}</option>
+                                            @endforeach
+                                        </select>
+                                        <button type="submit" class="rounded-lg px-2.5 py-1.5 text-xs font-semibold text-foreground hover:bg-muted">Simpan</button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="5" class="py-8 text-center text-muted-foreground">Tidak ada akun yang cocok.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
 
         <div class="mt-4 flex flex-wrap items-center justify-between gap-3 border-t border-border/60 pt-3 text-xs text-muted-foreground">
-            <p>Menampilkan 7 dari 1.284 akun</p>
-            <div class="flex items-center gap-1">
-                <button type="button" class="rounded-lg px-2.5 py-1.5 font-medium hover:bg-muted" disabled>Sebelumnya</button>
-                <button type="button" class="rounded-lg bg-primary px-2.5 py-1.5 font-semibold text-primary-foreground">1</button>
-                <button type="button" class="rounded-lg px-2.5 py-1.5 font-medium hover:bg-muted">2</button>
-                <button type="button" class="rounded-lg px-2.5 py-1.5 font-medium hover:bg-muted">3</button>
-                <button type="button" class="rounded-lg px-2.5 py-1.5 font-medium hover:bg-muted">Berikutnya</button>
-            </div>
+            <p>Menampilkan {{ $users->count() }} dari {{ $users->total() }} akun</p>
+            <div>{{ $users->links() }}</div>
         </div>
     </section>
 @endsection

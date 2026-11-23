@@ -59,14 +59,16 @@ export function initCharts() {
         gradient.addColorStop(0, `${ink}2e`);
         gradient.addColorStop(1, `${ink}00`);
 
+        const read = (key) => JSON.parse(activityCanvas.dataset[key] || '[]');
+
         new Chart(activityCanvas, {
             type: 'line',
             data: {
-                labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+                labels: read('labels'),
                 datasets: [
                     {
                         label: 'Cerita',
-                        data: [12, 18, 9, 22, 17, 26, 21],
+                        data: read('cerita'),
                         borderColor: ink,
                         backgroundColor: gradient,
                         fill: true,
@@ -78,7 +80,7 @@ export function initCharts() {
                     },
                     {
                         label: 'Pesan',
-                        data: [30, 34, 28, 41, 38, 46, 40],
+                        data: read('pesan'),
                         borderColor: lime,
                         borderWidth: 2,
                         borderDash: [5, 5],
@@ -115,13 +117,15 @@ export function initCharts() {
     if (sessionCanvas) {
         Chart.getChart(sessionCanvas)?.destroy();
 
+        const labels = JSON.parse(sessionCanvas.dataset.labels || '[]').map((item) => item?.label ?? item);
+
         new Chart(sessionCanvas, {
             type: 'doughnut',
             data: {
-                labels: ['Aktif', 'Selesai', 'Menunggu', 'Ditutup'],
+                labels,
                 datasets: [
                     {
-                        data: [32, 41, 9, 4],
+                        data: JSON.parse(sessionCanvas.dataset.values || '[]'),
                         backgroundColor: [ink, lime, '#a8b09c', `${muted}55`],
                         borderWidth: 0,
                         borderRadius: 8,

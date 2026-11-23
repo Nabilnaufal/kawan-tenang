@@ -4,11 +4,18 @@
 @section('content')
     <div class="mb-5">
         <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Status verifikasi akun</h2>
-        <p class="mt-1 text-sm text-muted-foreground">Hasil verifikasi liveness dari penyedia. Data wajah tidak disimpan di sistem ini.</p>
+        <p class="mt-1 text-sm text-muted-foreground">Descriptor wajah disimpan terenkripsi. Foto asli tidak disimpan.</p>
     </div>
 
+    @if (session('status'))
+        <p class="mb-4 rounded-xl bg-success/10 p-3 text-xs font-medium text-success">{{ session('status') }}</p>
+    @endif
+
     <div class="grid grid-cols-2 gap-3 xl:grid-cols-4">
-        @foreach ([['Berhasil', '612', 'check-circle', 'bg-success/15 text-success'], ['Menunggu', '9', 'clock', 'bg-accent/35 text-accent-foreground'], ['Gagal', '14', 'x', 'bg-destructive/15 text-destructive'], ['Belum verifikasi', '649', 'user', 'bg-muted text-muted-foreground']] as [$label, $value, $icon, $tone])
+        @foreach ([
+            ['Terdaftar', $counts['terdaftar'], 'check-circle', 'bg-success/15 text-success'],
+            ['Belum terdaftar', $counts['belum'], 'user', 'bg-muted text-muted-foreground'],
+        ] as [$label, $value, $icon, $tone])
             <div class="rounded-[1.4rem] bg-card p-4 neu-sm">
                 <span class="flex size-8 items-center justify-center rounded-lg {{ $tone }}">
                     <x-icon :name="$icon" :size="16" />
@@ -21,54 +28,61 @@
 
     <section class="mt-4 min-w-0 rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5">
         <div class="flex flex-wrap items-center justify-between gap-3">
-            <h3 class="text-sm font-semibold">Antrean verifikasi</h3>
-            <div class="flex gap-2" x-data="{ tab: 0 }">
-                @foreach (['Semua', 'Menunggu', 'Gagal'] as $i => $filter)
-                    <button type="button" @click="tab = {{ $i }}" :class="tab === {{ $i }} ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground'" class="rounded-full px-3 py-1.5 text-xs font-semibold">{{ $filter }}</button>
-                @endforeach
-            </div>
+            <h3 class="text-sm font-semibold">Data verifikasi wajah</h3>
+            <span class="text-xs text-muted-foreground">{{ $users->total() }} akun</span>
         </div>
 
         <div class="mt-4 overflow-x-auto">
-            <table class="w-full text-left text-xs">
+            <table class="w-full min-w-[620px] text-left text-xs">
                 <thead class="text-xs tracking-wide text-muted-foreground uppercase">
                     <tr class="border-b border-border/60">
-                        <th class="hidden py-2.5 pr-3 font-medium sm:table-cell">ID sesi</th>
                         <th class="py-2.5 pr-3 font-medium">Akun</th>
-                        <th class="hidden py-2.5 pr-3 font-medium sm:table-cell">Penyedia</th>
-                        <th class="hidden py-2.5 pr-3 font-medium sm:table-cell">Metode</th>
-                        <th class="hidden py-2.5 pr-3 font-medium sm:table-cell">Waktu</th>
+                        <th class="hidden py-2.5 pr-3 font-medium sm:table-cell">NIM</th>
                         <th class="py-2.5 pr-3 font-medium">Status</th>
+                        <th class="hidden py-2.5 pr-3 font-medium sm:table-cell">Waktu daftar wajah</th>
                         <th class="py-2.5 font-medium"></th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-border/60">
-                    @foreach ([
-                        ['#DVT-88214', 'Kawan Anonim', 'Didit', 'Passive liveness', '15 Nov, 09.12', 'Menunggu', 'warning'],
-                        ['#DVT-88210', 'Bagas Nugroho', 'Didit', 'Passive liveness', '15 Nov, 08.40', 'Berhasil', 'success'],
-                        ['#DVT-88201', 'Ayu Lestari', 'Didit', 'Face match 1:1', '14 Nov, 21.05', 'Gagal', 'danger'],
-                        ['#DVT-88190', 'Sari Wulandari', 'Didit', 'Passive liveness', '14 Nov, 17.22', 'Berhasil', 'success'],
-                        ['#DVT-88182', 'Fajar Hidayat', 'Didit', 'Passive liveness', '14 Nov, 11.03', 'Perlu ditinjau', 'info'],
-                    ] as [$session, $account, $provider, $method, $time, $status, $tone])
+                    @forelse ($users as $user)
                         <tr class="align-middle">
-                            <td class="hidden py-3 pr-3 font-mono text-xs font-medium sm:table-cell">{{ $session }}</td>
-                            <td class="py-3 pr-3 font-medium">{{ $account }}</td>
-                            <td class="hidden py-3 pr-3 text-muted-foreground sm:table-cell">{{ $provider }}</td>
-                            <td class="hidden py-3 pr-3 text-muted-foreground sm:table-cell">{{ $method }}</td>
-                            <td class="hidden py-3 pr-3 text-muted-foreground sm:table-cell">{{ $time }}</td>
-                            <td class="py-3 pr-3"><x-status :tone="$tone">{{ $status }}</x-status></td>
+                            <td class="py-3 pr-3">
+                                <p class="font-medium">{{ $user->name }}</p>
+                                <p class="text-xs text-muted-foreground">{{ $user->email }}</p>
+                            </td>
+                            <td class="hidden py-3 pr-3 text-muted-foreground sm:table-cell">{{ $user->nim ?: '—' }}</td>
+                            <td class="py-3 pr-3">
+                                @if ($user->face_registered_at)
+                                    <x-status tone="success">Terdaftar</x-status>
+                                @else
+                                    <x-status tone="warning">Belum</x-status>
+                                @endif
+                            </td>
+                            <td class="hidden py-3 pr-3 text-muted-foreground sm:table-cell">{{ $user->face_registered_at?->translatedFormat('d M Y, H.i') ?? '—' }}</td>
                             <td class="py-3 text-right">
-                                <button type="button" class="rounded-lg px-2.5 py-1.5 text-xs font-semibold text-foreground hover:bg-muted">Tinjau</button>
+                                @if ($user->face_registered_at && ! $user->is(auth()->user()))
+                                    <form method="POST" action="{{ route('admin.verifikasi.reset', $user) }}" onsubmit="return confirm('Hapus data wajah pengguna ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="rounded-lg px-2.5 py-1.5 text-xs font-semibold text-destructive hover:bg-destructive/10">Hapus wajah</button>
+                                    </form>
+                                @endif
                             </td>
                         </tr>
-                    @endforeach
+                    @empty
+                        <tr>
+                            <td colspan="5" class="py-8 text-center text-muted-foreground">Belum ada akun.</td>
+                        </tr>
+                    @endforelse
                 </tbody>
             </table>
         </div>
+
+        <div class="mt-4 border-t border-border/60 pt-3 text-xs text-muted-foreground">{{ $users->links() }}</div>
     </section>
 
     <p class="mt-3 flex items-start gap-2 px-1 text-xs leading-relaxed text-muted-foreground">
         <x-icon name="lock" :size="13" class="mt-0.5 shrink-0" />
-        Status hanya diperbarui dari webhook penyedia yang tervalidasi. Timeout atau kegagalan vendor tidak dianggap berhasil.
+        Penghapusan wajah membuat pengguna tidak bisa login dengan wajah sampai memindai ulang.
     </p>
 @endsection
