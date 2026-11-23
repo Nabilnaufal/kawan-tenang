@@ -36,7 +36,7 @@ class BubbleController extends Controller
     {
         $data = $request->validate([
             'body' => ['required', 'string', 'max:500'],
-            'tag' => ['nullable', 'in:Perlu dukungan'],
+            'tag' => ['nullable', 'in:Perlu dukungan,Cerita harian,Tips & pengalaman,Perayaan kecil'],
         ]);
 
         $request->user()->posts()->create($data);

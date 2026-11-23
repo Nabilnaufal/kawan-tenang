@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BubbleController;
 use App\Http\Controllers\CounselingController;
+use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
@@ -28,7 +29,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/bubble/{post}/suka', [BubbleController::class, 'suka'])->name('bubble.suka');
     Route::post('/bubble/{post}/lapor', [BubbleController::class, 'lapor'])->name('bubble.lapor');
     Route::view('/verifikasi', 'verifikasi')->name('verifikasi');
-    Route::view('/dasbor', 'dasbor.pengguna')->name('dasbor');
+    Route::get('/dasbor', [DashboardController::class, 'index'])->name('dasbor');
     Route::view('/profil', 'profil', ['role' => 'pengguna'])->name('profil');
 });
 Route::middleware('auth')->prefix('konseling')->name('konseling.')->group(function () {
