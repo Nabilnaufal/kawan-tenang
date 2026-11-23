@@ -7,6 +7,7 @@ use App\Http\Controllers\CounselingController;
 use App\Http\Controllers\CounselorController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 // Autentikasi
@@ -31,7 +32,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/bubble/{post}/lapor', [BubbleController::class, 'lapor'])->name('bubble.lapor');
     Route::view('/verifikasi', 'verifikasi')->name('verifikasi');
     Route::get('/dasbor', [DashboardController::class, 'index'])->name('dasbor');
-    Route::view('/profil', 'profil', ['role' => 'pengguna'])->name('profil');
+    Route::get('/profil', [ProfileController::class, 'show'])->name('profil');
+    Route::patch('/profil', [ProfileController::class, 'update'])->name('profil.update');
+    Route::delete('/profil/wajah', [ProfileController::class, 'forgetFace'])->name('profil.wajah.destroy');
 });
 Route::middleware('auth')->prefix('konseling')->name('konseling.')->group(function () {
     Route::get('/', [CounselingController::class, 'index'])->name('index');
@@ -47,7 +50,7 @@ Route::middleware(['auth', 'role:konselor'])->prefix('konselor')->name('konselor
     Route::get('/sesi/{session}', [CounselingController::class, 'show'])->name('sesi.show');
     Route::post('/sesi/{session}/catatan', [CounselorController::class, 'note'])->name('sesi.catatan');
     Route::patch('/ketersediaan', [CounselorController::class, 'availability'])->name('ketersediaan');
-    Route::view('/profil', 'profil', ['role' => 'konselor'])->name('profil');
+    Route::get('/profil', [ProfileController::class, 'show'])->name('profil');
 });
 
 // Area administrator
@@ -59,5 +62,5 @@ Route::middleware(['auth', 'role:admin'])->prefix('admin')->name('admin.')->grou
     Route::patch('/laporan/{report}', [AdminController::class, 'updateLaporan'])->name('laporan.update');
     Route::get('/verifikasi', [AdminController::class, 'verifikasi'])->name('verifikasi');
     Route::delete('/verifikasi/{user}', [AdminController::class, 'resetWajah'])->name('verifikasi.reset');
-    Route::view('/profil', 'profil', ['role' => 'admin'])->name('profil');
+    Route::get('/profil', [ProfileController::class, 'show'])->name('profil');
 });

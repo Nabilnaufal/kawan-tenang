@@ -16,42 +16,30 @@
                     <x-icon name="face" :size="24" />
                 </span>
                 <div class="min-w-0 flex-1">
-                    <x-status tone="warning">Belum diverifikasi</x-status>
-                    <h3 class="mt-2 text-lg font-semibold tracking-tight">Satu langkah kecil untuk kepercayaan bersama</h3>
+                    @if (auth()->user()->face_registered_at)
+                        <x-status tone="success">Wajah terdaftar</x-status>
+                    @else
+                        <x-status tone="warning">Belum terdaftar</x-status>
+                    @endif
+                    <h3 class="mt-2 text-lg font-semibold tracking-tight">{{ auth()->user()->face_registered_at ? 'Verifikasi wajahmu sudah tersimpan' : 'Satu langkah kecil untuk kepercayaan bersama' }}</h3>
                     <p class="mt-1.5 max-w-md text-xs leading-relaxed text-muted-foreground">
-                        Verifikasi dilakukan sekali oleh penyedia pihak ketiga (Didit). Kamu tetap bisa membaca Bubble Publik dan mengakses bantuan darurat tanpa verifikasi.
+                        Wajah diproses langsung di browser menggunakan model lokal. Sistem hanya menyimpan descriptor terenkripsi untuk login wajah. Kamu tetap bisa mengakses bantuan tanpa verifikasi.
                     </p>
                 </div>
             </div>
 
-            <template x-if="! waiting">
-                <div class="relative mt-5 flex flex-col gap-2 sm:flex-row">
-                    <button
-                        type="button"
-                        class="btn-lime text-xs"
-                        @click="open = true"
-                    >
-                        <x-icon name="face" :size="15" />
-                        Mulai verifikasi
-                    </button>
-                    <a href="#privasi" class="inline-flex items-center justify-center gap-2 rounded-full bg-background px-4 py-2.5 text-xs font-semibold neu-sm transition hover:bg-muted">
-                        Pelajari prosesnya
-                    </a>
-                </div>
-            </template>
-
-            <div x-show="waiting" x-cloak class="relative mt-5 flex items-center gap-3 rounded-xl bg-secondary/30 p-3">
-                <span class="flex size-8 items-center justify-center rounded-full bg-card text-foreground">
-                    <x-icon name="clock" :size="16" />
-                </span>
-                <div>
-                    <p class="text-xs font-semibold">Menunggu hasil pemeriksaan</p>
-                    <p class="text-xs text-muted-foreground">Biasanya selesai dalam 1–2 menit. Halaman ini akan diperbarui otomatis.</p>
-                </div>
+            <div class="relative mt-5 flex flex-col gap-2 sm:flex-row">
+                <a href="{{ route('profil') }}" class="btn-lime text-xs">
+                    <x-icon name="face" :size="15" />
+                    {{ auth()->user()->face_registered_at ? 'Kelola profil' : 'Daftar melalui langkah registrasi' }}
+                </a>
+                <a href="#privasi" class="inline-flex items-center justify-center gap-2 rounded-full bg-background px-4 py-2.5 text-xs font-semibold neu-sm transition hover:bg-muted">
+                    Pelajari prosesnya
+                </a>
             </div>
 
             <dl class="relative mt-6 grid grid-cols-2 gap-4 border-t border-border/60 pt-4 sm:grid-cols-3">
-                @foreach ([['Penyedia', 'Didit'], ['Metode', 'Passive liveness'], ['Data disimpan', 'Status & waktu']] as [$label, $value])
+                @foreach ([['Pemrosesan', 'Browser lokal'], ['Metode', 'Face descriptor 128 dimensi'], ['Data disimpan', auth()->user()->face_registered_at ? 'Descriptor terenkripsi' : 'Belum ada']] as [$label, $value])
                     <div>
                         <dt class="text-xs tracking-wide text-muted-foreground uppercase">{{ $label }}</dt>
                         <dd class="mt-0.5 text-xs font-semibold">{{ $value }}</dd>
@@ -84,8 +72,8 @@
                     <ul class="mt-4 space-y-2.5 text-xs leading-relaxed text-muted-foreground">
                         @foreach ([
                             'Tujuan: memastikan akun dijalankan oleh orang hidup, bukan foto atau rekaman.',
-                            'Data: gambar wajah diproses oleh Didit sebagai penyedia pihak ketiga.',
-                            'Penyimpanan: kami hanya menyimpan status, ID sesi, dan waktu — bukan foto selfie.',
+                            'Data: kamera diproses di browser menggunakan model face-api lokal.',
+                            'Penyimpanan: sistem hanya menyimpan descriptor wajah terenkripsi — bukan foto selfie.',
                             'Hak kamu: menarik persetujuan dan meminta penghapusan data kapan saja.',
                         ] as $point)
                             <li class="flex gap-2">
