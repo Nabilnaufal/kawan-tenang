@@ -47,7 +47,7 @@
                 </div>
 
                 <div class="mt-10 grid grid-cols-3 gap-2 rounded-2xl border border-primary-foreground/15 p-4">
-                    @foreach ([['1.284', 'cerita'], ['32', 'konselor'], ['4.8', 'rating']] as [$value, $label])
+                    @foreach ([['Anonim', 'cerita'], ['Privat', 'konseling'], ['Lokal', 'proses']] as [$value, $label])
                         <div>
                             <p class="text-lg font-semibold">{{ $value }}</p>
                             <p class="text-[0.72rem] uppercase tracking-[0.12em] text-primary-foreground/60">{{ $label }}</p>
