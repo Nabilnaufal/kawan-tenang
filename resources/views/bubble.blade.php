@@ -63,16 +63,17 @@
             @endauth
 
             {{-- Filters --}}
-            <div class="mt-5 flex flex-wrap gap-2 pb-1" role="tablist" aria-label="Filter cerita" x-data="{ tab: 0 }">
-                @foreach (['Semua', 'Terbaru', 'Populer', 'Perlu dukungan'] as $i => $filter)
-                    <button
-                        type="button"
-                        role="tab"
-                        @click="tab = {{ $i }}"
-                        :aria-selected="tab === {{ $i }}"
-                        :class="tab === {{ $i }} ? 'bg-primary text-primary-foreground' : 'bg-card text-muted-foreground hover:text-foreground'"
-                        class="shrink-0 rounded-full px-4 py-2 text-xs font-semibold transition"
-                    >{{ $filter }}</button>
+            <div class="mt-5 flex flex-wrap gap-2 pb-1" aria-label="Filter cerita">
+                @foreach (['semua' => 'Semua', 'terbaru' => 'Terbaru', 'populer' => 'Populer', 'dukungan' => 'Perlu dukungan'] as $value => $label)
+                    <a
+                        href="{{ route('bubble', ['filter' => $value]) }}"
+                        @class([
+                            'shrink-0 rounded-full px-4 py-2 text-xs font-semibold transition',
+                            'bg-primary text-primary-foreground' => $filter === $value,
+                            'bg-card text-muted-foreground hover:text-foreground' => $filter !== $value,
+                        ])
+                        @if ($filter === $value) aria-current="page" @endif
+                    >{{ $label }}</a>
                 @endforeach
             </div>
 

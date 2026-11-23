@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BubbleController;
 use App\Http\Controllers\CounselingController;
+use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
 
 // Autentikasi
@@ -18,7 +19,7 @@ Route::post('/keluar', [AuthController::class, 'keluar'])->name('keluar');
 Route::post('/lupa-sandi', fn () => redirect()->route('masuk'))->name('lupa-sandi.store');
 
 // Area pengguna
-Route::view('/', 'home')->name('home');
+Route::get('/', HomeController::class)->name('home');
 Route::get('/bubble', [BubbleController::class, 'index'])->name('bubble');
 
 Route::middleware('auth')->group(function () {

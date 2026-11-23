@@ -30,11 +30,11 @@
             </div>
 
             <dl class="grid grid-cols-3 gap-4 rounded-2xl border border-primary-foreground/15 p-4 sm:gap-6 sm:p-5 xl:min-w-[360px]">
-                @foreach ([['1.284', 'cerita', 'dibagikan'], ['32', 'konselor', 'aktif'], ['98%', 'merasa', 'didengar']] as [$value, $line1, $line2])
+                @foreach ($stats as $stat)
                     <div>
-                        <dd class="text-xl font-semibold tracking-tight tabular-nums" data-count="{{ $value }}">0</dd>
+                        <dd class="text-xl font-semibold tracking-tight tabular-nums" data-count="{{ $stat['value'] }}">0</dd>
                         <dt class="mt-1 text-[0.72rem] leading-tight tracking-[0.1em] text-primary-foreground/60 uppercase">
-                            {{ $line1 }}<br>{{ $line2 }}
+                            {{ $stat['label'] }}
                         </dt>
                     </div>
                 @endforeach
@@ -91,35 +91,39 @@
             </div>
 
             <div class="mt-3 space-y-3">
-                <x-post :likes="24" :replies="5" time="12 menit lalu" tag="Hari ini berat">
-                    Hari ini rasanya capek banget, tapi aku nggak tahu harus cerita ke siapa. Makasih sudah jadi ruang yang tenang.
-                </x-post>
-                <x-post :likes="41" :replies="9" time="1 jam lalu">
-                    Tips kecil buat kamu yang lagi cemas: coba tarik napas 4 detik, tahan 4 detik, buang 6 detik. Aku sudah coba dan lumayan membantu.
-                </x-post>
+                @forelse ($posts as $post)
+                    <x-post :post="$post" />
+                @empty
+                    <div class="rounded-[1.4rem] bg-card p-6 text-center neu-sm">
+                        <p class="text-sm font-semibold">Belum ada cerita</p>
+                        <p class="mt-1 text-xs text-muted-foreground">Jadilah orang pertama yang berbagi hari ini.</p>
+                    </div>
+                @endforelse
             </div>
         </section>
 
         <aside class="space-y-3">
             <div class="rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5">
                 <div class="flex items-center justify-between gap-3">
-                    <h2 class="text-sm font-semibold">Konselor tersedia</h2>
-                    <span class="text-xs text-muted-foreground">3 orang</span>
+                    <h2 class="text-sm font-semibold">Konselor terdaftar</h2>
+                    <span class="text-xs text-muted-foreground">{{ $counselors->count() }} orang</span>
                 </div>
                 <ul class="mt-4 space-y-3.5">
-                    @foreach ([['Rani', 'Konselor keluarga', true], ['Dimas', 'Konselor kecemasan', true], ['Sari', 'Konselor remaja', false]] as [$name, $role, $online])
+                    @forelse ($counselors as $counselor)
                         <li class="flex items-center gap-3">
                             <span class="relative flex size-10 items-center justify-center rounded-full bg-muted text-sm font-semibold">
-                                {{ $name[0] }}
-                                <span @class(['absolute -right-0.5 -bottom-0.5 size-2.5 rounded-full border-2 border-card', 'bg-success' => $online, 'bg-muted-foreground/50' => ! $online])></span>
+                                {{ mb_substr($counselor->name, 0, 1) }}
+                                <span class="absolute -right-0.5 -bottom-0.5 size-2.5 rounded-full border-2 border-card bg-success"></span>
                             </span>
                             <span class="min-w-0 flex-1 leading-tight">
-                                <span class="block truncate text-sm font-medium">Kak {{ $name }}</span>
-                                <span class="block text-xs text-muted-foreground">{{ $role }}</span>
+                                <span class="block truncate text-sm font-medium">Kak {{ $counselor->name }}</span>
+                                <span class="block truncate text-xs text-muted-foreground">{{ $counselor->prodi ?: 'Konselor' }}</span>
                             </span>
-                            <span class="text-xs font-medium {{ $online ? 'text-success' : 'text-muted-foreground' }}">{{ $online ? 'Online' : 'Offline' }}</span>
+                            <span class="text-xs font-medium text-success">Aktif</span>
                         </li>
-                    @endforeach
+                    @empty
+                        <li class="text-xs text-muted-foreground">Belum ada konselor terdaftar.</li>
+                    @endforelse
                 </ul>
                 <a href="{{ route('konseling.index') }}" class="btn-lime mt-5 w-full text-xs">
                     Mulai sesi konseling

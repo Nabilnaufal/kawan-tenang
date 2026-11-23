@@ -115,7 +115,7 @@
                     <x-icon name="user" :size="18" />
                 </span>
                 <span class="min-w-0 leading-tight">
-                    <span class="block truncate text-sm font-semibold">{{ $role === 'admin' ? 'Admin Dilan' : 'Kawan Anonim' }}</span>
+                    <span class="block truncate text-sm font-semibold">{{ auth()->user()?->name }}</span>
                     <span class="block text-[0.75rem] text-primary-foreground/60">{{ $roleLabel }}</span>
                 </span>
             </a>
