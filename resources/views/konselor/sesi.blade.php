@@ -2,6 +2,8 @@
 @section('title', 'Sesi Konseling')
 @section('role', 'konselor')
 @section('content')
+    @php($tones = ['aktif' => 'success', 'menunggu' => 'warning', 'selesai' => 'neutral'])
+
     <div class="mb-5">
         <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Sesi saya</h2>
         <p class="mt-1 text-sm text-muted-foreground">Hanya sesi yang ditugaskan kepadamu yang tampil di sini.</p>
@@ -9,30 +11,31 @@
 
     <div class="grid gap-4 xl:grid-cols-[360px_1fr]">
         <div class="min-w-0 space-y-2.5">
-            <div class="flex flex-wrap gap-2 pb-1" role="tablist" aria-label="Filter sesi" x-data="{ tab: 0 }">
-                @foreach (['Semua', 'Aktif', 'Menunggu', 'Selesai'] as $i => $filter)
-                    <button
-                        type="button"
-                        role="tab"
-                        @click="tab = {{ $i }}"
-                        :aria-selected="tab === {{ $i }}"
-                        :class="tab === {{ $i }} ? 'bg-primary text-primary-foreground' : 'bg-card text-muted-foreground hover:text-foreground'"
-                        class="shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold transition"
-                    >{{ $filter }}</button>
+            <form method="GET" action="{{ route('konselor.sesi') }}" class="flex items-center gap-2 rounded-xl bg-input px-3 py-2 text-xs text-muted-foreground neu-inset">
+                <x-icon name="search" :size="15" />
+                <input type="search" name="q" value="{{ $search }}" placeholder="Cari topik sesi" aria-label="Cari sesi" class="min-w-0 flex-1 bg-transparent text-foreground placeholder:text-muted-foreground focus:outline-none">
+            </form>
+
+            <div class="flex flex-wrap gap-2 pb-1" aria-label="Filter sesi">
+                @foreach (['semua' => 'Semua', 'aktif' => 'Aktif', 'menunggu' => 'Menunggu', 'selesai' => 'Selesai'] as $value => $label)
+                    <a
+                        href="{{ route('konselor.sesi', array_filter(['status' => $value, 'q' => $search])) }}"
+                        @class([
+                            'shrink-0 rounded-full px-3.5 py-1.5 text-xs font-semibold transition',
+                            'bg-primary text-primary-foreground' => $status === $value,
+                            'bg-card text-muted-foreground hover:text-foreground' => $status !== $value,
+                        ])
+                        @if ($status === $value) aria-current="page" @endif
+                    >{{ $label }}</a>
                 @endforeach
             </div>
 
-            @foreach ([
-                ['Anonim #2418', 'Kecemasan', '5 menit lalu', 'Boleh, aku coba. Makasih sudah dengerin.', 'Aktif', 'success', true, 1],
-                ['Anonim #2411', 'Tekanan akademik', '22 menit lalu', 'Aku bingung harus mulai dari mana…', 'Menunggu', 'warning', true, 1],
-                ['Anonim #2396', 'Masalah keluarga', '1 jam lalu', 'Aku sudah coba ngomong ke ibu, lumayan lega.', 'Aktif', 'success', false, 1],
-                ['Anonim #2374', 'Kesepian', 'Kemarin', 'Sampai jumpa di sesi berikutnya ya.', 'Selesai', 'neutral', false, 1],
-            ] as [$user, $topic, $time, $preview, $status, $tone, $unread, $id])
+            @forelse ($sessions as $sesi)
                 <a
-                    href="{{ route('konselor.sesi.show', $id) }}"
+                    href="{{ route('konselor.sesi', array_filter(['session' => $sesi->id, 'status' => $status, 'q' => $search])) }}"
                     @class([
                         'flex items-start gap-3 rounded-[1.4rem] bg-card p-3.5 neu-sm transition hover:bg-muted',
-                        'ring-1 ring-primary/25' => $loop->first,
+                        'ring-1 ring-primary/25' => $selected?->is($sesi),
                     ])
                 >
                     <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
@@ -40,23 +43,37 @@
                     </span>
                     <span class="min-w-0 flex-1">
                         <span class="flex items-center gap-2">
-                            <span class="truncate text-sm font-semibold">{{ $user }}</span>
-                            <span class="ml-auto shrink-0 text-xs text-muted-foreground">{{ $time }}</span>
+                            <span class="truncate text-sm font-semibold">Anonim #{{ $sesi->user_id }}</span>
+                            <span class="ml-auto shrink-0 text-xs text-muted-foreground">{{ $sesi->created_at->diffForHumans() }}</span>
                         </span>
-                        <span class="mt-0.5 block truncate text-xs text-muted-foreground">{{ $topic }} · {{ $preview }}</span>
+                        <span class="mt-0.5 block truncate text-xs text-muted-foreground">{{ $sesi->topic }} · {{ $sesi->messages_count }} pesan</span>
                         <span class="mt-1.5 flex items-center gap-2">
-                            <x-status :tone="$tone">{{ $status }}</x-status>
-                            @if ($unread)
-                                <span class="size-1.5 rounded-full bg-destructive" aria-label="Pesan belum dibaca"></span>
-                            @endif
+                            <x-status :tone="$tones[$sesi->status] ?? 'neutral'">{{ ucfirst($sesi->status) }}</x-status>
                         </span>
                     </span>
                 </a>
-            @endforeach
+            @empty
+                <div class="rounded-[1.4rem] bg-card p-6 text-center neu-sm">
+                    <p class="text-sm font-semibold">Belum ada sesi</p>
+                    <p class="mt-1 text-xs text-muted-foreground">Sesi yang ditugaskan akan tampil di sini.</p>
+                </div>
+            @endforelse
         </div>
 
         <div class="hidden min-w-0 xl:block">
-            <x-chat-panel name="Anonim #2418" role="Topik: Kecemasan" state="Sesi aktif" :anonymous="true" />
+            @if ($selected)
+                <x-chat-panel
+                    :session="$selected"
+                    name="Anonim #{{ $selected->user_id }}"
+                    role="Topik: {{ $selected->topic }}"
+                    :state="ucfirst($selected->status)"
+                    :anonymous="true"
+                />
+            @else
+                <div class="flex h-full min-h-[420px] items-center justify-center rounded-[1.4rem] bg-card p-6 text-center neu-sm">
+                    <p class="text-xs text-muted-foreground">Pilih sesi untuk melihat percakapan.</p>
+                </div>
+            @endif
         </div>
     </div>
 @endsection

@@ -2,10 +2,15 @@
 @section('title', 'Dasbor Konselor')
 @section('role', 'konselor')
 @section('content')
+    @php
+        $tones = ['aktif' => 'success', 'menunggu' => 'warning', 'selesai' => 'neutral'];
+        $perluDitangani = $sessions->whereIn('status', ['aktif', 'menunggu'])->take(3);
+    @endphp
+
     <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
         <div>
             <div class="flex flex-wrap items-center gap-2">
-                <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Halo, Kak</h2>
+                <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Halo, {{ $user->name }}</h2>
                 <span class="rounded-full bg-card px-3 py-1 text-[0.72rem] font-semibold text-muted-foreground neu-sm">Konselor</span>
             </div>
             <p class="mt-1 text-sm text-muted-foreground">Sesi yang ditugaskan kepadamu dan ringkasan beban kerja.</p>
@@ -27,25 +32,24 @@
             </div>
 
             <p class="mt-3 text-3xl leading-none font-semibold tracking-tight tabular-nums">
-                <span data-count="37">0</span>
+                <span data-count="{{ $sessions->count() }}">0</span>
             </p>
-            <p class="mt-1.5 text-xs text-primary-foreground/60">sesi ditangani bulan ini</p>
+            <p class="mt-1.5 text-xs text-primary-foreground/60">total sesi ditugaskan</p>
 
             <div class="mt-3 flex flex-wrap gap-2">
-                <span class="inline-flex items-center gap-1.5 rounded-full bg-secondary px-3 py-1 text-[0.72rem] font-bold text-secondary-foreground">
-                    <x-icon name="clock" :size="12" />
-                    9 mnt rata-rata
+                <span class="inline-flex items-center gap-1.5 rounded-full border border-primary-foreground/20 px-3 py-1 text-[0.72rem] font-medium">
+                    {{ $counts['aktif'] }} aktif
                 </span>
                 <span class="inline-flex items-center gap-1.5 rounded-full border border-primary-foreground/20 px-3 py-1 text-[0.72rem] font-medium">
-                    98% tepat waktu
+                    {{ $counts['menunggu'] }} menunggu
                 </span>
             </div>
 
             <dl class="mt-auto grid grid-cols-3 gap-2 pt-5">
                 @foreach ([
-                    ['label' => 'Aktif', 'value' => '6'],
-                    ['label' => 'Menunggu', 'value' => '3'],
-                    ['label' => 'Selesai', 'value' => '28'],
+                    ['label' => 'Aktif', 'value' => $counts['aktif']],
+                    ['label' => 'Menunggu', 'value' => $counts['menunggu']],
+                    ['label' => 'Selesai', 'value' => $counts['selesai']],
                 ] as $stat)
                     <div class="rounded-2xl bg-primary-foreground/10 p-3">
                         <dt class="text-[0.62rem] tracking-[0.1em] uppercase text-primary-foreground/60">{{ $stat['label'] }}</dt>
@@ -67,42 +71,51 @@
                 </div>
             </div>
             <div class="relative mt-3 min-h-[168px] flex-1">
-                <canvas id="chartSesiKonselor" role="img" aria-label="Diagram batang jumlah sesi konseling per hari"></canvas>
+                <canvas
+                    id="chartSesiKonselor"
+                    role="img"
+                    aria-label="Diagram batang jumlah sesi konseling per hari"
+                    data-labels='@json($chartLabels)'
+                    data-selesai='@json($chartSelesai)'
+                    data-baru='@json($chartBaru)'
+                ></canvas>
             </div>
         </section>
 
-        <section class="rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5" x-data="{ available: true }">
+        <section class="rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5">
             <div class="flex items-center justify-between gap-3">
                 <h3 class="text-sm font-semibold">Ketersediaan</h3>
                 <span class="flex items-center gap-1.5 text-xs text-muted-foreground">
-                    <span class="size-2 rounded-full bg-success" x-show="available"></span>
-                    <span x-text="available ? 'Online' : 'Offline'">Online</span>
+                    <span @class(['size-2 rounded-full', 'bg-success' => $user->is_available, 'bg-muted-foreground/50' => ! $user->is_available])></span>
+                    {{ $user->is_available ? 'Online' : 'Offline' }}
                 </span>
             </div>
 
-            <div class="mt-3 flex items-center justify-between gap-3 rounded-xl bg-muted/60 p-3">
-                <span class="text-xs font-medium" x-text="available ? 'Menerima sesi baru' : 'Sedang tidak tersedia'">Menerima sesi baru</span>
-                <button
-                    type="button"
-                    role="switch"
-                    :aria-checked="available"
-                    @click="available = !available"
-                    class="relative h-6 w-11 shrink-0 rounded-full transition"
-                    :class="available ? 'bg-primary' : 'bg-muted-foreground/30'"
-                    aria-label="Ketersediaan konselor"
-                >
-                    <span class="absolute top-0.5 left-0.5 size-5 rounded-full bg-card shadow transition" :class="available ? 'translate-x-5' : ''"></span>
+            <form method="POST" action="{{ route('konselor.ketersediaan') }}" class="mt-3">
+                @csrf
+                @method('PATCH')
+                <input type="hidden" name="is_available" value="{{ $user->is_available ? 0 : 1 }}">
+                <button type="submit" class="flex w-full items-center justify-between gap-3 rounded-xl bg-muted/60 p-3 text-left">
+                    <span class="text-xs font-medium">{{ $user->is_available ? 'Menerima sesi baru' : 'Sedang tidak tersedia' }}</span>
+                    <span @class(['relative h-6 w-11 shrink-0 rounded-full transition', 'bg-primary' => $user->is_available, 'bg-muted-foreground/30' => ! $user->is_available]) aria-hidden="true">
+                        <span @class(['absolute top-0.5 left-0.5 size-5 rounded-full bg-card shadow transition', 'translate-x-5' => $user->is_available])></span>
+                    </span>
                 </button>
-            </div>
+            </form>
 
-            <p class="label-cap mt-4 mb-2 block">Jadwal hari ini</p>
+            <p class="label-cap mt-4 mb-2 block">Perlu ditangani</p>
             <ul class="space-y-2.5 text-xs">
-                @foreach ([['10.00', 'Sesi lanjutan · Anonim #2418'], ['13.30', 'Sesi baru · Anonim #2420'], ['16.00', 'Evaluasi tim konselor']] as [$time, $label])
+                @forelse ($perluDitangani as $sesi)
                     <li class="flex gap-3">
-                        <span class="w-10 shrink-0 font-semibold tabular-nums text-foreground">{{ $time }}</span>
-                        <span class="text-muted-foreground">{{ $label }}</span>
+                        <span class="w-10 shrink-0 font-semibold tabular-nums text-foreground">{{ $sesi->created_at->format('H.i') }}</span>
+                        <a href="{{ route('konselor.sesi.show', $sesi) }}" class="min-w-0 text-muted-foreground hover:text-foreground">
+                            <span class="block truncate">{{ $sesi->topic }} · Anonim #{{ $sesi->user_id }}</span>
+                            <span class="block text-[0.7rem]">{{ $sesi->messages_count }} pesan · {{ ucfirst($sesi->status) }}</span>
+                        </a>
                     </li>
-                @endforeach
+                @empty
+                    <li class="text-muted-foreground">Tidak ada sesi yang menunggu.</li>
+                @endforelse
             </ul>
         </section>
     </div>
@@ -119,60 +132,46 @@
                 </span>
             </div>
 
-            <form class="mt-4 space-y-3" @submit.prevent="$el.reset()">
-                <div>
-                    <label for="sesi-catatan" class="label-cap mb-1.5 block">Sesi</label>
-                    <select id="sesi-catatan" class="w-full rounded-xl bg-input px-3 py-2.5 text-sm neu-inset focus:outline-none">
-                        <option>Anonim #2418 · Kecemasan</option>
-                        <option>Anonim #2411 · Tekanan akademik</option>
-                        <option>Anonim #2396 · Masalah keluarga</option>
-                    </select>
-                </div>
-
-                <div>
-                    <label for="isi-catatan" class="label-cap mb-1.5 block">Catatan</label>
-                    <textarea id="isi-catatan" rows="4" placeholder="Ringkasan sesi, rencana tindak lanjut…" class="w-full resize-none rounded-xl bg-input px-3 py-2.5 text-sm placeholder:text-muted-foreground neu-inset focus:outline-none"></textarea>
-                </div>
-
-                <div class="flex items-center justify-between gap-3">
-                    <p class="flex items-center gap-1.5 text-[0.7rem] text-muted-foreground">
-                        <x-icon name="lock" :size="12" />
-                        Catatan internal
-                    </p>
-                    <button type="submit" class="btn-lime">
-                        Simpan catatan
-                        <x-icon name="arrow-right" :size="14" />
-                    </button>
-                </div>
-            </form>
+            <ul class="mt-4 space-y-2.5">
+                @forelse ($notes as $sesi)
+                    <li>
+                        <a href="{{ route('konselor.sesi.show', $sesi) }}" class="block rounded-xl bg-muted/60 p-3 transition hover:bg-muted">
+                            <span class="flex items-center justify-between gap-2">
+                                <span class="text-xs font-semibold">Anonim #{{ $sesi->user_id }} · {{ $sesi->topic }}</span>
+                                <span class="text-xs text-muted-foreground">{{ $sesi->updated_at->diffForHumans() }}</span>
+                            </span>
+                            <span class="mt-1 block line-clamp-2 text-xs text-muted-foreground">{{ $sesi->counselor_note }}</span>
+                        </a>
+                    </li>
+                @empty
+                    <li class="rounded-xl bg-muted/60 p-3 text-xs text-muted-foreground">Belum ada catatan. Buka sesi untuk menulis catatan.</li>
+                @endforelse
+            </ul>
         </section>
 
         <div class="min-w-0">
             <div class="flex flex-wrap items-end justify-between gap-2">
                 <h3 class="text-base font-semibold tracking-tight">
                     Sesi terbaru
-                    <span class="text-xs font-normal text-muted-foreground">(2 sorotan)</span>
+                    <span class="text-xs font-normal text-muted-foreground">({{ $sessions->count() }} sesi)</span>
                 </h3>
                 <a href="{{ route('konselor.sesi') }}" class="text-xs font-semibold text-foreground hover:underline">Lihat semua</a>
             </div>
 
             <div class="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                @foreach ([
-                    ['Anonim #2418', 'Kecemasan', '5 menit lalu', 'Aktif', 'success'],
-                    ['Anonim #2411', 'Tekanan akademik', '22 menit lalu', 'Menunggu', 'warning'],
-                ] as [$user, $topic, $time, $status, $tone])
-                    <a href="{{ route('konselor.sesi.show', 1) }}" class="group flex flex-col rounded-[1.4rem] bg-card p-4 neu-sm transition hover:-translate-y-0.5">
+                @foreach ($sessions->take(2) as $sesi)
+                    <a href="{{ route('konselor.sesi.show', $sesi) }}" class="group flex flex-col rounded-[1.4rem] bg-card p-4 neu-sm transition hover:-translate-y-0.5">
                         <div class="flex items-center justify-between gap-3">
                             <span class="flex size-8 items-center justify-center rounded-lg bg-muted text-muted-foreground">
                                 <x-icon name="chat" :size="15" />
                             </span>
-                            <span @class(['size-2 rounded-full', 'bg-success' => $tone === 'success', 'bg-[#c9971f]' => $tone === 'warning'])></span>
+                            <span @class(['size-2 rounded-full', 'bg-success' => $sesi->status === 'aktif', 'bg-[#c9971f]' => $sesi->status === 'menunggu', 'bg-muted-foreground/50' => $sesi->status === 'selesai'])></span>
                         </div>
-                        <p class="mt-4 text-[0.68rem] tracking-[0.1em] uppercase text-muted-foreground">{{ $topic }}</p>
-                        <p class="mt-1 text-sm font-semibold">{{ $user }}</p>
-                        <p class="mt-0.5 text-xs text-muted-foreground">{{ $time }}</p>
+                        <p class="mt-4 text-[0.68rem] tracking-[0.1em] uppercase text-muted-foreground">{{ $sesi->topic }}</p>
+                        <p class="mt-1 text-sm font-semibold">Anonim #{{ $sesi->user_id }}</p>
+                        <p class="mt-0.5 text-xs text-muted-foreground">{{ $sesi->created_at->diffForHumans() }} · {{ $sesi->messages_count }} pesan</p>
                         <span class="mt-auto flex items-center justify-between gap-2 pt-3">
-                            <x-status :tone="$tone">{{ $status }}</x-status>
+                            <x-status :tone="$tones[$sesi->status] ?? 'neutral'">{{ ucfirst($sesi->status) }}</x-status>
                             <span class="inline-flex items-center gap-1 text-xs font-semibold text-foreground">
                                 Buka
                                 <x-icon name="arrow-right" :size="12" />
@@ -186,7 +185,7 @@
                         <x-icon name="plus" :size="17" />
                     </span>
                     <span class="text-sm font-semibold">Semua sesi</span>
-                    <span class="text-xs text-muted-foreground">4 sesi ditugaskan</span>
+                    <span class="text-xs text-muted-foreground">{{ $sessions->count() }} sesi ditugaskan</span>
                 </a>
             </div>
 
@@ -196,17 +195,19 @@
                     <a href="{{ route('konselor.sesi') }}" class="text-xs font-semibold text-foreground hover:underline">Buka sesi</a>
                 </div>
                 <ul class="mt-3 space-y-2.5">
-                    @foreach ([['Anonim #2411', 'Aku bingung harus mulai dari mana…', '22 mnt'], ['Anonim #2420', 'Besok aku ada presentasi, aku takut…', '41 mnt'], ['Anonim #2415', 'Makasih sarannya, aku coba ya.', '1 jam']] as [$user, $preview, $time])
+                    @forelse ($unreadSessions as $sesi)
                         <li>
-                            <a href="{{ route('konselor.sesi.show', 1) }}" class="block rounded-xl bg-muted/60 p-3 transition hover:bg-muted">
+                            <a href="{{ route('konselor.sesi.show', $sesi) }}" class="block rounded-xl bg-muted/60 p-3 transition hover:bg-muted">
                                 <span class="flex items-center justify-between gap-2">
-                                    <span class="text-xs font-semibold">{{ $user }}</span>
-                                    <span class="text-xs text-muted-foreground">{{ $time }}</span>
+                                    <span class="text-xs font-semibold">Anonim #{{ $sesi->user_id }} · {{ $sesi->topic }}</span>
+                                    <span class="text-xs text-muted-foreground">{{ $sesi->updated_at->diffForHumans() }}</span>
                                 </span>
-                                <span class="mt-0.5 block truncate text-xs text-muted-foreground">{{ $preview }}</span>
+                                <span class="mt-0.5 block text-xs text-muted-foreground">{{ $sesi->unread_count }} pesan belum dibaca</span>
                             </a>
                         </li>
-                    @endforeach
+                    @empty
+                        <li class="rounded-xl bg-muted/60 p-3 text-xs text-muted-foreground">Tidak ada pesan yang menunggu balasan.</li>
+                    @endforelse
                 </ul>
             </section>
         </div>

@@ -144,21 +144,23 @@ export function initCharts() {
     if (counselorCanvas) {
         Chart.getChart(counselorCanvas)?.destroy();
 
+        const read = (key) => JSON.parse(counselorCanvas.dataset[key] || '[]');
+
         new Chart(counselorCanvas, {
             type: 'bar',
             data: {
-                labels: ['Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab', 'Min'],
+                labels: read('labels'),
                 datasets: [
                     {
                         label: 'Selesai',
-                        data: [4, 6, 3, 7, 5, 8, 6],
+                        data: read('selesai'),
                         backgroundColor: ink,
                         borderRadius: 6,
                         maxBarThickness: 18,
                     },
                     {
                         label: 'Baru',
-                        data: [2, 3, 1, 4, 2, 3, 2],
+                        data: read('baru'),
                         backgroundColor: lime,
                         borderRadius: 6,
                         maxBarThickness: 18,

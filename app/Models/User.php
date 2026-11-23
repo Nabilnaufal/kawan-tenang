@@ -24,6 +24,7 @@ class User extends Authenticatable
         'nim',
         'prodi',
         'role',
+        'is_available',
         'email',
         'password',
         'face_descriptor',
@@ -73,6 +74,7 @@ class User extends Authenticatable
             'password' => 'hashed',
             'face_descriptor' => 'encrypted:array',
             'face_registered_at' => 'datetime',
+            'is_available' => 'boolean',
         ];
     }
 }

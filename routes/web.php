@@ -4,6 +4,7 @@ use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BubbleController;
 use App\Http\Controllers\CounselingController;
+use App\Http\Controllers\CounselorController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use Illuminate\Support\Facades\Route;
@@ -41,9 +42,11 @@ Route::middleware('auth')->prefix('konseling')->name('konseling.')->group(functi
 });
 // Area konselor
 Route::middleware(['auth', 'role:konselor'])->prefix('konselor')->name('konselor.')->group(function () {
-    Route::view('/', 'konselor.dasbor')->name('dasbor');
-    Route::view('/sesi', 'konselor.sesi')->name('sesi');
-    Route::view('/sesi/{id}', 'konselor.sesi-show')->name('sesi.show');
+    Route::get('/', [CounselorController::class, 'dashboard'])->name('dasbor');
+    Route::get('/sesi', [CounselorController::class, 'sessions'])->name('sesi');
+    Route::get('/sesi/{session}', [CounselingController::class, 'show'])->name('sesi.show');
+    Route::post('/sesi/{session}/catatan', [CounselorController::class, 'note'])->name('sesi.catatan');
+    Route::patch('/ketersediaan', [CounselorController::class, 'availability'])->name('ketersediaan');
     Route::view('/profil', 'profil', ['role' => 'konselor'])->name('profil');
 });
 

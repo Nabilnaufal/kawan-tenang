@@ -49,7 +49,10 @@ class CounselingController extends Controller
             $session->messages()->whereNull('read_at')->where('sender_id', '!=', $request->user()->id)->update(['read_at' => now()]);
         }
 
-        return view('konseling.show', compact('session'));
+        $role = $request->routeIs('konselor.*') ? 'konselor' : 'pengguna';
+        $back = $role === 'konselor' ? route('konselor.sesi') : route('konseling.index');
+
+        return view('konseling.show', compact('session', 'role', 'back'));
     }
 
     public function message(Request $request, CounselingSession $session): RedirectResponse
