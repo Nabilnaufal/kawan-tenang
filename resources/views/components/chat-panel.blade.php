@@ -8,6 +8,7 @@
 
 @php
     $initial = mb_substr(preg_replace('/^Anonim\s*/', '', str_replace('Kak ', '', $name)), 0, 1);
+    $canChat = $session && ! $session->isSelesai();
 @endphp
 
 <section
@@ -31,9 +32,9 @@
             <p class="truncate text-xs text-muted-foreground">{{ $role }} · <span class="text-success">{{ $state }}</span></p>
         </div>
 
-        @if ($session)
+        @if ($session && $canChat)
             <form method="POST" action="{{ route('konseling.close', $session) }}">@csrf<button type="submit" class="rounded-lg px-2.5 py-1.5 text-xs font-semibold text-destructive transition hover:bg-destructive/10">Akhiri</button></form>
-        @else
+        @elseif (! $session)
             <button type="button" class="rounded-lg px-2.5 py-1.5 text-xs font-semibold text-destructive transition hover:bg-destructive/10">{{ $anonymous ? 'Tandai selesai' : 'Akhiri' }}</button>
         @endif
     </header>
@@ -50,34 +51,43 @@
     </div>
 
     <div class="shrink-0 border-t border-border/60 px-4 py-3">
-        <div class="mb-2 flex gap-2 overflow-x-auto no-scrollbar">
-            @foreach (['Aku merasa lebih tenang', 'Boleh lanjut besok?', 'Terima kasih'] as $chip)
-                <button type="button" class="shrink-0 rounded-full bg-muted px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:text-foreground" @if($session) @click="$refs.message.value = '{{ $chip }}'" @endif>
-                    {{ $chip }}
-                </button>
-            @endforeach
-        </div>
+        @if ($canChat || ! $session)
+            <div class="mb-2 flex gap-2 overflow-x-auto no-scrollbar">
+                @foreach (['Aku merasa lebih tenang', 'Boleh lanjut besok?', 'Terima kasih'] as $chip)
+                    <button type="button" class="shrink-0 rounded-full bg-muted px-3 py-1.5 text-xs font-medium text-muted-foreground transition hover:text-foreground" @if($session) @click="$refs.message.value = '{{ $chip }}'" @endif>
+                        {{ $chip }}
+                    </button>
+                @endforeach
+            </div>
 
-        <form class="flex items-center gap-2" method="POST" @if($session) action="{{ route('konseling.message', $session) }}" @submit.prevent="kirim($event)" @else @submit.prevent="$el.reset()" @endif>
-            @if ($session) @csrf @endif
-            <label for="pesan" class="sr-only">Tulis pesan</label>
-            <input
-                id="pesan"
-                name="body"
-                required
-                maxlength="2000"
-                x-ref="message"
-                type="text"
-                placeholder="Tulis pesan privat…"
-                class="min-w-0 flex-1 rounded-xl bg-input px-3.5 py-2.5 text-xs text-foreground placeholder:text-muted-foreground neu-inset focus:outline-none"
-            >
-            <button type="submit" class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground disabled:opacity-50" aria-label="Kirim pesan" @if ($session) :disabled="mengirim" @endif>
-                <x-icon name="send" :size="16" />
-            </button>
-        </form>
+            <form class="flex items-center gap-2" method="POST" @if($session) action="{{ route('konseling.message', $session) }}" @submit.prevent="kirim($event)" @else @submit.prevent="$el.reset()" @endif>
+                @if ($session) @csrf @endif
+                <label for="pesan" class="sr-only">Tulis pesan</label>
+                <input
+                    id="pesan"
+                    name="body"
+                    required
+                    maxlength="2000"
+                    x-ref="message"
+                    type="text"
+                    placeholder="Tulis pesan privat…"
+                    class="min-w-0 flex-1 rounded-xl bg-input px-3.5 py-2.5 text-xs text-foreground placeholder:text-muted-foreground neu-inset focus:outline-none"
+                >
+                <button type="submit" class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground disabled:opacity-50" aria-label="Kirim pesan" @if ($session) :disabled="mengirim" @endif>
+                    <x-icon name="send" :size="16" />
+                </button>
+            </form>
+        @else
+            <div class="flex flex-wrap items-center justify-center gap-2 rounded-xl bg-muted px-3 py-2.5 text-xs font-medium text-muted-foreground">
+                <span class="flex items-center gap-1.5"><x-icon name="lock" :size="12" />Sesi sudah selesai.</span>
+                @if (! $anonymous)
+                    <a href="{{ route('konseling.index') }}" class="font-semibold text-foreground underline underline-offset-2">Buat sesi baru</a>
+                @endif
+            </div>
+        @endif
         <p class="mt-2 flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
             <x-icon name="lock" :size="11" />
-            {{ $anonymous ? 'Pesan ini hanya terlihat olehmu dan pengguna ini.' : 'Hanya kamu dan konselormu yang bisa membaca pesan ini.' }}
+            {{ $session && $session->isSelesai() ? 'Riwayat pesan tetap tersimpan untuk kedua pihak.' : ($anonymous ? 'Pesan ini hanya terlihat olehmu dan pengguna ini.' : 'Hanya kamu dan konselormu yang bisa membaca pesan ini.') }}
         </p>
     </div>
 </section>

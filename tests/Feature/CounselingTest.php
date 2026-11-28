@@ -119,4 +119,23 @@ class CounselingTest extends TestCase
         $this->post(route('konseling.message', $session), ['body' => 'Tidak boleh'])
             ->assertForbidden();
     }
+
+    public function test_participants_cannot_send_message_after_session_is_finished(): void
+    {
+        $user = User::factory()->create();
+        $counselor = User::factory()->create(['role' => 'konselor']);
+        $session = CounselingSession::create([
+            'user_id' => $user->id,
+            'counselor_id' => $counselor->id,
+            'topic' => 'Kesepian',
+            'status' => CounselingSession::STATUS_SELESAI,
+            'closed_at' => now(),
+        ]);
+
+        $this->actingAs($user)
+            ->post(route('konseling.message', $session), ['body' => 'Pesan baru'])
+            ->assertStatus(422);
+
+        $this->assertDatabaseCount('messages', 0);
+    }
 }
