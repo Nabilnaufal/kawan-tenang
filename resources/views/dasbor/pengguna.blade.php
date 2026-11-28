@@ -59,7 +59,7 @@
         </div>
     </section>
 
-    <div class="mt-8 flex flex-wrap items-end justify-between gap-3">
+    <div class="mt-8 mb-4 flex flex-wrap items-end justify-between gap-3">
         <div>
             <div class="flex flex-wrap items-center gap-2">
                 <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Aktivitasmu</h2>
