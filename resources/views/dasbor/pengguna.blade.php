@@ -74,35 +74,35 @@
     </div>
 
     <div class="grid gap-3">
-        <section class="flex flex-col rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5">
-            <div class="flex items-start justify-between gap-3">
-                <div>
-                    <h3 class="text-sm font-semibold">Konselor kamu</h3>
-                    <p class="mt-0.5 text-xs text-muted-foreground">{{ $counselors->count() }} konselor terhubung.</p>
-                </div>
-                <span class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+        <section class="flex flex-col gap-4 rounded-[1.4rem] bg-card p-4 neu-sm sm:flex-row sm:items-center sm:justify-between sm:p-5">
+            <div class="flex min-w-0 flex-1 items-start gap-3">
+                <span class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-muted text-muted-foreground">
                     <x-icon name="users" :size="15" />
                 </span>
+                <div class="min-w-0 flex-1">
+                    <h3 class="text-sm font-semibold">Konselor kamu</h3>
+                    <p class="mt-0.5 text-xs text-muted-foreground">{{ $counselors->count() }} konselor terhubung.</p>
+
+                    <ul class="mt-3 space-y-2">
+                        @forelse ($counselors as $counselor)
+                            <li class="flex items-center gap-3">
+                                <span class="relative flex size-8 shrink-0 items-center justify-center rounded-full bg-secondary text-sm font-semibold text-secondary-foreground">
+                                    {{ mb_substr($counselor->name, 0, 1) }}
+                                </span>
+                                <span class="min-w-0 flex-1 leading-tight">
+                                    <span class="block truncate text-sm font-medium">Kak {{ $counselor->name }}</span>
+                                    <span class="block truncate text-xs text-muted-foreground">{{ $counselor->prodi ?: 'Konselor' }}</span>
+                                </span>
+                                <span class="text-xs font-medium text-success">Terhubung</span>
+                            </li>
+                        @empty
+                            <li class="text-xs text-muted-foreground">Belum ada konselor. Ajukan sesi untuk terhubung.</li>
+                        @endforelse
+                    </ul>
+                </div>
             </div>
 
-            <ul class="mt-4 space-y-3">
-                @forelse ($counselors as $counselor)
-                    <li class="flex items-center gap-3">
-                        <span class="relative flex size-9 shrink-0 items-center justify-center rounded-full bg-secondary text-sm font-semibold text-secondary-foreground">
-                            {{ mb_substr($counselor->name, 0, 1) }}
-                        </span>
-                        <span class="min-w-0 flex-1 leading-tight">
-                            <span class="block truncate text-sm font-medium">Kak {{ $counselor->name }}</span>
-                            <span class="block truncate text-xs text-muted-foreground">{{ $counselor->prodi ?: 'Konselor' }}</span>
-                        </span>
-                        <span class="text-xs font-medium text-success">Terhubung</span>
-                    </li>
-                @empty
-                    <li class="text-xs text-muted-foreground">Belum ada konselor. Ajukan sesi untuk terhubung.</li>
-                @endforelse
-            </ul>
-
-            <a href="{{ route('konseling.index') }}" class="btn-soft mt-auto w-full">
+            <a href="{{ route('konseling.index') }}" class="btn-soft w-full shrink-0 sm:w-auto">
                 <x-icon name="chat" :size="14" />
                 Cari konselor
             </a>
