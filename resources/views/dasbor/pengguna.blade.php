@@ -1,10 +1,68 @@
 @extends('layouts.app')
 @section('title', 'Dasbor')
 @section('content')
-    <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
+    <section class="card-ink relative overflow-hidden rounded-[1.75rem] p-5 sm:p-8">
+        <div class="flex flex-col gap-7 xl:flex-row xl:items-end xl:justify-between">
+            <div class="max-w-2xl">
+                <span class="inline-flex items-center gap-2 rounded-full border border-primary-foreground/20 px-3 py-1.5 text-[0.75rem] font-medium">
+                    <span class="size-1.5 rounded-full bg-secondary"></span>
+                    Ruang aman & anonim
+                </span>
+
+                <h2 class="mt-4 text-2xl leading-tight font-semibold tracking-tight sm:text-3xl">
+                    Halo, Kawan. Tidak apa-apa untuk tidak baik-baik saja.
+                </h2>
+                <p class="mt-2.5 max-w-xl text-sm leading-relaxed text-primary-foreground/70">
+                    Ceritakan apa yang sedang kamu rasakan tanpa takut dikenali, atau ngobrol privat dengan konselor yang siap mendengarkan.
+                </p>
+
+                <div class="mt-6 flex flex-col gap-2 sm:flex-row">
+                    <a href="{{ route('bubble') }}" class="inline-flex items-center justify-center gap-2 rounded-full bg-secondary px-5 py-2.5 text-sm font-semibold text-secondary-foreground transition hover:opacity-90">
+                        Mulai bercerita
+                        <x-icon name="arrow-right" :size="16" />
+                    </a>
+                    <a href="{{ route('konseling.index') }}" class="inline-flex items-center justify-center gap-2 rounded-full border border-primary-foreground/25 px-5 py-2.5 text-sm font-semibold text-primary-foreground transition hover:bg-primary-foreground/10">
+                        <x-icon name="chat" :size="16" />
+                        Cari konselor
+                    </a>
+                </div>
+            </div>
+
+            <dl class="grid grid-cols-3 gap-4 rounded-2xl border border-primary-foreground/15 p-4 sm:gap-6 sm:p-5 xl:min-w-[360px]">
+                @foreach ($platformStats as $stat)
+                    <div>
+                        <dd class="text-xl font-semibold tracking-tight tabular-nums" data-count="{{ $stat['value'] }}">0</dd>
+                        <dt class="mt-1 text-[0.72rem] leading-tight tracking-[0.1em] text-primary-foreground/60 uppercase">
+                            {{ $stat['label'] }}
+                        </dt>
+                    </div>
+                @endforeach
+            </dl>
+        </div>
+    </section>
+
+    <section class="mt-8">
+        <div class="flex items-end justify-between gap-4">
+            <h2 class="text-lg font-semibold tracking-tight">Cerita terbaru</h2>
+            <a href="{{ route('bubble') }}" class="text-xs font-semibold text-foreground hover:underline">Lihat semua</a>
+        </div>
+
+        <div class="mt-3 space-y-3">
+            @forelse ($latestPosts as $post)
+                <x-post :post="$post" />
+            @empty
+                <div class="rounded-[1.4rem] bg-card p-6 text-center neu-sm">
+                    <p class="text-sm font-semibold">Belum ada cerita</p>
+                    <p class="mt-1 text-xs text-muted-foreground">Jadilah orang pertama yang berbagi hari ini.</p>
+                </div>
+            @endforelse
+        </div>
+    </section>
+
+    <div class="mt-8 flex flex-wrap items-end justify-between gap-3">
         <div>
             <div class="flex flex-wrap items-center gap-2">
-                <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Halo, {{ $user->name }}</h2>
+                <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Aktivitasmu</h2>
                 <span class="rounded-full bg-card px-3 py-1 text-[0.72rem] font-semibold text-muted-foreground neu-sm">Pengguna</span>
             </div>
             <p class="mt-1 text-sm text-muted-foreground">Ringkasan aktivitas, status akun, dan sesi konselingmu.</p>

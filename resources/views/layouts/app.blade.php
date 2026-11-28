@@ -6,7 +6,6 @@
 @php
     $primary = [
         'pengguna' => [
-            ['label' => 'Beranda', 'href' => route('home'), 'icon' => 'home', 'active' => request()->routeIs('home')],
             ['label' => 'Forum', 'href' => route('bubble'), 'icon' => 'bubble', 'active' => request()->routeIs('bubble')],
             ['label' => 'Konseling', 'href' => route('konseling.index'), 'icon' => 'chat', 'active' => request()->routeIs('konseling.*')],
             ['label' => 'Dasbor', 'href' => route('dasbor'), 'icon' => 'chart', 'active' => request()->routeIs('dasbor')],
@@ -38,7 +37,7 @@
     $dock = array_slice($dock, 0, 5);
 
     $roleLabel = ['pengguna' => 'Pengguna', 'konselor' => 'Konselor', 'admin' => 'Administrator'][$role] ?? 'Pengguna';
-    $homeUrl = ['pengguna' => route('home'), 'konselor' => route('konselor.dasbor'), 'admin' => route('admin.dasbor')][$role];
+    $homeUrl = ['pengguna' => route('dasbor'), 'konselor' => route('konselor.dasbor'), 'admin' => route('admin.dasbor')][$role];
 @endphp
 
 <!DOCTYPE html>
