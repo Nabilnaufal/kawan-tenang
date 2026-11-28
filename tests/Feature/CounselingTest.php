@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\CounselingSession;
+use App\Models\Message;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -36,6 +37,10 @@ class CounselingTest extends TestCase
             'counseling_session_id' => $session->id,
             'sender_id' => $user->id,
         ]);
+
+        $message = Message::firstOrFail();
+        $this->assertSame('Halo, saya ingin mulai bercerita.', $message->body);
+        $this->assertNotSame('Halo, saya ingin mulai bercerita.', $message->getRawOriginal('body'));
     }
 
     public function test_non_participant_cannot_read_or_send_session_message(): void

@@ -2,6 +2,7 @@
 
 namespace Tests\Feature;
 
+use App\Models\Comment;
 use App\Models\Post;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -23,6 +24,8 @@ class BubbleTest extends TestCase
 
         $post = Post::firstOrFail();
         $this->assertSame($user->id, $post->user_id);
+        $this->assertSame('Hari ini terasa lebih ringan.', $post->body);
+        $this->assertNotSame('Hari ini terasa lebih ringan.', $post->getRawOriginal('body'));
 
         $this->post(route('bubble.komentar', $post), [
             'body' => 'Pelan-pelan, kamu tidak sendirian.',
@@ -31,8 +34,11 @@ class BubbleTest extends TestCase
         $this->assertDatabaseHas('comments', [
             'post_id' => $post->id,
             'user_id' => $user->id,
-            'body' => 'Pelan-pelan, kamu tidak sendirian.',
         ]);
+
+        $comment = Comment::firstOrFail();
+        $this->assertSame('Pelan-pelan, kamu tidak sendirian.', $comment->body);
+        $this->assertNotSame('Pelan-pelan, kamu tidak sendirian.', $comment->getRawOriginal('body'));
     }
 
     public function test_user_can_toggle_like_and_report_post(): void

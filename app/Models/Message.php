@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Support\Vigenere;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
@@ -11,7 +13,15 @@ class Message extends Model
 
     protected function casts(): array
     {
-        return ['body' => 'encrypted', 'read_at' => 'datetime'];
+        return ['read_at' => 'datetime'];
+    }
+
+    protected function body(): Attribute
+    {
+        return Attribute::make(
+            get: fn (?string $value) => $value === null ? null : Vigenere::decrypt($value),
+            set: fn (?string $value) => $value === null ? null : Vigenere::encrypt($value),
+        );
     }
 
     public function session(): BelongsTo

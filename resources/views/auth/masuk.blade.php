@@ -100,13 +100,6 @@
             Nama dan email tidak pernah ditampilkan di Bubble Publik. Identitas publik selalu "Anonim".
         </p>
 
-        <p class="mt-6 border-t border-border/60 pt-4 text-center text-xs text-muted-foreground">
-            Tampilan peran:
-            <a href="{{ route('konselor.dasbor') }}" class="font-semibold text-foreground hover:underline">Konselor</a>
-            <span class="mx-1">·</span>
-            <a href="{{ route('admin.dasbor') }}" class="font-semibold text-foreground hover:underline">Administrator</a>
-        </p>
-
         {{-- Dialog masuk dengan wajah --}}
         <div
             x-show="faceOpen"
