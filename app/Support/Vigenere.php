@@ -4,14 +4,6 @@ namespace App\Support;
 
 use InvalidArgumentException;
 
-/**
- * Vigenère cipher for message bodies.
- *
- * Each letter maps to a number (A = 0 … Z = 25). The key letter's number is
- * added on encrypt and subtracted on decrypt, then the result maps back to a
- * letter. The key repeats whenever it is shorter than the text. Case is
- * preserved and non-letters pass through without consuming the key.
- */
 final class Vigenere
 {
     /** Indeks ke huruf: 0 => A, 1 => B, … 25 => Z. */
