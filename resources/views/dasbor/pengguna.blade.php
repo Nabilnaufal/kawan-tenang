@@ -73,7 +73,7 @@
         </a>
     </div>
 
-    <div class="mt-3 grid gap-3 xl:grid-cols-[1.25fr_0.85fr_1.5fr]">
+    <div class="mt-3 grid gap-3 xl:grid-cols-[1.05fr_1.95fr]">
         <section class="flex h-full flex-col rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5">
             <div class="flex items-start justify-between gap-3">
                 <div>
@@ -115,7 +115,8 @@
             </form>
         </section>
 
-        <section class="flex h-full flex-col rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5">
+        <div class="min-w-0 space-y-3">
+            <section class="flex flex-col rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5">
             <div class="flex items-start justify-between gap-3">
                 <div>
                     <h3 class="text-sm font-semibold">Konselor kamu</h3>
@@ -143,13 +144,13 @@
                 @endforelse
             </ul>
 
-            <a href="{{ route('konseling.index') }}" class="btn-soft mt-auto w-full">
+            <a href="{{ route('konseling.index') }}" class="btn-soft mt-4 w-full">
                 <x-icon name="chat" :size="14" />
                 Cari konselor
             </a>
-        </section>
+            </section>
 
-        <div class="min-w-0">
+            <div class="min-w-0">
             <div class="flex flex-wrap items-end justify-between gap-2">
                 <h3 class="text-base font-semibold tracking-tight">
                     Terbaru untukmu
@@ -227,6 +228,7 @@
                 </a>
             </div>
 
+            </div>
         </div>
     </div>
 @endsection
