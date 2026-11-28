@@ -44,6 +44,7 @@ class AuthTest extends TestCase
         $this->assertCount(128, $user->face_descriptor);
         $this->assertNotNull($user->face_registered_at);
         $this->assertNull($user->email_verified_at);
+        $this->assertTrue($user->is_active);
         Notification::assertSentTo($user, VerifyEmailNotification::class);
         $this->assertSame('bcrypt', Hash::info($user->getRawOriginal('password'))['algoName']);
         $this->assertTrue(Hash::check('rahasia123', $user->getRawOriginal('password')));

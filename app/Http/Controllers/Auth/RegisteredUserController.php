@@ -46,6 +46,7 @@ class RegisteredUserController extends Controller
             'nim' => $data['nim'],
             'prodi' => $data['prodi'],
             'role' => $data['role'],
+            'is_active' => true,
             'email' => $data['email'],
             'password' => $data['password'],
             'face_descriptor' => Wajah::deskriptor($data['wajah']),
