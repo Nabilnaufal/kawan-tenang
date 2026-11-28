@@ -57,6 +57,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/dasbor', [UserDashboardController::class, 'index'])->name('dasbor');
     Route::get('/profil', [ProfileController::class, 'show'])->name('profil');
     Route::patch('/profil', [ProfileController::class, 'update'])->name('profil.update');
+    Route::patch('/profil/wajah', [ProfileController::class, 'registerFace'])->name('profil.wajah.update');
     Route::delete('/profil/wajah', [ProfileController::class, 'forgetFace'])->name('profil.wajah.destroy');
 });
 

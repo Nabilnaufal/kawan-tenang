@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Support\Wajah;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -48,6 +49,26 @@ class ProfileController extends Controller
         }
 
         return back()->with('status', 'Profil berhasil diperbarui.');
+    }
+
+    public function registerFace(Request $request): RedirectResponse
+    {
+        $data = $request->validate([
+            'wajah' => ['required', 'json'],
+            'liveness' => ['required', 'accepted'],
+        ], [
+            'wajah.required' => 'Pindai wajah dulu.',
+            'wajah.json' => 'Data wajah tidak valid. Pindai ulang.',
+            'liveness.required' => 'Selesaikan pemeriksaan liveness dengan membuka mulut.',
+            'liveness.accepted' => 'Buka mulut saat diminta sebelum menyimpan wajah.',
+        ]);
+
+        $request->user()->update([
+            'face_descriptor' => Wajah::deskriptor($data['wajah']),
+            'face_registered_at' => now(),
+        ]);
+
+        return back()->with('status', 'Data wajah berhasil disimpan. Kamu bisa masuk dengan pengenalan wajah.');
     }
 
     public function forgetFace(Request $request): RedirectResponse

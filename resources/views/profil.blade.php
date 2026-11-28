@@ -53,12 +53,10 @@
                 </div>
             </dl>
 
-            @if (($role ?? 'pengguna') === 'pengguna')
-                <a href="{{ route('verifikasi') }}" class="mt-5 flex items-center justify-center gap-2 rounded-full bg-background px-4 py-2.5 text-xs font-semibold neu-sm transition hover:bg-muted">
-                    <x-icon name="face" :size="14" />
-                    Verifikasi wajah
-                </a>
-            @endif
+            <a href="#verifikasi-wajah" class="mt-5 flex items-center justify-center gap-2 rounded-full bg-background px-4 py-2.5 text-xs font-semibold neu-sm transition hover:bg-muted">
+                <x-icon name="face" :size="14" />
+                {{ $user->face_registered_at ? 'Perbarui verifikasi wajah' : 'Verifikasi wajah' }}
+            </a>
         </section>
 
         {{-- Account form --}}
@@ -90,4 +88,39 @@
                 </form>
         </section>
     </div>
+
+    <section id="verifikasi-wajah" class="mt-4 rounded-[1.4rem] bg-card p-5 neu-sm" x-data="{ wajahSiap: false }" @wajah-siap.window="wajahSiap = true" @wajah-reset.window="wajahSiap = false">
+        <div class="flex flex-wrap items-start justify-between gap-3">
+            <div>
+                <h3 class="text-sm font-semibold">Verifikasi wajah</h3>
+                <p class="mt-1 text-xs text-muted-foreground">Daftarkan atau perbarui wajah untuk masuk tanpa kata sandi. Foto tidak disimpan.</p>
+            </div>
+            @if ($user->face_registered_at)
+                <x-status tone="success">Wajah terdaftar</x-status>
+            @endif
+        </div>
+
+        <form class="mt-4" method="POST" action="{{ route('profil.wajah.update') }}">
+            @csrf
+            @method('PATCH')
+            <x-pemindai-wajah />
+            @error('wajah')<p class="mt-2 text-xs font-medium text-destructive">{{ $message }}</p>@enderror
+            @error('liveness')<p class="mt-2 text-xs font-medium text-destructive">{{ $message }}</p>@enderror
+            <div class="mt-3 flex flex-wrap items-center justify-between gap-3">
+                <p class="flex items-center gap-1.5 text-xs text-muted-foreground"><x-icon name="lock" :size="12" />Descriptor disimpan terenkripsi.</p>
+                <button type="submit" class="btn-lime text-xs disabled:cursor-not-allowed disabled:opacity-40" :disabled="! wajahSiap">
+                    Simpan wajah
+                    <x-icon name="arrow-right" :size="14" />
+                </button>
+            </div>
+        </form>
+
+        @if ($user->face_registered_at)
+            <form class="mt-3 border-t border-border/60 pt-3" method="POST" action="{{ route('profil.wajah.destroy') }}" onsubmit="return confirm('Hapus data wajah dan nonaktifkan login dengan wajah?')">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="text-xs font-medium text-destructive hover:underline">Hapus data wajah</button>
+            </form>
+        @endif
+    </section>
 @endsection

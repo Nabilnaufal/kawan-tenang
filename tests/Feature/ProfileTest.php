@@ -52,4 +52,21 @@ class ProfileTest extends TestCase
         $this->assertNull($user->fresh()->email_verified_at);
         Notification::assertSentTo($user->fresh(), VerifyEmailNotification::class);
     }
+
+    public function test_counselor_can_register_face_from_profile(): void
+    {
+        $counselor = User::factory()->create(['role' => User::ROLE_KONSELOR]);
+        $descriptor = array_fill(0, 128, 0.1);
+
+        $this->actingAs($counselor)
+            ->patch(route('profil.wajah.update'), [
+                'wajah' => json_encode($descriptor),
+                'liveness' => '1',
+            ])
+            ->assertRedirect();
+
+        $saved = $counselor->fresh();
+        $this->assertSame($descriptor, $saved->face_descriptor);
+        $this->assertNotNull($saved->face_registered_at);
+    }
 }
