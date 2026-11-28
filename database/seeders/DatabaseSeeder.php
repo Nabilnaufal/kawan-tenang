@@ -3,23 +3,43 @@
 namespace Database\Seeders;
 
 use App\Models\User;
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    use WithoutModelEvents;
-
     /**
      * Seed the application's database.
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $accounts = [
+            [
+                'name' => 'Admin Kawan Tenang',
+                'email' => 'admin@gmail.com',
+                'role' => User::ROLE_ADMIN,
+                'nim' => 'ADMIN-001',
+                'prodi' => 'Administrasi',
+            ],
+            [
+                'name' => 'Konselor Kawan Tenang',
+                'email' => 'konselor@gmail.com',
+                'role' => User::ROLE_KONSELOR,
+                'nim' => 'KONSELOR-001',
+                'prodi' => 'Bimbingan Konseling',
+                'is_available' => true,
+            ],
+        ];
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
-        ]);
+        foreach ($accounts as $account) {
+            $user = User::updateOrCreate(
+                ['email' => $account['email']],
+                [
+                    ...$account,
+                    'password' => 'password',
+                ],
+            );
+
+            $user->forceFill(['email_verified_at' => now()])->save();
+        }
     }
 }
