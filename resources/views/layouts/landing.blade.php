@@ -31,7 +31,7 @@
         </div>
 
         <header x-data="{ open: false }" class="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-5">
-            <nav class="relative mx-auto flex max-w-6xl items-center gap-3 rounded-full bg-card/85 px-3 py-2.5 backdrop-blur-xl neu-sm sm:px-4" aria-label="Navigasi utama">
+            <nav class="relative mx-auto flex w-full max-w-6xl items-center gap-3 rounded-full bg-card/90 px-3 py-2.5 backdrop-blur-xl neu-sm sm:px-4" aria-label="Navigasi utama">
                 <a href="{{ route('home') }}" class="flex shrink-0 items-center gap-2.5" aria-label="Kawan Tenang">
                     <img src="/assets/kawan-tenang-logo.png" alt="Kawan Tenang" width="118" height="58" class="h-10 w-auto sm:h-11">
                 </a>

@@ -1,7 +1,7 @@
 @extends('layouts.landing')
 @section('title', 'Ruang aman untuk ceritamu')
 @section('content')
-    <section class="mx-auto max-w-6xl scroll-mt-28 px-5 pb-14 pt-32 sm:px-8 sm:pb-20 sm:pt-40 lg:px-10">
+    <section class="mx-auto max-w-6xl scroll-mt-28 px-5 pb-14 pt-36 sm:px-8 sm:pb-20 sm:pt-44 lg:px-10 lg:pt-48">
         <div class="grid items-center gap-12 lg:grid-cols-[1.02fr_.98fr] lg:gap-16">
             <div>
                 <span class="inline-flex items-center gap-2 rounded-full border border-border bg-card/75 px-3.5 py-2 text-xs font-semibold text-muted-foreground neu-inset">
