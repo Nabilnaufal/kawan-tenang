@@ -127,7 +127,7 @@
         </section>
     </div>
 
-    <div id="privasi" class="mt-4 grid gap-4 lg:grid-cols-2">
+    <div id="privasi" class="mt-4">
         <section class="rounded-2xl bg-secondary/25 p-5">
             <h3 class="flex items-center gap-2 text-sm font-semibold">
                 <x-icon name="lock" :size="15" />
@@ -141,20 +141,6 @@
             <p class="mt-3 text-xs leading-relaxed text-muted-foreground">
                 Kamu dapat mengajukan penghapusan data verifikasi melalui halaman pengaturan profil.
             </p>
-        </section>
-
-        <section class="rounded-2xl border border-accent/50 bg-accent/15 p-5">
-            <h3 class="flex items-center gap-2 text-sm font-semibold">
-                <x-icon name="alert" :size="15" />
-                Verifikasi bukan syarat bantuan
-            </h3>
-            <p class="mt-2 text-xs leading-relaxed">
-                Kamu tetap dapat memakai Forum Publik dan menghubungi layanan darurat tanpa verifikasi wajah. Jangan menunda bantuan hanya karena proses ini.
-            </p>
-            <a href="tel:119" class="mt-3 inline-flex items-center gap-2 rounded-full bg-card px-4 py-2 text-xs font-semibold">
-                <x-icon name="life-buoy" :size="13" />
-                Hubungi 119 ext. 8
-            </a>
         </section>
     </div>
 @endsection
