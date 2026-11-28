@@ -133,7 +133,7 @@
 
     {{-- Verifikasi + laporan terbaru --}}
     <div class="mt-3 grid gap-3 xl:grid-cols-[1fr_1.55fr]">
-        <section class="rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5">
+        <section class="flex h-full flex-col rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5">
             <div class="flex items-start justify-between gap-3">
                 <div>
                     <h3 class="text-sm font-semibold">Status verifikasi wajah</h3>
@@ -155,7 +155,7 @@
                 </div>
             </dl>
 
-            <a href="{{ route('admin.verifikasi') }}" class="btn-soft mt-4 w-full">
+            <a href="{{ route('admin.verifikasi') }}" class="btn-soft mt-auto w-full">
                 <x-icon name="face" :size="14" />
                 Kelola verifikasi
             </a>
