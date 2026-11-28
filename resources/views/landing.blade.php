@@ -18,11 +18,11 @@
                 </p>
 
                 <div class="mt-7 flex flex-col gap-3 sm:flex-row">
-                    <a href="{{ route('daftar') }}" class="btn-lime w-full px-6 py-3 text-sm sm:w-auto">
+                    <a href="{{ route('daftar') }}" class="btn-lime w-full px-6 py-3 text-sm whitespace-nowrap sm:w-auto">
                         Mulai bercerita
                         <x-icon name="arrow-right" :size="16" />
                     </a>
-                    <a href="{{ route('masuk') }}" class="btn-soft w-full px-6 py-3 text-sm sm:w-auto">
+                    <a href="{{ route('masuk') }}" class="btn-soft w-full px-6 py-3 text-sm whitespace-nowrap sm:w-auto">
                         Sudah punya akun? Masuk
                     </a>
                 </div>
@@ -52,11 +52,13 @@
                         if (! isi || this.mengetik) return;
                         this.pesan.push({ dari: 'kamu', teks: isi });
                         this.teks = '';
+                        this.$nextTick(() => { this.$refs.ruang.scrollTop = this.$refs.ruang.scrollHeight; });
                         this.mengetik = true;
                         const jawab = this.balasan[this.indeks++ % this.balasan.length];
                         setTimeout(() => {
                             this.pesan.push({ dari: 'konselor', teks: jawab });
                             this.mengetik = false;
+                            this.$nextTick(() => { this.$refs.ruang.scrollTop = this.$refs.ruang.scrollHeight; });
                         }, 900);
                     },
                     contoh(teks) {
@@ -84,7 +86,7 @@
                         </span>
                     </div>
 
-                    <div class="relative mt-4 flex h-56 flex-col gap-2.5 overflow-y-auto pr-1 no-scrollbar" aria-live="polite">
+                    <div class="relative mt-4 flex h-56 flex-col justify-end gap-2.5 overflow-y-auto pr-1 no-scrollbar" aria-live="polite" x-ref="ruang">
                         <template x-for="(item, i) in pesan" :key="i">
                             <div :class="item.dari === 'kamu' ? 'ml-auto max-w-[85%] text-right' : 'max-w-[90%]'">
                                 <div
