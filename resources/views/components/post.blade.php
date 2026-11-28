@@ -28,7 +28,11 @@
 
 <article class="rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5" x-data="{ liked: {{ ($post->liked ?? false) ? 'true' : 'false' }}, likes: {{ $post->likes_count }}, showComments: false, report: false, sent: false, reason: 'Ujaran kebencian' }">
     <div class="flex items-start gap-3">
-        <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground" aria-hidden="true"><x-icon name="user" :size="18" /></span>
+        <span @class([
+            'flex size-10 shrink-0 items-center justify-center rounded-full',
+            'bg-secondary text-secondary-foreground' => $milikSaya,
+            'bg-[#15181b] text-[#faf7ef]' => ! $milikSaya,
+        ]) aria-hidden="true"><x-icon name="user" :size="18" /></span>
         <div class="min-w-0 flex-1">
             <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
                 <span class="text-sm font-semibold">{{ $milikSaya ? 'Saya' : 'Anonim' }}</span>
@@ -63,7 +67,11 @@
     <div x-show="showComments" x-cloak x-transition.opacity class="mt-3 space-y-3 border-t border-border/60 pt-3">
         @forelse ($post->comments as $comment)
             @php($komentarMilikSaya = auth()->check() && (int) $comment->user_id === (int) auth()->id())
-            <div class="flex items-start gap-2.5"><span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground"><x-icon name="user" :size="14" /></span><div class="rounded-xl bg-muted/70 px-3 py-2"><p class="text-xs font-semibold">{{ $komentarMilikSaya ? 'Saya' : 'Anonim' }} <span class="ml-1 font-normal text-muted-foreground">{{ $comment->created_at->diffForHumans() }}</span></p><p class="mt-0.5 text-xs leading-relaxed">{{ $comment->body }}</p></div></div>
+            <div class="flex items-start gap-2.5"><span @class([
+                'flex size-7 shrink-0 items-center justify-center rounded-full',
+                'bg-secondary text-secondary-foreground' => $komentarMilikSaya,
+                'bg-[#15181b] text-[#faf7ef]' => ! $komentarMilikSaya,
+            ])><x-icon name="user" :size="14" /></span><div class="rounded-xl bg-muted/70 px-3 py-2"><p class="text-xs font-semibold">{{ $komentarMilikSaya ? 'Saya' : 'Anonim' }} <span class="ml-1 font-normal text-muted-foreground">{{ $comment->created_at->diffForHumans() }}</span></p><p class="mt-0.5 text-xs leading-relaxed">{{ $comment->body }}</p></div></div>
         @empty
             <p class="text-xs text-muted-foreground">Belum ada komentar. Jadi kawan pertama yang mendukung.</p>
         @endforelse
