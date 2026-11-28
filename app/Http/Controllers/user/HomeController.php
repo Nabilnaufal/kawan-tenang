@@ -12,6 +12,10 @@ class HomeController extends Controller
 {
     public function index(): View
     {
+        if (auth()->guest()) {
+            return view('landing');
+        }
+
         $posts = Post::query()
             ->where('is_hidden', false)
             ->with(['comments' => fn ($query) => $query->where('is_hidden', false)->latest()])
