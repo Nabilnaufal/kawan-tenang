@@ -99,7 +99,7 @@
 
                 <div>
                     <label for="isi-cerita" class="label-cap mb-1.5 block">Ceritamu</label>
-                    <textarea id="isi-cerita" name="body" rows="5" required maxlength="500" placeholder="Apa yang sedang kamu rasakan hari ini, Kawan?" class="min-h-[180px] w-full resize-none rounded-xl bg-input px-3 py-2.5 text-sm leading-relaxed placeholder:text-muted-foreground neu-inset focus:outline-none"></textarea>
+                    <textarea id="isi-cerita" name="body" rows="5" required maxlength="500" placeholder="Ceritakan harimu, Kawan…" class="min-h-[180px] w-full resize-none rounded-xl bg-input px-3 py-2.5 text-sm leading-relaxed placeholder:text-muted-foreground neu-inset focus:outline-none"></textarea>
                 </div>
 
                 <div class="flex items-center justify-between gap-3">

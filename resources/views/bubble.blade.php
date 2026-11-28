@@ -29,7 +29,7 @@
                             rows="3"
                             maxlength="500"
                             x-model="text"
-                            placeholder="Apa yang sedang kamu rasakan hari ini, Kawan?"
+                            placeholder="Ceritakan harimu, Kawan…"
                             class="w-full resize-none rounded-xl bg-input px-4 py-3 text-sm leading-relaxed text-foreground placeholder:text-muted-foreground neu-inset focus:outline-none"
                         ></textarea>
 
