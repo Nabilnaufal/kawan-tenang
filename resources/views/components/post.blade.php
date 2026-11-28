@@ -26,7 +26,7 @@
     $id = 'post-' . $post->id;
 @endphp
 
-<article class="rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5" x-data="{ liked: {{ ($post->liked ?? false) ? 'true' : 'false' }}, likes: {{ $post->likes_count }}, showComments: false, report: false, sent: false, reason: 'Ujaran kebencian' }">
+<article class="rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5" x-data="{ liked: {{ ($post->liked ?? false) ? 'true' : 'false' }}, likes: {{ $post->likes_count }}, showComments: false, report: false, hapus: false, sent: false, reason: 'Ujaran kebencian' }">
     <div class="flex items-start gap-3">
         <span @class([
             'flex size-10 shrink-0 items-center justify-center rounded-full',
@@ -41,7 +41,9 @@
             </div>
             <p class="mt-1 text-xs text-muted-foreground">{{ $milikSaya ? 'Postinganmu · identitas tetap disamarkan' : 'Identitas disamarkan · hanya kamu yang tahu' }}</p>
         </div>
-        <button type="button" class="flex size-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted" aria-label="Opsi postingan" @click="report = true"><x-icon name="more" :size="18" /></button>
+        @if ($persistent && $milikSaya)
+            <button type="button" class="flex size-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted" aria-label="Opsi postingan" @click="hapus = true"><x-icon name="more" :size="18" /></button>
+        @endif
     </div>
 
     <div class="mt-3 text-sm leading-relaxed text-foreground/90">{{ $post->body }}</div>
@@ -60,7 +62,9 @@
         @endauth
         <button type="button" class="flex items-center gap-1.5 rounded-lg px-2 py-1.5 hover:bg-muted" :aria-expanded="showComments" @click="showComments = !showComments"><x-icon name="chat" :size="16" />{{ $post->comments_count }}<span class="sr-only">komentar</span></button>
         @auth
+        @if (! $milikSaya)
             <button type="button" class="ml-auto flex items-center gap-1.5 rounded-lg px-2 py-1.5 hover:bg-muted" @click="report = true"><x-icon name="flag" :size="15" />Laporkan</button>
+        @endif
         @endauth
     </div>
 
@@ -82,13 +86,37 @@
         @endif
     </div>
 
-    @if ($persistent)
+    @if ($persistent && ! $milikSaya)
     @auth
     <div x-show="report" x-cloak x-transition.opacity class="fixed inset-0 z-50 flex items-end justify-center bg-foreground/40 p-4 backdrop-blur-sm sm:items-center" role="dialog" aria-modal="true" @keydown.escape.window="report = false">
         <div class="w-full max-w-md rounded-[1.4rem] bg-card p-5 neu" @click.outside="report = false">
             <div class="flex items-start justify-between gap-4"><div><h2 class="text-base font-semibold">Laporkan postingan</h2><p class="mt-1 text-xs text-muted-foreground">Laporanmu dikirim ke moderator.</p></div><button type="button" class="rounded-lg p-1 text-muted-foreground hover:bg-muted" aria-label="Tutup" @click="report = false"><x-icon name="x" :size="18" /></button></div>
             <template x-if="! sent"><form class="mt-4 space-y-3" method="POST" action="{{ route('bubble.lapor', $post) }}" @submit="sent = true">@csrf<label class="block text-xs font-medium text-muted-foreground">Alasan</label><select name="reason" x-model="reason" required class="w-full rounded-xl bg-input px-3 py-2.5 text-sm neu-inset focus:outline-none"><option>Ujaran kebencian</option><option>Pelecehan atau intimidasi</option><option>Membahayakan diri sendiri</option><option>Spam atau penipuan</option></select><label class="block text-xs font-medium text-muted-foreground">Catatan tambahan (opsional)</label><textarea name="note" rows="3" maxlength="500" class="w-full rounded-xl bg-input px-3 py-2.5 text-sm neu-inset focus:outline-none" placeholder="Ceritakan singkat apa yang terjadi…"></textarea><div class="flex justify-end gap-2"><button type="button" class="rounded-xl px-4 py-2 text-sm text-muted-foreground hover:bg-muted" @click="report = false">Batal</button><button type="submit" class="rounded-full bg-destructive px-4 py-2 text-sm font-semibold text-white">Kirim laporan</button></div></form></template>
             <div x-show="sent" x-cloak class="mt-5 flex items-start gap-3 rounded-xl bg-success/10 p-3"><span class="flex size-7 items-center justify-center rounded-full bg-success text-white"><x-icon name="check" :size="15" /></span><p class="text-xs leading-relaxed">Terima kasih. Laporanmu sudah masuk antrean moderasi.</p></div>
+        </div>
+    </div>
+    @endauth
+    @endif
+
+    @if ($persistent && $milikSaya)
+    @auth
+    <div x-show="hapus" x-cloak x-transition.opacity class="fixed inset-0 z-50 flex items-end justify-center bg-foreground/40 p-4 backdrop-blur-sm sm:items-center" role="dialog" aria-modal="true" @keydown.escape.window="hapus = false">
+        <div class="w-full max-w-md rounded-[1.4rem] bg-card p-5 neu" @click.outside="hapus = false">
+            <div class="flex items-start justify-between gap-4">
+                <div>
+                    <h2 class="text-base font-semibold">Hapus postingan?</h2>
+                    <p class="mt-1 text-xs leading-relaxed text-muted-foreground">Cerita ini dan komentar di dalamnya akan dihapus dari Forum.</p>
+                </div>
+                <button type="button" class="rounded-lg p-1 text-muted-foreground hover:bg-muted" aria-label="Tutup" @click="hapus = false"><x-icon name="x" :size="18" /></button>
+            </div>
+            <div class="mt-5 flex justify-end gap-2">
+                <button type="button" class="rounded-xl px-4 py-2 text-sm text-muted-foreground hover:bg-muted" @click="hapus = false">Batal</button>
+                <form method="POST" action="{{ route('bubble.destroy', $post) }}">
+                    @csrf
+                    @method('DELETE')
+                    <button type="submit" class="rounded-full bg-destructive px-4 py-2 text-sm font-semibold text-white">Hapus postingan</button>
+                </form>
+            </div>
         </div>
     </div>
     @endauth

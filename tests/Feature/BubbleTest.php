@@ -71,4 +71,24 @@ class BubbleTest extends TestCase
             'status' => 'baru',
         ]);
     }
+
+    public function test_user_can_delete_own_post_but_not_someone_elses(): void
+    {
+        $user = User::factory()->create();
+        $other = User::factory()->create();
+        $ownPost = Post::create(['user_id' => $user->id, 'body' => 'Postinganku.']);
+        $otherPost = Post::create(['user_id' => $other->id, 'body' => 'Postingan orang lain.']);
+
+        $this->actingAs($user)
+            ->delete(route('bubble.destroy', $ownPost))
+            ->assertRedirect();
+
+        $this->assertDatabaseMissing('posts', ['id' => $ownPost->id]);
+
+        $this->actingAs($user)
+            ->delete(route('bubble.destroy', $otherPost))
+            ->assertForbidden();
+
+        $this->assertDatabaseHas('posts', ['id' => $otherPost->id]);
+    }
 }

@@ -59,6 +59,15 @@ class BubbleController extends Controller
         return back()->with('status', 'Komentar terkirim sebagai Saya.');
     }
 
+    public function destroy(Request $request, Post $post): RedirectResponse
+    {
+        abort_unless((int) $post->user_id === (int) $request->user()->id, 403);
+
+        $post->delete();
+
+        return back()->with('status', 'Postinganmu berhasil dihapus.');
+    }
+
     public function like(Request $request, Post $post): JsonResponse|RedirectResponse
     {
         $hasil = $post->likes()->toggle($request->user()->id);

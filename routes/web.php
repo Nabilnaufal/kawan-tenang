@@ -49,6 +49,7 @@ Route::get('/bubble', [UserBubbleController::class, 'index'])->name('bubble');
 
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/bubble', [UserBubbleController::class, 'store'])->name('bubble.store');
+    Route::delete('/bubble/{post}', [UserBubbleController::class, 'destroy'])->name('bubble.destroy');
     Route::post('/bubble/{post}/komentar', [UserBubbleController::class, 'comment'])->name('bubble.komentar');
     Route::post('/bubble/{post}/suka', [UserBubbleController::class, 'like'])->name('bubble.suka');
     Route::post('/bubble/{post}/lapor', [UserBubbleController::class, 'report'])->name('bubble.lapor');
