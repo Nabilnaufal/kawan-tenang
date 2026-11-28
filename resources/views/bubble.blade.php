@@ -1,8 +1,8 @@
 @extends('layouts.app')
-@section('title', 'Bubble Publik')
+@section('title', 'Forum Publik')
 @section('content')
     <div class="mb-5">
-        <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Bubble Publik</h2>
+        <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Forum Publik</h2>
         <p class="mt-1 text-sm text-muted-foreground">Ruang berbagi cerita dengan identitas anonim. Nama dan emailmu tidak pernah ditampilkan.</p>
     </div>
 
@@ -95,7 +95,7 @@
         {{-- Aside --}}
         <aside class="hidden space-y-3 xl:block">
             <div class="rounded-[1.4rem] bg-card p-5 neu-sm">
-                <h2 class="text-sm font-semibold">Panduan Bubble</h2>
+                <h2 class="text-sm font-semibold">Panduan Forum</h2>
                 <ul class="mt-3 space-y-2.5 text-xs leading-relaxed text-muted-foreground">
                     @foreach ([
                         'Jangan bagikan data pribadi siapa pun.',
@@ -128,7 +128,7 @@
                     Kondisi darurat
                 </h2>
                 <p class="mt-1 text-xs leading-relaxed text-muted-foreground">
-                    Hubungi 119 ext. 8 atau 112. Tim Kawan Tenang tidak memantau Bubble 24 jam.
+                    Hubungi 119 ext. 8 atau 112. Tim Kawan Tenang tidak memantau Forum 24 jam.
                 </p>
             </div>
         </aside>

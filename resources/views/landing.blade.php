@@ -181,7 +181,7 @@
 
             <div class="mt-8 grid gap-4 md:grid-cols-3">
                 @foreach ([
-                    ['icon' => 'bubble', 'number' => '01', 'title' => 'Bubble Publik', 'text' => 'Bagikan cerita dan saling menguatkan dengan identitas yang tetap anonim.', 'href' => route('daftar'), 'tone' => 'bg-secondary text-secondary-foreground'],
+                    ['icon' => 'bubble', 'number' => '01', 'title' => 'Forum Publik', 'text' => 'Bagikan cerita dan saling menguatkan dengan identitas yang tetap anonim.', 'href' => route('daftar'), 'tone' => 'bg-secondary text-secondary-foreground'],
                     ['icon' => 'chat', 'number' => '02', 'title' => 'Konseling Privat', 'text' => 'Bicara empat mata dengan konselor dalam ruang yang hanya untuk kalian.', 'href' => route('daftar'), 'tone' => 'bg-primary text-primary-foreground'],
                     ['icon' => 'shield', 'number' => '03', 'title' => 'Ruang yang Terjaga', 'text' => 'Moderasi dan verifikasi membantu komunitas tetap aman untuk semua.', 'href' => '#privasi', 'tone' => 'bg-accent text-accent-foreground'],
                 ] as $feature)
@@ -214,9 +214,9 @@
 
             <div class="space-y-3">
                 @foreach ([
-                    ['number' => 1, 'title' => 'Pilih ruang yang terasa aman', 'text' => 'Bercerita di Bubble atau mulai percakapan privat dengan konselor.', 'detail' => 'Bubble cocok saat kamu ingin didengar tanpa nama. Konseling privat cocok saat kamu butuh teman bicara yang lebih fokus.'],
+                    ['number' => 1, 'title' => 'Pilih ruang yang terasa aman', 'text' => 'Bercerita di Forum atau mulai percakapan privat dengan konselor.', 'detail' => 'Forum cocok saat kamu ingin didengar tanpa nama. Konseling privat cocok saat kamu butuh teman bicara yang lebih fokus.'],
                     ['number' => 2, 'title' => 'Ceritakan secukupnya', 'text' => 'Kamu selalu boleh berhenti, kembali, dan mengatur batasanmu sendiri.', 'detail' => 'Tidak ada tekanan untuk menceritakan semuanya sekaligus. Kamu bisa berhenti kapan pun dan melanjutkan saat sudah siap.'],
-                    ['number' => 3, 'title' => 'Temukan dukungan', 'text' => 'Dapatkan respons dari komunitas atau pendamping yang siap mendengarkan.', 'detail' => 'Balasan bisa datang dari kawan di Bubble atau konselor yang ditugaskan. Kamu tetap memegang kendali atas percakapanmu.'],
+                    ['number' => 3, 'title' => 'Temukan dukungan', 'text' => 'Dapatkan respons dari komunitas atau pendamping yang siap mendengarkan.', 'detail' => 'Balasan bisa datang dari kawan di Forum atau konselor yang ditugaskan. Kamu tetap memegang kendali atas percakapanmu.'],
                 ] as $step)
                     <div class="overflow-hidden rounded-[1.35rem] bg-card transition neu-sm" data-reveal style="--reveal-delay: {{ $loop->index * 90 }}ms">
                         <button

@@ -62,7 +62,7 @@
 
         <div class="mt-3 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
             @foreach ([
-                ['icon' => 'bubble', 'title' => 'Bubble Publik', 'text' => 'Bagikan cerita dan saling menguatkan dengan identitas anonim.', 'href' => route('bubble'), 'tone' => 'bg-secondary text-secondary-foreground'],
+                ['icon' => 'bubble', 'title' => 'Forum Publik', 'text' => 'Bagikan cerita dan saling menguatkan dengan identitas anonim.', 'href' => route('bubble'), 'tone' => 'bg-secondary text-secondary-foreground'],
                 ['icon' => 'chat', 'title' => 'Konseling Privat', 'text' => 'Ngobrol empat mata dengan konselor, hanya kalian yang bisa membaca.', 'href' => route('konseling.index'), 'tone' => 'bg-muted text-foreground'],
                 ['icon' => 'shield', 'title' => 'Verifikasi Akun', 'text' => 'Bantu jaga komunitas tetap aman lewat verifikasi liveness.', 'href' => route('verifikasi'), 'tone' => 'bg-muted text-foreground'],
             ] as $card)

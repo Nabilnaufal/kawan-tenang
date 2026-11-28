@@ -97,7 +97,7 @@
 
         <p class="mt-6 flex items-start gap-2 rounded-xl bg-muted/60 p-3 text-xs leading-relaxed text-muted-foreground">
             <x-icon name="lock" :size="13" class="mt-0.5" />
-            Nama dan email tidak pernah ditampilkan di Bubble Publik. Identitas publik selalu "Anonim".
+            Nama dan email tidak pernah ditampilkan di Forum Publik. Identitas publik selalu "Anonim".
         </p>
 
         {{-- Dialog masuk dengan wajah --}}

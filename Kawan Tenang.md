@@ -17,7 +17,7 @@ konselor.
 
 Aplikasi memiliki tiga area utama:
 
-1.  **Bubble Publik** --- ruang komunitas untuk membagikan cerita dan
+1.  **Forum Publik** --- ruang komunitas untuk membagikan cerita dan
     memberi komentar dengan identitas publik anonim.
 2.  **Konseling Privat** --- percakapan pribadi antara pengguna dan
     konselor.
@@ -106,7 +106,7 @@ verifikasi akun yang dapat membantu mengurangi penyalahgunaan identitas.
 -   Kata sandi disimpan menggunakan password hashing yang kuat, bukan
     enkripsi yang dapat dibalik.
 
-### 5.2 Bubble Publik
+### 5.2 Forum Publik
 
 -   Pengguna dapat membuat postingan teks.
 -   Pengguna dapat melihat daftar postingan komunitas.
@@ -202,7 +202,7 @@ komunitas. - Pengelolaan status verifikasi.
 ### 6.2 Membuat postingan anonim
 
 1.  Pengguna masuk ke akun.
-2.  Pengguna membuka Bubble Publik.
+2.  Pengguna membuka Forum Publik.
 3.  Pengguna menulis cerita dan mengirim postingan.
 4.  Backend menyimpan konten beserta relasi pemilik internal.
 5.  Tampilan publik hanya menampilkan label "Anonim" dan avatar generik.
@@ -322,7 +322,7 @@ pesan konseling, kata sandi, token, atau data biometrik.
 
 ### Privasi
 
--   Identitas publik pengguna selalu disamarkan pada Bubble Publik.
+-   Identitas publik pengguna selalu disamarkan pada Forum Publik.
 -   Data biometrik diperlakukan sebagai data pribadi sensitif.
 -   Persetujuan harus menjelaskan tujuan, penyedia, jenis data, retensi,
     dan konsekuensi pemrosesan.
@@ -521,7 +521,7 @@ hak akses.
 
 ### Tahap 2 --- Komunitas
 
--   Feed Bubble Publik.
+-   Feed Forum Publik.
 -   Posting dan komentar anonim.
 -   Edit/hapus konten milik sendiri.
 -   Pelaporan dan moderasi dasar.
@@ -556,7 +556,7 @@ tampilan/API publik. - Pengguna dan konselor dapat berkomunikasi hanya
 dalam sesi yang sah. - Admin dapat meninjau laporan dan melakukan
 moderasi. - Proses verifikasi dapat dibuat, diselesaikan, dan hasilnya
 diperbarui melalui webhook yang tervalidasi. - API key tidak terekspos
-di browser atau repository. - Halaman utama, Bubble Publik, chat, dan
+di browser atau repository. - Halaman utama, Forum Publik, chat, dan
 dashboard responsif. - Kebijakan privasi menjelaskan penggunaan data,
 termasuk pemrosesan biometrik oleh penyedia pihak ketiga.
 
@@ -565,7 +565,7 @@ termasuk pemrosesan biometrik oleh penyedia pihak ketiga.
   -----------------------------------------------------------------------
   Risiko                              Mitigasi
   ----------------------------------- -----------------------------------
-  Kebocoran identitas dari Bubble     DTO/resource publik hanya mengirim
+  Kebocoran identitas dari Forum     DTO/resource publik hanya mengirim
   Publik                              label anonim dan data yang
                                       diperlukan
 

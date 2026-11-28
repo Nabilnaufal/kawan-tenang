@@ -7,7 +7,7 @@
     $primary = [
         'pengguna' => [
             ['label' => 'Beranda', 'href' => route('home'), 'icon' => 'home', 'active' => request()->routeIs('home')],
-            ['label' => 'Bubble', 'href' => route('bubble'), 'icon' => 'bubble', 'active' => request()->routeIs('bubble')],
+            ['label' => 'Forum', 'href' => route('bubble'), 'icon' => 'bubble', 'active' => request()->routeIs('bubble')],
             ['label' => 'Konseling', 'href' => route('konseling.index'), 'icon' => 'chat', 'active' => request()->routeIs('konseling.*')],
             ['label' => 'Dasbor', 'href' => route('dasbor'), 'icon' => 'chart', 'active' => request()->routeIs('dasbor')],
         ],

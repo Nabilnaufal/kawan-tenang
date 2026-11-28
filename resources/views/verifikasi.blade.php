@@ -149,7 +149,7 @@
                 Verifikasi bukan syarat bantuan
             </h3>
             <p class="mt-2 text-xs leading-relaxed">
-                Kamu tetap dapat memakai Bubble Publik dan menghubungi layanan darurat tanpa verifikasi wajah. Jangan menunda bantuan hanya karena proses ini.
+                Kamu tetap dapat memakai Forum Publik dan menghubungi layanan darurat tanpa verifikasi wajah. Jangan menunda bantuan hanya karena proses ini.
             </p>
             <a href="tel:119" class="mt-3 inline-flex items-center gap-2 rounded-full bg-card px-4 py-2 text-xs font-semibold">
                 <x-icon name="life-buoy" :size="13" />
