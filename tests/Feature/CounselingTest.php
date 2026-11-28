@@ -15,10 +15,12 @@ class CounselingTest extends TestCase
     public function test_user_can_request_session_and_send_private_message(): void
     {
         $user = User::factory()->create(['role' => 'pengguna']);
-        $counselor = User::factory()->create(['role' => 'konselor']);
+        User::factory()->create(['role' => 'konselor', 'name' => 'Konselor lain']);
+        $counselor = User::factory()->create(['role' => 'konselor', 'name' => 'Konselor pilihan']);
         $this->actingAs($user);
 
         $response = $this->post(route('konseling.store'), [
+            'counselor_id' => $counselor->id,
             'topic' => 'Kecemasan',
             'note' => 'Saya ingin bercerita.',
         ]);
@@ -41,6 +43,23 @@ class CounselingTest extends TestCase
         $message = Message::firstOrFail();
         $this->assertSame('Halo, saya ingin mulai bercerita.', $message->body);
         $this->assertNotSame('Halo, saya ingin mulai bercerita.', $message->getRawOriginal('body'));
+    }
+
+    public function test_user_cannot_request_session_with_unavailable_counselor(): void
+    {
+        $user = User::factory()->create(['role' => 'pengguna']);
+        $counselor = User::factory()->create(['role' => 'konselor', 'is_available' => false]);
+
+        $this->actingAs($user)
+            ->from(route('konseling.index'))
+            ->post(route('konseling.store'), [
+                'counselor_id' => $counselor->id,
+                'topic' => 'Kesepian',
+            ])
+            ->assertRedirect(route('konseling.index'))
+            ->assertSessionHasErrors('counselor_id');
+
+        $this->assertDatabaseCount('counseling_sessions', 0);
     }
 
     public function test_participants_can_poll_and_send_messages_without_a_reload(): void

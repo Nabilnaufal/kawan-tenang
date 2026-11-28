@@ -7,6 +7,7 @@ use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class CounselingController extends Controller
@@ -20,22 +21,34 @@ class CounselingController extends Controller
             ->latest()
             ->get();
 
-        return view('konseling.index', compact('sessions'));
+        $counselors = User::query()
+            ->where('role', User::ROLE_KONSELOR)
+            ->where('is_active', true)
+            ->where('is_available', true)
+            ->orderBy('name')
+            ->get();
+
+        return view('konseling.index', compact('sessions', 'counselors'));
     }
 
     public function store(Request $request): RedirectResponse
     {
         $data = $request->validate([
+            'counselor_id' => [
+                'required',
+                'integer',
+                Rule::exists('users', 'id')->where(fn ($query) => $query
+                    ->where('role', User::ROLE_KONSELOR)
+                    ->where('is_active', true)
+                    ->where('is_available', true)),
+            ],
             'topic' => ['required', 'string', 'max:100'],
             'note' => ['nullable', 'string', 'max:2000'],
         ]);
 
-        $counselor = User::query()->where('role', User::ROLE_KONSELOR)->oldest('id')->first();
-
         $session = $request->user()->counselingSessions()->create([
             ...$data,
-            'counselor_id' => $counselor?->id,
-            'status' => $counselor ? CounselingSession::STATUS_AKTIF : CounselingSession::STATUS_MENUNGGU,
+            'status' => CounselingSession::STATUS_AKTIF,
         ]);
 
         return redirect()->route('konseling.show', $session)->with('status', 'Pengajuan sesi berhasil dikirim.');
