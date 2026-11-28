@@ -203,7 +203,7 @@ Alpine.data('chatRealtime', ({ poll, send, count }) => ({
     mengirim: false,
     timer: null,
     init() {
-        this.timer = setInterval(() => this.cek(), 3000);
+        this.timer = setInterval(() => this.cek(), 2000);
         this.keBawah();
     },
     destroy() {
