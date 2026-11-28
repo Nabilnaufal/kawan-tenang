@@ -42,7 +42,8 @@ class BubbleTest extends TestCase
 
         $this->get(route('bubble'))
             ->assertOk()
-            ->assertSee('Pelan-pelan, kamu tidak sendirian.');
+            ->assertSee('Pelan-pelan, kamu tidak sendirian.')
+            ->assertViewHas('posts', fn ($posts) => $posts->perPage() === 10);
     }
 
     public function test_user_can_toggle_like_and_report_post(): void

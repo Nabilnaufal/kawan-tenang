@@ -122,15 +122,6 @@
                 </a>
             </div>
 
-            <div class="rounded-2xl border border-accent/50 bg-accent/15 p-5">
-                <h2 class="flex items-center gap-2 text-sm font-semibold">
-                    <x-icon name="life-buoy" :size="15" />
-                    Kondisi darurat
-                </h2>
-                <p class="mt-1 text-xs leading-relaxed text-muted-foreground">
-                    Hubungi 119 ext. 8 atau 112. Tim Kawan Tenang tidak memantau Forum 24 jam.
-                </p>
-            </div>
         </aside>
     </div>
 @endsection
