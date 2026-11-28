@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\user;
 
+use App\Http\Controllers\Controller;
 use App\Models\CounselingSession;
 use App\Models\Post;
 use App\Models\User;
@@ -9,7 +10,7 @@ use Illuminate\View\View;
 
 class HomeController extends Controller
 {
-    public function __invoke(): View
+    public function index(): View
     {
         $posts = Post::query()
             ->where('is_hidden', false)
@@ -25,11 +26,15 @@ class HomeController extends Controller
             ->take(2)
             ->get();
 
-        $counselors = User::query()->where('role', 'konselor')->orderBy('name')->take(3)->get();
+        $counselors = User::query()
+            ->where('role', User::ROLE_KONSELOR)
+            ->orderBy('name')
+            ->take(3)
+            ->get();
 
         $stats = [
             ['value' => Post::query()->where('is_hidden', false)->count(), 'label' => 'cerita dibagikan'],
-            ['value' => User::query()->where('role', 'konselor')->count(), 'label' => 'konselor terdaftar'],
+            ['value' => User::query()->where('role', User::ROLE_KONSELOR)->count(), 'label' => 'konselor terdaftar'],
             ['value' => CounselingSession::query()->count(), 'label' => 'sesi konseling'],
         ];
 

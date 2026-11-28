@@ -2,7 +2,6 @@
 
 namespace App\Models;
 
-// use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Database\Factories\UserFactory;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -11,14 +10,21 @@ use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
+    public const ROLE_PENGGUNA = 'pengguna';
+
+    public const ROLE_KONSELOR = 'konselor';
+
+    public const ROLE_ADMIN = 'admin';
+
+    public const ROLES = [
+        self::ROLE_PENGGUNA,
+        self::ROLE_KONSELOR,
+        self::ROLE_ADMIN,
+    ];
+
     /** @use HasFactory<UserFactory> */
     use HasFactory, Notifiable;
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var list<string>
-     */
     protected $fillable = [
         'name',
         'nim',
@@ -31,16 +37,31 @@ class User extends Authenticatable
         'face_registered_at',
     ];
 
-    /**
-     * The attributes that should be hidden for serialization.
-     *
-     * @var list<string>
-     */
     protected $hidden = [
         'password',
         'remember_token',
         'face_descriptor',
     ];
+
+    public function isPengguna(): bool
+    {
+        return $this->role === self::ROLE_PENGGUNA;
+    }
+
+    public function isKonselor(): bool
+    {
+        return $this->role === self::ROLE_KONSELOR;
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === self::ROLE_ADMIN;
+    }
+
+    public function isAvailable(): bool
+    {
+        return (bool) $this->is_available;
+    }
 
     public function posts(): HasMany
     {

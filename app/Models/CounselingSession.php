@@ -8,11 +8,22 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class CounselingSession extends Model
 {
+    public const STATUS_MENUNGGU = 'menunggu';
+
+    public const STATUS_AKTIF = 'aktif';
+
+    public const STATUS_SELESAI = 'selesai';
+
     protected $fillable = ['user_id', 'counselor_id', 'topic', 'note', 'counselor_note', 'status', 'closed_at'];
 
     protected function casts(): array
     {
         return ['note' => 'encrypted', 'counselor_note' => 'encrypted', 'closed_at' => 'datetime'];
+    }
+
+    public function isSelesai(): bool
+    {
+        return $this->status === self::STATUS_SELESAI;
     }
 
     public function user(): BelongsTo

@@ -29,12 +29,12 @@ class CounselingController extends Controller
             'note' => ['nullable', 'string', 'max:2000'],
         ]);
 
-        $counselor = User::query()->where('role', 'konselor')->oldest('id')->first();
+        $counselor = User::query()->where('role', User::ROLE_KONSELOR)->oldest('id')->first();
 
         $session = $request->user()->counselingSessions()->create([
             ...$data,
             'counselor_id' => $counselor?->id,
-            'status' => $counselor ? 'aktif' : 'menunggu',
+            'status' => $counselor ? CounselingSession::STATUS_AKTIF : CounselingSession::STATUS_MENUNGGU,
         ]);
 
         return redirect()->route('konseling.show', $session)->with('status', 'Pengajuan sesi berhasil dikirim.');
@@ -59,7 +59,7 @@ class CounselingController extends Controller
     {
         $this->ensureParticipant($request, $session);
 
-        abort_if($session->status === 'selesai', 422, 'Sesi ini sudah selesai.');
+        abort_if($session->isSelesai(), 422, 'Sesi ini sudah selesai.');
 
         $data = $request->validate(['body' => ['required', 'string', 'max:2000']]);
         $session->messages()->create(['sender_id' => $request->user()->id, 'body' => $data['body']]);
@@ -70,7 +70,7 @@ class CounselingController extends Controller
     public function close(Request $request, CounselingSession $session): RedirectResponse
     {
         $this->ensureParticipant($request, $session);
-        $session->update(['status' => 'selesai', 'closed_at' => now()]);
+        $session->update(['status' => CounselingSession::STATUS_SELESAI, 'closed_at' => now()]);
 
         return back()->with('status', 'Sesi konseling ditandai selesai.');
     }
