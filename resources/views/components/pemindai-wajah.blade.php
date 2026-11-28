@@ -2,6 +2,7 @@
 
 <div x-data="pemindaiWajah" @tutup-kamera.window="tutup()" {{ $attributes->class('rounded-2xl bg-input p-3 neu-inset') }}>
     <input type="hidden" name="{{ $name }}" x-ref="input">
+    <input type="hidden" name="liveness" data-liveness x-ref="liveness">
 
     <div x-show="! aktif">
         <div class="flex flex-col items-center gap-3 py-4 text-center">
@@ -24,6 +25,8 @@
                 <video x-ref="video" autoplay playsinline muted width="640" height="480" class="size-full scale-x-[-1] object-cover"></video>
                 <span class="pointer-events-none absolute inset-0 m-auto h-[72%] w-[52%] rounded-[50%] border-2 border-dashed border-secondary/80" aria-hidden="true"></span>
             </div>
+
+            <p class="text-center text-xs font-medium text-muted-foreground">Buka mulut saat diminta untuk pemeriksaan liveness.</p>
 
             <div class="flex flex-wrap justify-center gap-2">
                 <button type="button" class="btn-lime text-xs" :disabled="memuat" @click="pindai()">

@@ -5,7 +5,7 @@
 @extends('layouts.guest')
 @section('title', 'Daftar')
 @section('content')
-    <div x-data="daftarWizard({{ $awal }})">
+    <div x-data="daftarWizard({{ $awal }})" @wajah-reset.window="wajahSiap = false">
         <h2 class="text-2xl font-semibold tracking-tight">Buat akun Kawan Tenang</h2>
         <p class="mt-1.5 text-sm text-muted-foreground">Tiga langkah singkat, kurang dari satu menit.</p>
 

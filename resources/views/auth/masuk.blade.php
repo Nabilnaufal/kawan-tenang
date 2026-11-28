@@ -16,6 +16,13 @@
             </p>
         @enderror
 
+        @error('liveness')
+            <p class="mt-4 flex items-start gap-2 rounded-xl bg-destructive/10 p-3 text-xs font-medium text-destructive">
+                <x-icon name="alert" :size="14" class="mt-0.5" />
+                {{ $message }}
+            </p>
+        @enderror
+
         <form class="mt-7 space-y-4" action="{{ route('masuk.store') }}" method="POST">
             @csrf
 

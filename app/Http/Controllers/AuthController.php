@@ -50,12 +50,15 @@ class AuthController extends Controller
             'email' => ['required', 'email', 'max:255', 'unique:users,email'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
             'wajah' => ['required', 'json'],
+            'liveness' => ['required', 'accepted'],
             'setuju' => ['accepted'],
         ], [
             'nim.unique' => 'NIM ini sudah terdaftar.',
             'email.unique' => 'Email ini sudah terdaftar.',
             'wajah.required' => 'Pindai wajah dulu sebelum mendaftar.',
             'wajah.json' => 'Data wajah tidak valid. Pindai ulang.',
+            'liveness.required' => 'Selesaikan pemeriksaan liveness dengan membuka mulut.',
+            'liveness.accepted' => 'Buka mulut saat diminta sebelum melanjutkan.',
             'setuju.accepted' => 'Setujui kebijakan privasi dan aturan komunitas dulu.',
             'password.confirmed' => 'Ulangi kata sandi tidak sama.',
         ]);
@@ -83,9 +86,12 @@ class AuthController extends Controller
     {
         $data = $request->validate([
             'wajah' => ['required', 'json'],
+            'liveness' => ['required', 'accepted'],
         ], [
             'wajah.required' => 'Pindai wajah dulu.',
             'wajah.json' => 'Data wajah tidak valid. Pindai ulang.',
+            'liveness.required' => 'Selesaikan pemeriksaan liveness dengan membuka mulut.',
+            'liveness.accepted' => 'Buka mulut saat diminta sebelum melanjutkan.',
         ]);
 
         $wajah = Wajah::deskriptor($data['wajah']);
@@ -127,5 +133,4 @@ class AuthController extends Controller
             default => 'dasbor',
         };
     }
-
 }

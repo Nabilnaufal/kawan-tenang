@@ -4,6 +4,7 @@ namespace Tests\Feature;
 
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\Hash;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
@@ -26,6 +27,7 @@ class AuthTest extends TestCase
             'password' => 'rahasia123',
             'password_confirmation' => 'rahasia123',
             'wajah' => json_encode($this->wajah(0.25)),
+            'liveness' => '1',
             'setuju' => '1',
         ]);
 
@@ -36,6 +38,8 @@ class AuthTest extends TestCase
         $this->assertSame('2024001', $user->nim);
         $this->assertCount(128, $user->face_descriptor);
         $this->assertNotNull($user->face_registered_at);
+        $this->assertSame('bcrypt', Hash::info($user->getRawOriginal('password'))['algoName']);
+        $this->assertTrue(Hash::check('rahasia123', $user->getRawOriginal('password')));
     }
 
     public function test_login_wajah_mencocokkan_descriptor_terdekat(): void
@@ -54,7 +58,7 @@ class AuthTest extends TestCase
             'face_descriptor' => $this->wajah(0.9),
         ]);
 
-        $this->post('/masuk/wajah', ['wajah' => json_encode($this->wajah(0.251))])
+        $this->post('/masuk/wajah', ['wajah' => json_encode($this->wajah(0.251)), 'liveness' => '1'])
             ->assertRedirect(route('dasbor'));
 
         $this->assertAuthenticatedAs($user);
@@ -69,8 +73,23 @@ class AuthTest extends TestCase
             'face_descriptor' => $this->wajah(0.25),
         ]);
 
-        $this->post('/masuk/wajah', ['wajah' => json_encode($this->wajah(5))])
+        $this->post('/masuk/wajah', ['wajah' => json_encode($this->wajah(5)), 'liveness' => '1'])
             ->assertSessionHasErrors('wajah');
+
+        $this->assertGuest();
+    }
+
+    public function test_login_wajah_menolak_request_tanpa_liveness(): void
+    {
+        User::create([
+            'name' => 'Nadia',
+            'email' => 'nadia@example.com',
+            'password' => 'rahasia123',
+            'face_descriptor' => $this->wajah(0.25),
+        ]);
+
+        $this->post('/masuk/wajah', ['wajah' => json_encode($this->wajah(0.25))])
+            ->assertSessionHasErrors('liveness');
 
         $this->assertGuest();
     }

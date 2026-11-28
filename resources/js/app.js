@@ -145,9 +145,19 @@ Alpine.data('pemindaiWajah', () => ({
     input() {
         return this.$root.querySelector('input[type="hidden"]');
     },
+    livenessInput() {
+        return this.$root.querySelector('[data-liveness]');
+    },
+    resetHasil() {
+        this.deskriptor = [];
+        this.input().value = '';
+        this.livenessInput().value = '';
+        this.$dispatch('wajah-reset');
+    },
     async buka() {
         this.aktif = true;
         this.pesan = '';
+        this.resetHasil();
 
         await this.$nextTick();
 
@@ -167,13 +177,20 @@ Alpine.data('pemindaiWajah', () => ({
         this.pesan = '';
 
         try {
-            this.deskriptor = await pindaiWajah(this.video());
+            this.deskriptor = await pindaiWajah(this.video(), {
+                onStatus: (status) => {
+                    this.pesan = status;
+                },
+            });
             this.input().value = JSON.stringify(this.deskriptor);
             this.input().dispatchEvent(new Event('input', { bubbles: true }));
+            this.livenessInput().value = '1';
+            this.livenessInput().dispatchEvent(new Event('input', { bubbles: true }));
             this.tutup();
-            this.pesan = 'Wajah berhasil dipindai.';
+            this.pesan = 'Liveness berhasil. Wajah siap dipakai.';
             this.$dispatch('wajah-siap', { deskriptor: this.deskriptor });
         } catch (error) {
+            this.livenessInput().value = '';
             this.pesan = pesanKamera(error);
         } finally {
             this.memuat = false;

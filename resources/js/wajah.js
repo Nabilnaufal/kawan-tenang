@@ -61,23 +61,71 @@ export function hentikanKamera(video) {
     }
 }
 
-export async function pindaiWajah(video) {
+function jarak(a, b) {
+    return Math.hypot(a.x - b.x, a.y - b.y);
+}
+
+/** Ratio of inner-mouth height to width; a higher ratio means the mouth is open. */
+function rasioMulutTerbuka(landmarks) {
+    const posisi = landmarks?.positions ?? [];
+
+    if (posisi.length < 68) {
+        return 0;
+    }
+
+    const lebar = jarak(posisi[60], posisi[64]);
+
+    return lebar === 0 ? 0 : jarak(posisi[62], posisi[66]) / lebar;
+}
+
+function tunggu(ms) {
+    return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+export async function pindaiWajah(video, { onStatus = () => {}, timeoutMs = 12000 } = {}) {
     if (! stream?.active || video.readyState < HTMLMediaElement.HAVE_CURRENT_DATA) {
         throw new Error('Preview kamera belum siap. Tutup kamera lalu buka lagi.');
     }
 
     const faceapi = await muatModel();
+    const mulai = Date.now();
+    let mulutTerbukaBerurutan = 0;
 
-    const hasil = await faceapi
-        .detectSingleFace(video, new faceapi.TinyFaceDetectorOptions({ inputSize: 320, scoreThreshold: 0.4 }))
-        .withFaceLandmarks()
-        .withFaceDescriptor();
+    onStatus('Hadapkan wajah ke kamera.');
 
-    if (! hasil) {
-        throw new Error('Wajah belum terdeteksi. Hadapkan wajah ke kamera dan coba lagi.');
+    while (Date.now() - mulai < timeoutMs) {
+        if (! stream?.active) {
+            throw new Error('Kamera ditutup sebelum pemeriksaan selesai.');
+        }
+
+        const hasil = await faceapi
+            .detectSingleFace(video, new faceapi.TinyFaceDetectorOptions({ inputSize: 320, scoreThreshold: 0.4 }))
+            .withFaceLandmarks()
+            .withFaceDescriptor();
+
+        if (! hasil) {
+            mulutTerbukaBerurutan = 0;
+            onStatus('Wajah belum terdeteksi. Hadapkan wajah ke kamera.');
+            await tunggu(120);
+            continue;
+        }
+
+        if (rasioMulutTerbuka(hasil.landmarks) >= 0.38) {
+            mulutTerbukaBerurutan++;
+            onStatus('Mulut terdeteksi terbuka. Tahan sebentar…');
+
+            if (mulutTerbukaBerurutan >= 2) {
+                return Array.from(hasil.descriptor);
+            }
+        } else {
+            mulutTerbukaBerurutan = 0;
+            onStatus('Buka mulut saat diminta untuk memeriksa liveness.');
+        }
+
+        await tunggu(120);
     }
 
-    return Array.from(hasil.descriptor);
+    throw new Error('Liveness gagal. Pastikan wajah terlihat jelas lalu buka mulut saat diminta.');
 }
 
 export function pesanKamera(error) {
