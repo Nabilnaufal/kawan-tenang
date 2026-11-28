@@ -6,6 +6,8 @@ use App\Http\Controllers\admin\UserController as AdminUserController;
 use App\Http\Controllers\admin\VerificationController as AdminVerificationController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\Auth\EmailVerificationController;
+use App\Http\Controllers\Auth\NewPasswordController;
+use App\Http\Controllers\Auth\PasswordResetLinkController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CounselingController;
 use App\Http\Controllers\konselor\DashboardController as KonselorDashboardController;
@@ -20,7 +22,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/masuk', [AuthenticatedSessionController::class, 'create'])->name('masuk');
 Route::redirect('/login', '/masuk')->name('login');
 Route::get('/daftar', [RegisteredUserController::class, 'create'])->name('daftar');
-Route::view('/lupa-sandi', 'auth.lupa-sandi')->name('lupa-sandi');
+Route::get('/lupa-sandi', [PasswordResetLinkController::class, 'create'])->name('lupa-sandi');
 Route::post('/masuk', [AuthenticatedSessionController::class, 'store'])->name('masuk.store');
 Route::post('/masuk/wajah', [AuthenticatedSessionController::class, 'faceLogin'])
     ->middleware('throttle:10,1')
@@ -29,7 +31,13 @@ Route::post('/daftar', [RegisteredUserController::class, 'store'])
     ->middleware('throttle:10,1')
     ->name('daftar.store');
 Route::post('/keluar', [AuthenticatedSessionController::class, 'destroy'])->name('keluar');
-Route::post('/lupa-sandi', fn () => redirect()->route('masuk'))->name('lupa-sandi.store');
+Route::post('/lupa-sandi', [PasswordResetLinkController::class, 'store'])
+    ->middleware('throttle:6,1')
+    ->name('lupa-sandi.store');
+Route::get('/reset-sandi/{token}', [NewPasswordController::class, 'create'])->name('password.reset');
+Route::post('/reset-sandi', [NewPasswordController::class, 'store'])
+    ->middleware('throttle:6,1')
+    ->name('password.store');
 
 // Verifikasi email
 Route::middleware('auth')->group(function () {
