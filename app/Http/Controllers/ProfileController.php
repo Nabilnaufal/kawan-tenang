@@ -26,13 +26,26 @@ class ProfileController extends Controller
             'password' => ['nullable', 'string', 'min:8', 'confirmed'],
         ]);
 
+        $emailChanged = $user->email !== $data['email'];
         $user->fill(['name' => $data['name'], 'email' => $data['email']]);
+
+        if ($emailChanged) {
+            $user->email_verified_at = null;
+        }
 
         if (! empty($data['password'])) {
             $user->password = $data['password'];
         }
 
         $user->save();
+
+        if ($emailChanged) {
+            $user->sendEmailVerificationNotification();
+
+            return redirect()
+                ->route('verification.notice')
+                ->with('status', 'Email berubah. Link verifikasi baru sudah dikirim.');
+        }
 
         return back()->with('status', 'Profil berhasil diperbarui.');
     }

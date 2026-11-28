@@ -5,6 +5,7 @@ use App\Http\Controllers\admin\ReportController as AdminReportController;
 use App\Http\Controllers\admin\UserController as AdminUserController;
 use App\Http\Controllers\admin\VerificationController as AdminVerificationController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
+use App\Http\Controllers\Auth\EmailVerificationController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\CounselingController;
 use App\Http\Controllers\konselor\DashboardController as KonselorDashboardController;
@@ -30,11 +31,23 @@ Route::post('/daftar', [RegisteredUserController::class, 'store'])
 Route::post('/keluar', [AuthenticatedSessionController::class, 'destroy'])->name('keluar');
 Route::post('/lupa-sandi', fn () => redirect()->route('masuk'))->name('lupa-sandi.store');
 
+// Verifikasi email
+Route::middleware('auth')->group(function () {
+    Route::get('/email/verifikasi', [EmailVerificationController::class, 'notice'])
+        ->name('verification.notice');
+    Route::get('/email/verifikasi/{id}/{hash}', [EmailVerificationController::class, 'verify'])
+        ->middleware(['signed', 'throttle:6,1'])
+        ->name('verification.verify');
+    Route::post('/email/verifikasi-kirim', [EmailVerificationController::class, 'send'])
+        ->middleware('throttle:6,1')
+        ->name('verification.send');
+});
+
 // Area pengguna
 Route::get('/', [UserHomeController::class, 'index'])->name('home');
 Route::get('/bubble', [UserBubbleController::class, 'index'])->name('bubble');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/bubble', [UserBubbleController::class, 'store'])->name('bubble.store');
     Route::post('/bubble/{post}/komentar', [UserBubbleController::class, 'comment'])->name('bubble.komentar');
     Route::post('/bubble/{post}/suka', [UserBubbleController::class, 'like'])->name('bubble.suka');
@@ -47,7 +60,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // Menu konseling bersama pengguna dan konselor
-Route::middleware('auth')->prefix('konseling')->name('konseling.')->group(function () {
+Route::middleware(['auth', 'verified'])->prefix('konseling')->name('konseling.')->group(function () {
     Route::get('/', [CounselingController::class, 'index'])->name('index');
     Route::post('/', [CounselingController::class, 'store'])->name('store');
     Route::get('/{session}/pesan', [CounselingController::class, 'messages'])->name('messages');
@@ -57,7 +70,7 @@ Route::middleware('auth')->prefix('konseling')->name('konseling.')->group(functi
 });
 
 // Area konselor
-Route::middleware(['auth', 'konselor'])->prefix('konselor')->name('konselor.')->group(function () {
+Route::middleware(['auth', 'verified', 'konselor'])->prefix('konselor')->name('konselor.')->group(function () {
     Route::get('/', [KonselorDashboardController::class, 'index'])->name('dasbor');
     Route::get('/sesi', [KonselorSessionController::class, 'index'])->name('sesi');
     Route::get('/sesi/{session}', [CounselingController::class, 'show'])->name('sesi.show');
@@ -67,7 +80,7 @@ Route::middleware(['auth', 'konselor'])->prefix('konselor')->name('konselor.')->
 });
 
 // Area administrator
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dasbor');
     Route::get('/pengguna', [AdminUserController::class, 'index'])->name('pengguna');
     Route::patch('/pengguna/{user}/peran', [AdminUserController::class, 'updateRole'])->name('pengguna.peran');

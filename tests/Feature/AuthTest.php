@@ -3,8 +3,11 @@
 namespace Tests\Feature;
 
 use App\Models\User;
+use App\Notifications\VerifyEmailNotification;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Notification;
+use Illuminate\Support\Facades\URL;
 use Tests\TestCase;
 
 class AuthTest extends TestCase
@@ -16,8 +19,10 @@ class AuthTest extends TestCase
         return array_fill(0, 128, $nilai);
     }
 
-    public function test_pendaftaran_menyimpan_profil_dan_wajah_lalu_login(): void
+    public function test_pendaftaran_menyimpan_profil_dan_wajah_lalu_mengirim_verifikasi_email(): void
     {
+        Notification::fake();
+
         $response = $this->post('/daftar', [
             'nama' => 'Nadia Putri',
             'nim' => '2024001',
@@ -31,15 +36,38 @@ class AuthTest extends TestCase
             'setuju' => '1',
         ]);
 
-        $response->assertRedirect(route('dasbor'));
+        $response->assertRedirect(route('verification.notice'));
         $this->assertAuthenticated();
 
         $user = User::where('email', 'nadia@example.com')->firstOrFail();
         $this->assertSame('2024001', $user->nim);
         $this->assertCount(128, $user->face_descriptor);
         $this->assertNotNull($user->face_registered_at);
+        $this->assertNull($user->email_verified_at);
+        Notification::assertSentTo($user, VerifyEmailNotification::class);
         $this->assertSame('bcrypt', Hash::info($user->getRawOriginal('password'))['algoName']);
         $this->assertTrue(Hash::check('rahasia123', $user->getRawOriginal('password')));
+    }
+
+    public function test_unverified_user_must_verify_email_before_opening_dashboard(): void
+    {
+        $user = User::factory()->unverified()->create();
+
+        $this->actingAs($user)
+            ->get(route('dasbor'))
+            ->assertRedirect(route('verification.notice'));
+
+        $verificationUrl = URL::temporarySignedRoute(
+            'verification.verify',
+            now()->addMinutes(60),
+            ['id' => $user->id, 'hash' => sha1($user->email)],
+        );
+
+        $this->actingAs($user)
+            ->get($verificationUrl)
+            ->assertRedirect(route('dasbor'));
+
+        $this->assertNotNull($user->fresh()->email_verified_at);
     }
 
     public function test_login_wajah_mencocokkan_descriptor_terdekat(): void

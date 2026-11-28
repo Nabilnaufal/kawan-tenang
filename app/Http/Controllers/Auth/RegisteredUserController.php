@@ -54,15 +54,8 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
         $request->session()->regenerate();
+        $user->sendEmailVerificationNotification();
 
-        return redirect()->route($this->homeRoute($user));
-    }
-
-    private function homeRoute(User $user): string
-    {
-        return match ($user->role) {
-            User::ROLE_KONSELOR => 'konselor.dasbor',
-            default => 'dasbor',
-        };
+        return redirect()->route('verification.notice');
     }
 }
