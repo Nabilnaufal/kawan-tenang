@@ -21,6 +21,7 @@
     }
 
     $persistent = $post instanceof \App\Models\Post;
+    $milikSaya = auth()->check() && $persistent && (int) $post->user_id === (int) auth()->id();
     $waktu = $post->exists ?? false ? $post->created_at->diffForHumans() : $time;
     $id = 'post-' . $post->id;
 @endphp
@@ -30,11 +31,11 @@
         <span class="flex size-10 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground" aria-hidden="true"><x-icon name="user" :size="18" /></span>
         <div class="min-w-0 flex-1">
             <div class="flex flex-wrap items-center gap-x-2 gap-y-1">
-                <span class="text-sm font-semibold">Anonim</span>
+                <span class="text-sm font-semibold">{{ $milikSaya ? 'Saya' : 'Anonim' }}</span>
                 <span class="text-xs text-muted-foreground">{{ $waktu }}</span>
                 @if ($post->tag)<x-status tone="info">{{ $post->tag }}</x-status>@endif
             </div>
-            <p class="mt-1 text-xs text-muted-foreground">Identitas disamarkan · hanya kamu yang tahu</p>
+            <p class="mt-1 text-xs text-muted-foreground">{{ $milikSaya ? 'Postinganmu · identitas tetap disamarkan' : 'Identitas disamarkan · hanya kamu yang tahu' }}</p>
         </div>
         <button type="button" class="flex size-8 items-center justify-center rounded-lg text-muted-foreground hover:bg-muted" aria-label="Opsi postingan" @click="report = true"><x-icon name="more" :size="18" /></button>
     </div>
@@ -61,13 +62,14 @@
 
     <div x-show="showComments" x-cloak x-transition.opacity class="mt-3 space-y-3 border-t border-border/60 pt-3">
         @forelse ($post->comments as $comment)
-            <div class="flex items-start gap-2.5"><span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground"><x-icon name="user" :size="14" /></span><div class="rounded-xl bg-muted/70 px-3 py-2"><p class="text-xs font-semibold">Anonim <span class="ml-1 font-normal text-muted-foreground">{{ $comment->created_at->diffForHumans() }}</span></p><p class="mt-0.5 text-xs leading-relaxed">{{ $comment->body }}</p></div></div>
+            @php($komentarMilikSaya = auth()->check() && (int) $comment->user_id === (int) auth()->id())
+            <div class="flex items-start gap-2.5"><span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-secondary text-secondary-foreground"><x-icon name="user" :size="14" /></span><div class="rounded-xl bg-muted/70 px-3 py-2"><p class="text-xs font-semibold">{{ $komentarMilikSaya ? 'Saya' : 'Anonim' }} <span class="ml-1 font-normal text-muted-foreground">{{ $comment->created_at->diffForHumans() }}</span></p><p class="mt-0.5 text-xs leading-relaxed">{{ $comment->body }}</p></div></div>
         @empty
             <p class="text-xs text-muted-foreground">Belum ada komentar. Jadi kawan pertama yang mendukung.</p>
         @endforelse
         @if ($persistent)
         @auth
-            <form class="flex items-center gap-2" method="POST" action="{{ route('bubble.komentar', $post) }}">@csrf<input type="text" name="body" required maxlength="300" placeholder="Tulis dukungan sebagai Anonim…" aria-label="Tulis komentar" class="min-w-0 flex-1 rounded-xl bg-input px-3 py-2 text-xs neu-inset focus:outline-none"><button type="submit" class="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground" aria-label="Kirim komentar"><x-icon name="send" :size="15" /></button></form>
+            <form class="flex items-center gap-2" method="POST" action="{{ route('bubble.komentar', $post) }}">@csrf<input type="text" name="body" required maxlength="300" placeholder="Tulis dukungan sebagai Saya…" aria-label="Tulis komentar" class="min-w-0 flex-1 rounded-xl bg-input px-3 py-2 text-xs neu-inset focus:outline-none"><button type="submit" class="flex size-9 items-center justify-center rounded-xl bg-primary text-primary-foreground" aria-label="Kirim komentar"><x-icon name="send" :size="15" /></button></form>
         @endauth
         @endif
     </div>

@@ -36,7 +36,7 @@
                         <div class="mt-3 flex flex-wrap items-center gap-2">
                             <p class="flex items-center gap-1.5 text-xs text-muted-foreground">
                                 <x-icon name="lock" :size="13" />
-                                Diposting sebagai <span class="font-semibold text-foreground">Anonim</span>
+                                Diposting sebagai <span class="font-semibold text-foreground">Saya</span>
                             </p>
 
                             <div class="ml-auto flex items-center gap-3">

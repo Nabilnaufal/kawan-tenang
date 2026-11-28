@@ -42,7 +42,7 @@ class BubbleController extends Controller
 
         $request->user()->posts()->create($data);
 
-        return back()->with('status', 'Ceritamu sudah tayang sebagai Anonim.');
+        return back()->with('status', 'Ceritamu sudah tayang sebagai Saya. Identitasmu tetap disamarkan untuk pengguna lain.');
     }
 
     public function comment(Request $request, Post $post): RedirectResponse
@@ -56,7 +56,7 @@ class BubbleController extends Controller
             'body' => $data['body'],
         ]);
 
-        return back()->with('status', 'Komentar terkirim sebagai Anonim.');
+        return back()->with('status', 'Komentar terkirim sebagai Saya.');
     }
 
     public function like(Request $request, Post $post): JsonResponse|RedirectResponse

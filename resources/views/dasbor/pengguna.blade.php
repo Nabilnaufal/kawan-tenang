@@ -222,7 +222,7 @@
                 <div class="flex items-center justify-between gap-3">
                     <p class="flex items-center gap-1.5 text-[0.7rem] text-muted-foreground">
                         <x-icon name="lock" :size="12" />
-                        Diposting sebagai Anonim
+                        Diposting sebagai Saya
                     </p>
                     <button type="submit" class="btn-lime">
                         Bagikan
@@ -285,7 +285,7 @@
                         </div>
                         <p class="mt-4 text-[0.68rem] tracking-[0.1em] uppercase text-muted-foreground">Cerita terakhir</p>
                         <p class="mt-1 line-clamp-2 text-sm font-semibold">{{ $post->body }}</p>
-                        <p class="mt-0.5 text-xs text-muted-foreground">{{ $post->created_at->diffForHumans() }} · Anonim</p>
+                        <p class="mt-0.5 text-xs text-muted-foreground">{{ $post->created_at->diffForHumans() }} · Saya</p>
                         <span class="mt-auto inline-flex items-center gap-1 pt-3 text-xs font-semibold text-foreground">
                             Baca
                             <x-icon name="arrow-right" :size="12" />
