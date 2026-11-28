@@ -6,13 +6,13 @@
         <p class="mb-4 rounded-xl bg-success/10 p-3 text-xs font-medium text-success">{{ session('status') }}</p>
     @endif
     <div class="mb-5">
-        <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Profil & Privasi</h2>
-        <p class="mt-1 text-sm text-muted-foreground">Kelola akun, identitas publik, dan izin data.</p>
+        <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Profil</h2>
+        <p class="mt-1 text-sm text-muted-foreground">Kelola akun dan identitas publikmu.</p>
     </div>
 
-    <div class="grid gap-4 lg:grid-cols-[1fr_1.5fr]">
+    <div class="grid items-stretch gap-4 lg:grid-cols-2">
         {{-- Identity --}}
-        <section class="self-start rounded-[1.4rem] bg-card p-5 neu-sm">
+        <section class="h-full rounded-[1.4rem] bg-card p-5 neu-sm">
             <div class="flex items-center gap-4">
                 <span class="flex size-16 items-center justify-center rounded-full bg-secondary text-secondary-foreground">
                     <x-icon name="user" :size="28" />
@@ -61,9 +61,8 @@
             @endif
         </section>
 
-        <div class="space-y-4">
-            {{-- Account form --}}
-            <section class="rounded-[1.4rem] bg-card p-5 neu-sm">
+        {{-- Account form --}}
+        <section class="h-full rounded-[1.4rem] bg-card p-5 neu-sm">
                 <h3 class="text-sm font-semibold">Informasi akun</h3>
                 <form class="mt-4 grid gap-3 sm:grid-cols-2" method="POST" action="{{ route('profil.update') }}">
                     @csrf
@@ -89,33 +88,6 @@
                         <button type="submit" class="rounded-full bg-primary px-4 py-2 text-xs font-semibold text-primary-foreground">Simpan perubahan</button>
                     </div>
                 </form>
-            </section>
-
-            {{-- Privacy --}}
-            <section class="rounded-[1.4rem] bg-card p-5 neu-sm">
-                <h3 class="text-sm font-semibold">Privasi</h3>
-                <div class="mt-3 divide-y divide-border/60">
-                    <div class="flex items-center gap-3 py-3">
-                        <span class="min-w-0 flex-1">
-                            <span class="block text-xs font-medium">Selalu tampil anonim</span>
-                            <span class="block text-xs text-muted-foreground">Nama asli tidak pernah ditampilkan di ruang publik.</span>
-                        </span>
-                        <x-status tone="success">Aktif</x-status>
-                    </div>
-                </div>
-
-                @if ($user->face_registered_at)
-                    <form method="POST" action="{{ route('profil.wajah.destroy') }}" class="mt-3" onsubmit="return confirm('Hapus data wajah dari akun ini?')">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="inline-flex w-full items-center justify-center gap-2 rounded-full bg-destructive/10 px-4 py-2.5 text-xs font-semibold text-destructive hover:bg-destructive/15">
-                            <x-icon name="x" :size="14" />
-                            Hapus data wajah
-                        </button>
-                    </form>
-                @endif
-            </section>
-
-        </div>
+        </section>
     </div>
 @endsection
