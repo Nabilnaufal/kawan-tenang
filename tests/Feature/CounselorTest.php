@@ -22,6 +22,11 @@ class CounselorTest extends TestCase
             'status' => 'aktif',
         ]);
 
+        $session->messages()->create([
+            'sender_id' => $user->id,
+            'body' => 'Aku sulit tidur akhir-akhir ini.',
+        ]);
+
         $this->actingAs($counselor)
             ->get(route('konselor.dasbor'))
             ->assertOk()
@@ -31,7 +36,13 @@ class CounselorTest extends TestCase
         $this->actingAs($counselor)
             ->get(route('konselor.sesi.show', $session))
             ->assertOk()
-            ->assertSee('Tekanan akademik');
+            ->assertSee('Tekanan akademik')
+            ->assertSee('Aku sulit tidur akhir-akhir ini.');
+
+        $this->assertNotSame(
+            'Aku sulit tidur akhir-akhir ini.',
+            $session->messages()->firstOrFail()->getRawOriginal('body'),
+        );
     }
 
     public function test_counselor_can_save_note_and_toggle_availability(): void
