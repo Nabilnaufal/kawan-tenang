@@ -65,7 +65,7 @@
                 <h2 class="text-xl font-semibold tracking-tight sm:text-2xl">Aktivitasmu</h2>
                 <span class="rounded-full bg-card px-3 py-1 text-[0.72rem] font-semibold text-muted-foreground neu-sm">Pengguna</span>
             </div>
-            <p class="mt-1 text-sm text-muted-foreground">Ringkasan aktivitas, status akun, dan sesi konselingmu.</p>
+            <p class="mt-1 text-sm text-muted-foreground">Cerita dan sesi konselingmu di Kawan Tenang.</p>
         </div>
         <a href="{{ route('bubble') }}" class="btn-lime">
             <x-icon name="plus" :size="15" />
@@ -73,88 +73,7 @@
         </a>
     </div>
 
-    <div class="grid gap-3 xl:grid-cols-[1.32fr_1fr_1fr]">
-        <section class="card-ink flex flex-col rounded-[1.5rem] p-5">
-            <div class="flex items-start justify-between gap-3">
-                <p class="label-cap text-primary-foreground/60">Ringkasan aktivitas</p>
-                <span class="flex size-9 shrink-0 items-center justify-center rounded-full bg-primary-foreground/10">
-                    <x-icon name="chart" :size="16" />
-                </span>
-            </div>
-
-            <p class="mt-3 text-3xl leading-none font-semibold tracking-tight tabular-nums">
-                <span data-count="{{ $interaksi }}">0</span>
-            </p>
-            <p class="mt-1.5 text-xs text-primary-foreground/60">interaksi tercatat</p>
-
-            <div class="mt-3 flex flex-wrap gap-2">
-                <span class="inline-flex items-center gap-1.5 rounded-full border border-primary-foreground/20 px-3 py-1 text-[0.72rem] font-medium">
-                    {{ $sessions->where('status', 'aktif')->count() }} sesi aktif
-                </span>
-            </div>
-
-            <dl class="mt-auto grid grid-cols-3 gap-2 pt-5">
-                @foreach ([
-                    ['label' => 'Cerita', 'value' => $stats['cerita']],
-                    ['label' => 'Komentar', 'value' => $stats['komentar']],
-                    ['label' => 'Dukungan', 'value' => $stats['dukungan']],
-                ] as $stat)
-                    <div class="rounded-2xl bg-primary-foreground/10 p-3">
-                        <dt class="text-[0.62rem] tracking-[0.1em] uppercase text-primary-foreground/60">{{ $stat['label'] }}</dt>
-                        <dd class="mt-1.5 text-lg font-semibold tabular-nums"><span data-count="{{ $stat['value'] }}">0</span></dd>
-                    </div>
-                @endforeach
-            </dl>
-        </section>
-
-        <section class="flex flex-col rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5">
-            <div class="flex items-start justify-between gap-3">
-                <div>
-                    <h3 class="text-sm font-semibold">Status akun</h3>
-                    <p class="mt-0.5 text-xs text-muted-foreground">Identitas publikmu tetap anonim.</p>
-                </div>
-                <span class="flex size-8 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
-                    <x-icon name="shield" :size="15" />
-                </span>
-            </div>
-
-            <dl class="mt-4 space-y-2.5 text-xs">
-                <div class="flex items-center justify-between gap-3">
-                    <dt class="text-muted-foreground">Email</dt>
-                    <dd class="truncate font-medium">{{ $user->email }}</dd>
-                </div>
-                <div class="flex items-center justify-between gap-3">
-                    <dt class="text-muted-foreground">Nama publik</dt>
-                    <dd class="font-medium">Anonim</dd>
-                </div>
-                <div class="flex items-center justify-between gap-3">
-                    <dt class="text-muted-foreground">Verifikasi wajah</dt>
-                    <dd>
-                        @if ($user->face_registered_at)
-                            <x-status tone="success">Terdaftar</x-status>
-                        @else
-                            <x-status tone="warning">Belum</x-status>
-                        @endif
-                    </dd>
-                </div>
-                <div class="flex items-center justify-between gap-3">
-                    <dt class="text-muted-foreground">Email aktif</dt>
-                    <dd>
-                        @if ($user->email_verified_at)
-                            <x-status tone="success">Terverifikasi</x-status>
-                        @else
-                            <x-status tone="warning">Belum</x-status>
-                        @endif
-                    </dd>
-                </div>
-            </dl>
-
-            <a href="{{ route('verifikasi') }}" class="btn-soft mt-auto w-full">
-                <x-icon name="face" :size="14" />
-                {{ $user->face_registered_at ? 'Perbarui wajah' : 'Mulai verifikasi' }}
-            </a>
-        </section>
-
+    <div class="grid gap-3">
         <section class="flex flex-col rounded-[1.4rem] bg-card p-4 neu-sm sm:p-5">
             <div class="flex items-start justify-between gap-3">
                 <div>

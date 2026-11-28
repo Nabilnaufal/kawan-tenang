@@ -43,12 +43,6 @@ class DashboardController extends Controller
 
         $counselors = $sessions->pluck('counselor')->filter()->unique('id')->values();
 
-        $stats = [
-            'cerita' => $user->posts()->count(),
-            'komentar' => $user->comments()->count(),
-            'dukungan' => $user->posts()->withCount('likes')->get()->sum('likes_count'),
-        ];
-
         $platformStats = [
             ['value' => Post::query()->where('is_hidden', false)->count(), 'label' => 'cerita dibagikan'],
             ['value' => User::query()->where('role', User::ROLE_KONSELOR)->count(), 'label' => 'konselor terdaftar'],
@@ -56,14 +50,11 @@ class DashboardController extends Controller
         ];
 
         return view('dasbor.pengguna', [
-            'user' => $user,
             'sessions' => $sessions,
             'posts' => $posts,
             'latestPosts' => $latestPosts,
             'counselors' => $counselors,
-            'stats' => $stats,
             'platformStats' => $platformStats,
-            'interaksi' => array_sum($stats),
         ]);
     }
 }
