@@ -10,7 +10,12 @@
     $initial = mb_substr(preg_replace('/^Anonim\s*/', '', str_replace('Kak ', '', $name)), 0, 1);
 @endphp
 
-<section class="flex h-[calc(100dvh-13.5rem)] min-h-[420px] flex-col overflow-hidden rounded-[1.4rem] bg-card neu-sm lg:h-[calc(100dvh-13rem)]">
+<section
+    @if ($session)
+        x-data="chatRealtime({ poll: '{{ route('konseling.messages', $session) }}', send: '{{ route('konseling.message', $session) }}', count: {{ $session->messages->count() }} })"
+    @endif
+    class="flex h-[calc(100dvh-13.5rem)] min-h-[420px] flex-col overflow-hidden rounded-[1.4rem] bg-card neu-sm lg:h-[calc(100dvh-13rem)]"
+>
     <header class="flex shrink-0 items-center gap-3 border-b border-border/60 px-4 py-3">
         <span class="relative flex size-10 shrink-0 items-center justify-center rounded-full bg-primary/15 text-sm font-semibold text-foreground">
             @if ($anonymous)
@@ -33,18 +38,9 @@
         @endif
     </header>
 
-    <div class="flex-1 space-y-3 overflow-y-auto px-4 py-4" aria-live="polite" aria-label="Riwayat pesan">
+    <div x-ref="list" class="flex-1 space-y-3 overflow-y-auto px-4 py-4" aria-live="polite" aria-label="Riwayat pesan">
         @if ($session)
-            @forelse ($session->messages as $message)
-                <div @class(['flex justify-end' => $message->sender_id === auth()->id(), 'flex items-start gap-2' => $message->sender_id !== auth()->id()])>
-                    @if ($message->sender_id !== auth()->id())
-                        <span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/15 text-xs font-semibold text-foreground">{{ mb_substr($name, 0, 1) }}</span>
-                    @endif
-                    <div class="max-w-[80%]"><p @class(['rounded-2xl px-3.5 py-2.5 text-xs leading-relaxed', 'rounded-tr-sm bg-primary text-primary-foreground' => $message->sender_id === auth()->id(), 'rounded-tl-sm bg-muted' => $message->sender_id !== auth()->id()])>{{ $message->body }}</p><p @class(['mt-1 text-xs text-muted-foreground', 'text-right' => $message->sender_id === auth()->id()])>{{ $message->created_at->format('H.i') }}</p></div>
-                </div>
-            @empty
-                <p class="text-center text-xs text-muted-foreground">Belum ada pesan. Mulai percakapan dengan aman.</p>
-            @endforelse
+            @include('konseling._messages', ['session' => $session, 'name' => $name])
         @else
             <p class="text-center text-xs text-muted-foreground">Hari ini</p>
             <div class="flex items-start gap-2"><span class="flex size-7 shrink-0 items-center justify-center rounded-full bg-primary/15 text-xs font-semibold text-foreground">{{ $initial }}</span><div class="max-w-[80%]"><p class="rounded-2xl rounded-tl-sm bg-muted px-3.5 py-2.5 text-xs leading-relaxed">Halo, terima kasih sudah mau cerita. Apa yang paling mengganggu pikiranmu belakangan ini?</p><p class="mt-1 pl-1 text-xs text-muted-foreground">09.12</p></div></div>
@@ -62,7 +58,7 @@
             @endforeach
         </div>
 
-        <form class="flex items-center gap-2" method="POST" @if($session) action="{{ route('konseling.message', $session) }}" @endif @if(!$session) @submit.prevent="$el.reset()" @endif>
+        <form class="flex items-center gap-2" method="POST" @if($session) action="{{ route('konseling.message', $session) }}" @submit.prevent="kirim($event)" @else @submit.prevent="$el.reset()" @endif>
             @if ($session) @csrf @endif
             <label for="pesan" class="sr-only">Tulis pesan</label>
             <input
@@ -75,7 +71,7 @@
                 placeholder="Tulis pesan privat…"
                 class="min-w-0 flex-1 rounded-xl bg-input px-3.5 py-2.5 text-xs text-foreground placeholder:text-muted-foreground neu-inset focus:outline-none"
             >
-            <button type="submit" class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground" aria-label="Kirim pesan">
+            <button type="submit" class="flex size-10 shrink-0 items-center justify-center rounded-xl bg-primary text-primary-foreground disabled:opacity-50" aria-label="Kirim pesan" @if ($session) :disabled="mengirim" @endif>
                 <x-icon name="send" :size="16" />
             </button>
         </form>

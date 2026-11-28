@@ -39,6 +39,10 @@ class BubbleTest extends TestCase
         $comment = Comment::firstOrFail();
         $this->assertSame('Pelan-pelan, kamu tidak sendirian.', $comment->body);
         $this->assertNotSame('Pelan-pelan, kamu tidak sendirian.', $comment->getRawOriginal('body'));
+
+        $this->get(route('bubble'))
+            ->assertOk()
+            ->assertSee('Pelan-pelan, kamu tidak sendirian.');
     }
 
     public function test_user_can_toggle_like_and_report_post(): void

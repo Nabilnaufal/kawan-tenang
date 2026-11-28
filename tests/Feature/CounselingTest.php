@@ -43,6 +43,48 @@ class CounselingTest extends TestCase
         $this->assertNotSame('Halo, saya ingin mulai bercerita.', $message->getRawOriginal('body'));
     }
 
+    public function test_participants_can_poll_and_send_messages_without_a_reload(): void
+    {
+        $user = User::factory()->create();
+        $counselor = User::factory()->create(['role' => 'konselor']);
+        $session = CounselingSession::create([
+            'user_id' => $user->id,
+            'counselor_id' => $counselor->id,
+            'topic' => 'Kecemasan',
+            'status' => 'aktif',
+        ]);
+
+        $this->actingAs($user)
+            ->postJson(route('konseling.message', $session), ['body' => 'Aku butuh teman bicara.'])
+            ->assertOk()
+            ->assertJsonPath('count', 1);
+
+        $message = Message::firstOrFail();
+        $this->assertSame('Aku butuh teman bicara.', $message->body);
+        $this->assertNotSame('Aku butuh teman bicara.', $message->getRawOriginal('body'));
+
+        $response = $this->actingAs($counselor)
+            ->getJson(route('konseling.messages', $session))
+            ->assertOk()
+            ->assertJsonPath('count', 1);
+
+        $this->assertStringContainsString('Aku butuh teman bicara.', $response->json('html'));
+        $this->assertNotNull($message->fresh()->read_at);
+    }
+
+    public function test_outsider_cannot_poll_session_messages(): void
+    {
+        $session = CounselingSession::create([
+            'user_id' => User::factory()->create()->id,
+            'topic' => 'Kesepian',
+            'status' => 'menunggu',
+        ]);
+
+        $this->actingAs(User::factory()->create())
+            ->getJson(route('konseling.messages', $session))
+            ->assertForbidden();
+    }
+
     public function test_non_participant_cannot_read_or_send_session_message(): void
     {
         $owner = User::factory()->create();

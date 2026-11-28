@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\CounselingSession;
 use App\Models\User;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
@@ -55,7 +56,19 @@ class CounselingController extends Controller
         return view('konseling.show', compact('session', 'role', 'back'));
     }
 
-    public function message(Request $request, CounselingSession $session): RedirectResponse
+    public function messages(Request $request, CounselingSession $session): JsonResponse
+    {
+        $this->ensureParticipant($request, $session);
+
+        $session->messages()
+            ->whereNull('read_at')
+            ->where('sender_id', '!=', $request->user()->id)
+            ->update(['read_at' => now()]);
+
+        return $this->payload($request, $session);
+    }
+
+    public function message(Request $request, CounselingSession $session): RedirectResponse|JsonResponse
     {
         $this->ensureParticipant($request, $session);
 
@@ -64,7 +77,7 @@ class CounselingController extends Controller
         $data = $request->validate(['body' => ['required', 'string', 'max:2000']]);
         $session->messages()->create(['sender_id' => $request->user()->id, 'body' => $data['body']]);
 
-        return back();
+        return $request->wantsJson() ? $this->payload($request, $session) : back();
     }
 
     public function close(Request $request, CounselingSession $session): RedirectResponse
@@ -73,6 +86,20 @@ class CounselingController extends Controller
         $session->update(['status' => CounselingSession::STATUS_SELESAI, 'closed_at' => now()]);
 
         return back()->with('status', 'Sesi konseling ditandai selesai.');
+    }
+
+    private function payload(Request $request, CounselingSession $session): JsonResponse
+    {
+        $session->load(['messages.sender']);
+
+        $name = $request->user()->id === $session->counselor_id
+            ? 'Anonim #'.$session->user_id
+            : ($session->counselor?->name ?? 'Konselor');
+
+        return response()->json([
+            'html' => view('konseling._messages', compact('session', 'name'))->render(),
+            'count' => $session->messages->count(),
+        ]);
     }
 
     private function ensureParticipant(Request $request, CounselingSession $session): void

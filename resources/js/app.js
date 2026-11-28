@@ -198,6 +198,83 @@ Alpine.data('pemindaiWajah', () => ({
     },
 }));
 
+Alpine.data('chatRealtime', ({ poll, send, count }) => ({
+    jumlah: count,
+    mengirim: false,
+    timer: null,
+    init() {
+        this.timer = setInterval(() => this.cek(), 3000);
+        this.keBawah();
+    },
+    destroy() {
+        clearInterval(this.timer);
+    },
+    async cek() {
+        if (document.hidden) {
+            return;
+        }
+
+        try {
+            const response = await fetch(poll, { headers: { Accept: 'application/json' } });
+
+            if (!response.ok) {
+                return;
+            }
+
+            const data = await response.json();
+
+            if (data.count !== this.jumlah) {
+                this.$refs.list.innerHTML = data.html;
+                this.jumlah = data.count;
+                this.keBawah();
+            }
+        } catch {
+            // Jaringan putus sementara; coba lagi pada interval berikutnya.
+        }
+    },
+    async kirim(event) {
+        const input = event.target.querySelector('[name="body"]');
+        const body = input.value.trim();
+
+        if (!body || this.mengirim) {
+            return;
+        }
+
+        this.mengirim = true;
+
+        try {
+            const response = await fetch(send, {
+                method: 'POST',
+                headers: {
+                    Accept: 'application/json',
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.content ?? '',
+                },
+                body: JSON.stringify({ body }),
+            });
+
+            if (!response.ok) {
+                return;
+            }
+
+            const data = await response.json();
+            this.$refs.list.innerHTML = data.html;
+            this.jumlah = data.count;
+            input.value = '';
+            this.keBawah();
+        } catch {
+            // Biarkan teks tetap di input agar bisa dikirim ulang.
+        } finally {
+            this.mengirim = false;
+        }
+    },
+    keBawah() {
+        this.$nextTick(() => {
+            this.$refs.list.scrollTop = this.$refs.list.scrollHeight;
+        });
+    },
+}));
+
 Alpine.start();
 
 window.toggleTheme = () => {

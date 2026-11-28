@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function () {
 Route::middleware('auth')->prefix('konseling')->name('konseling.')->group(function () {
     Route::get('/', [CounselingController::class, 'index'])->name('index');
     Route::post('/', [CounselingController::class, 'store'])->name('store');
+    Route::get('/{session}/pesan', [CounselingController::class, 'messages'])->name('messages');
     Route::get('/{session}', [CounselingController::class, 'show'])->name('show');
     Route::post('/{session}/pesan', [CounselingController::class, 'message'])->name('message');
     Route::post('/{session}/selesai', [CounselingController::class, 'close'])->name('close');
