@@ -184,6 +184,45 @@
         background: #15181b;
         color: var(--primary-foreground);
     }
+
+    [data-reveal] {
+        opacity: 0;
+        translate: 0 22px;
+        transition:
+            opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+            translate 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+        transition-delay: var(--reveal-delay, 0ms);
+    }
+
+    [data-reveal].is-visible {
+        opacity: 1;
+        translate: 0 0;
+    }
+
+    .animate-drift {
+        animation: blob-drift 16s ease-in-out infinite;
+    }
+
+    .animate-drift-slow {
+        animation: blob-drift 22s ease-in-out infinite reverse;
+    }
+
+    .animate-bob {
+        animation: bob 5s ease-in-out infinite;
+    }
+
+    @keyframes bob {
+        50% {
+            translate: 0 -6px;
+        }
+    }
+
+    @keyframes blob-drift {
+        50% {
+            translate: 0 -18px;
+            scale: 1.06;
+        }
+    }
 }
 
 @layer base {

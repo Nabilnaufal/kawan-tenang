@@ -2,16 +2,16 @@
 @section('title', 'Ruang aman untuk ceritamu')
 @section('content')
     {{-- Hero --}}
-    <section class="mx-auto max-w-6xl px-5 pb-16 pt-32 sm:px-8 sm:pt-40 lg:px-10 lg:pt-44">
+    <section class="mx-auto max-w-[86rem] px-5 pb-16 pt-32 sm:px-8 sm:pt-40 lg:px-10 lg:pt-44">
         <div class="grid items-center gap-14 lg:grid-cols-[1.04fr_.96fr] lg:gap-16">
-            <div>
+            <div data-reveal>
                 <span class="inline-flex items-center gap-2 rounded-full border border-border bg-card/75 px-3.5 py-2 text-xs font-semibold text-muted-foreground neu-inset">
                     <span class="size-2 rounded-full bg-success"></span>
                     Ruang aman &amp; anonim
                 </span>
 
                 <h1 class="mt-6 max-w-3xl text-4xl leading-[1.06] font-semibold tracking-tight sm:text-5xl lg:text-[4rem]">
-                    Kamu tidak harus terlihat kuat <span class="text-success">setiap hari.</span>
+                    Kamu tidak harus terlihat kuat <span class="text-success whitespace-nowrap">setiap hari.</span>
                 </h1>
                 <p class="mt-5 max-w-xl text-sm leading-relaxed text-muted-foreground sm:text-base">
                     Kawan Tenang adalah tempat untuk bercerita tanpa takut dikenali, menemukan dukungan, dan bicara privat dengan konselor yang siap mendengarkan.
@@ -36,7 +36,9 @@
 
             {{-- Interactive preview --}}
             <div
-                class="relative mx-auto w-full max-w-[31rem] lg:ml-auto"
+                class="relative mx-auto w-full max-w-[34rem]"
+                data-reveal
+                style="--reveal-delay: 140ms"
                 x-data="{
                     pesan: [{ dari: 'konselor', teks: 'Halo, terima kasih sudah mampir. Apa yang paling terasa berat hari ini?' }],
                     teks: '',
@@ -67,7 +69,7 @@
                     }
                 }"
             >
-                <span class="absolute -top-3 right-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-secondary px-3.5 py-1.5 text-[0.68rem] font-bold text-secondary-foreground neu-sm">
+                <span class="animate-bob absolute -top-3 right-4 z-10 inline-flex items-center gap-1.5 rounded-full bg-secondary px-3.5 py-1.5 text-[0.68rem] font-bold text-secondary-foreground neu-sm">
                     Kamu aman di sini
                     <span aria-hidden="true">✦</span>
                 </span>
@@ -86,9 +88,14 @@
                         </span>
                     </div>
 
-                    <div class="relative mt-4 flex h-56 flex-col justify-end gap-2.5 overflow-y-auto pr-1 no-scrollbar" aria-live="polite" x-ref="ruang">
+                    <div class="relative mt-4 flex h-44 flex-col justify-end gap-2.5 overflow-y-auto pr-1 no-scrollbar" aria-live="polite" x-ref="ruang">
                         <template x-for="(item, i) in pesan" :key="i">
-                            <div :class="item.dari === 'kamu' ? 'ml-auto max-w-[85%] text-right' : 'max-w-[90%]'">
+                            <div
+                                :class="item.dari === 'kamu' ? 'ml-auto max-w-[85%] text-right' : 'max-w-[90%]'"
+                                x-transition:enter="transition duration-300 ease-out"
+                                x-transition:enter-start="opacity-0 translate-y-2"
+                                x-transition:enter-end="opacity-100 translate-y-0"
+                            >
                                 <div
                                     :class="item.dari === 'kamu'
                                         ? 'rounded-[1.2rem] rounded-br-md bg-secondary px-3.5 py-2.5 text-xs font-medium text-secondary-foreground'
@@ -143,14 +150,14 @@
     </section>
 
     {{-- Trust strip --}}
-    <section class="mx-auto max-w-6xl px-5 pb-16 sm:px-8 lg:px-10">
+    <section class="mx-auto max-w-[86rem] px-5 pb-16 sm:px-8 lg:px-10">
         <div class="grid overflow-hidden rounded-[1.7rem] bg-card neu-sm sm:grid-cols-3">
             @foreach ([
                 ['icon' => 'bubble', 'value' => '3', 'label' => 'ruang pendampingan'],
                 ['icon' => 'user', 'value' => '0', 'label' => 'identitas publik'],
                 ['icon' => 'chat', 'value' => '1×1', 'label' => 'dukungan yang lebih personal'],
             ] as $item)
-                <div class="group flex items-center gap-3 border-b border-border/70 px-5 py-5 transition last:border-0 hover:bg-muted/40 sm:border-r sm:border-b-0 sm:px-7">
+                <div class="group flex items-center gap-3 border-b border-border/70 px-5 py-5 transition last:border-0 hover:bg-muted/40 sm:border-r sm:border-b-0 sm:px-7" data-reveal style="--reveal-delay: {{ $loop->index * 90 }}ms">
                     <span class="flex size-9 shrink-0 items-center justify-center rounded-xl bg-secondary/40 text-foreground transition group-hover:bg-secondary">
                         <x-icon :name="$item['icon']" :size="16" />
                     </span>
@@ -165,7 +172,7 @@
 
     {{-- Features --}}
     <section id="fitur" class="scroll-mt-28 bg-card/55 py-16 sm:py-20">
-        <div class="mx-auto max-w-6xl px-5 sm:px-8 lg:px-10">
+        <div class="mx-auto max-w-[86rem] px-5 sm:px-8 lg:px-10">
             <div class="max-w-2xl">
                 <span class="label-cap">Ruang untukmu</span>
                 <h2 class="mt-3 text-3xl leading-tight font-semibold tracking-tight sm:text-4xl">Pilih cara yang paling nyaman untuk mulai.</h2>
@@ -178,7 +185,7 @@
                     ['icon' => 'chat', 'number' => '02', 'title' => 'Konseling Privat', 'text' => 'Bicara empat mata dengan konselor dalam ruang yang hanya untuk kalian.', 'href' => route('daftar'), 'tone' => 'bg-primary text-primary-foreground'],
                     ['icon' => 'shield', 'number' => '03', 'title' => 'Ruang yang Terjaga', 'text' => 'Moderasi dan verifikasi membantu komunitas tetap aman untuk semua.', 'href' => '#privasi', 'tone' => 'bg-accent text-accent-foreground'],
                 ] as $feature)
-                    <a href="{{ $feature['href'] }}" class="group flex flex-col rounded-[1.5rem] bg-card p-5 transition duration-300 hover:-translate-y-1 hover:shadow-[6px_6px_0_var(--hard-shadow)] neu-sm sm:p-6">
+                    <a href="{{ $feature['href'] }}" class="group flex flex-col rounded-[1.5rem] bg-card p-5 transition duration-300 hover:-translate-y-1 hover:shadow-[6px_6px_0_var(--hard-shadow)] neu-sm sm:p-6" data-reveal style="--reveal-delay: {{ $loop->index * 90 }}ms">
                         <div class="flex items-center justify-between">
                             <span class="flex size-12 items-center justify-center rounded-2xl {{ $feature['tone'] }} transition group-hover:rotate-[-6deg]"><x-icon :name="$feature['icon']" :size="21" /></span>
                             <span class="text-xs font-bold text-muted-foreground">{{ $feature['number'] }}</span>
@@ -196,7 +203,7 @@
     </section>
 
     {{-- How it works, interactive steps --}}
-    <section id="cara-kerja" class="mx-auto max-w-6xl scroll-mt-28 px-5 py-16 sm:px-8 sm:py-20 lg:px-10" x-data="{ aktif: 1 }">
+    <section id="cara-kerja" class="mx-auto max-w-[86rem] scroll-mt-28 px-5 py-16 sm:px-8 sm:py-20 lg:px-10" x-data="{ aktif: 1 }">
         <div class="grid gap-10 lg:grid-cols-[.8fr_1.2fr] lg:items-start">
             <div class="lg:sticky lg:top-28">
                 <span class="label-cap">Mulai dengan tenang</span>
@@ -211,10 +218,10 @@
                     ['number' => 2, 'title' => 'Ceritakan secukupnya', 'text' => 'Kamu selalu boleh berhenti, kembali, dan mengatur batasanmu sendiri.', 'detail' => 'Tidak ada tekanan untuk menceritakan semuanya sekaligus. Kamu bisa berhenti kapan pun dan melanjutkan saat sudah siap.'],
                     ['number' => 3, 'title' => 'Temukan dukungan', 'text' => 'Dapatkan respons dari komunitas atau pendamping yang siap mendengarkan.', 'detail' => 'Balasan bisa datang dari kawan di Bubble atau konselor yang ditugaskan. Kamu tetap memegang kendali atas percakapanmu.'],
                 ] as $step)
-                    <div class="overflow-hidden rounded-[1.35rem] bg-card transition neu-sm">
+                    <div class="overflow-hidden rounded-[1.35rem] bg-card transition neu-sm" data-reveal style="--reveal-delay: {{ $loop->index * 90 }}ms">
                         <button
                             type="button"
-                            @click="aktif = {{ $step['number'] }}"
+                            @click="aktif = aktif === {{ $step['number'] }} ? 0 : {{ $step['number'] }}"
                             class="flex w-full items-center gap-4 p-4 text-left sm:p-5"
                             :aria-expanded="aktif === {{ $step['number'] }}"
                         >
@@ -227,8 +234,10 @@
                             </span>
                             <x-icon name="chevron-down" :size="17" class="shrink-0 text-muted-foreground transition" x-bind:class="aktif === {{ $step['number'] }} ? 'rotate-180' : ''" />
                         </button>
-                        <div x-show="aktif === {{ $step['number'] }}" x-transition.opacity x-cloak>
-                            <p class="border-t border-border/60 px-4 py-3.5 pl-[4.5rem] text-xs leading-relaxed text-muted-foreground sm:px-5 sm:pl-[4.75rem] sm:text-sm">{{ $step['detail'] }}</p>
+                        <div class="grid transition-[grid-template-rows] duration-300 ease-out" :class="aktif === {{ $step['number'] }} ? 'grid-rows-[1fr]' : 'grid-rows-[0fr]'">
+                            <div class="overflow-hidden">
+                                <p class="border-t border-border/60 px-4 py-3.5 pl-[4.5rem] text-xs leading-relaxed text-muted-foreground sm:px-5 sm:pl-[4.75rem] sm:text-sm">{{ $step['detail'] }}</p>
+                            </div>
                         </div>
                     </div>
                 @endforeach
@@ -237,7 +246,7 @@
     </section>
 
     {{-- Privacy --}}
-    <section id="privasi" class="mx-auto max-w-6xl scroll-mt-28 px-5 pb-16 sm:px-8 sm:pb-20 lg:px-10">
+    <section id="privasi" class="mx-auto max-w-[86rem] scroll-mt-28 px-5 pb-16 sm:px-8 sm:pb-20 lg:px-10">
         <div class="card-ink relative overflow-hidden rounded-[1.8rem] p-6 neu sm:p-9">
             <div class="pointer-events-none absolute -right-20 -bottom-28 size-80 rounded-full bg-secondary/15 blur-3xl" aria-hidden="true"></div>
             <div class="relative grid gap-8 lg:grid-cols-[.8fr_1.2fr] lg:items-center">
@@ -255,7 +264,7 @@
                         ['icon' => 'lock', 'title' => 'Privat', 'text' => 'Percakapan konseling hanya untuk pihak yang terlibat.'],
                         ['icon' => 'shield', 'title' => 'Terkendali', 'text' => 'Kamu bisa mengelola data dan persetujuanmu.'],
                     ] as $item)
-                        <div class="group rounded-2xl border border-primary-foreground/15 bg-primary-foreground/5 p-4 transition hover:border-secondary/50 hover:bg-primary-foreground/10">
+                        <div class="group rounded-2xl border border-primary-foreground/15 bg-primary-foreground/5 p-4 transition hover:border-secondary/50 hover:bg-primary-foreground/10" data-reveal style="--reveal-delay: {{ $loop->index * 90 }}ms">
                             <x-icon :name="$item['icon']" :size="18" class="text-secondary transition group-hover:scale-110" />
                             <h3 class="mt-4 text-sm font-semibold">{{ $item['title'] }}</h3>
                             <p class="mt-1.5 text-xs leading-relaxed text-primary-foreground/60">{{ $item['text'] }}</p>
@@ -267,7 +276,7 @@
     </section>
 
     {{-- Final CTA --}}
-    <section class="mx-auto max-w-6xl px-5 pb-6 sm:px-8 lg:px-10">
+    <section class="mx-auto max-w-[86rem] px-5 pb-6 sm:px-8 lg:px-10">
         <div class="relative overflow-hidden rounded-[1.8rem] bg-secondary px-6 py-9 text-secondary-foreground neu sm:px-9 sm:py-10">
             <div class="pointer-events-none absolute -top-16 -right-10 size-52 rounded-full bg-white/25 blur-2xl" aria-hidden="true"></div>
             <div class="relative flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
@@ -285,7 +294,7 @@
     </section>
 
     {{-- Emergency notice --}}
-    <section class="mx-auto max-w-6xl px-5 pb-4 pt-4 sm:px-8 lg:px-10">
+    <section class="mx-auto max-w-[86rem] px-5 pb-4 pt-4 sm:px-8 lg:px-10">
         <div class="flex flex-col items-start gap-4 rounded-[1.4rem] border-2 border-[var(--card-border)] bg-card/60 px-5 py-4 sm:flex-row sm:items-center sm:justify-between sm:px-6">
             <p class="flex items-start gap-2 text-xs leading-relaxed sm:items-center"><x-icon name="life-buoy" :size="17" class="mt-0.5 shrink-0 sm:mt-0" /><span><strong>Butuh bantuan segera?</strong> Kawan Tenang bukan layanan darurat. Hubungi <a href="tel:119" class="font-semibold underline underline-offset-2">119 ext. 8</a> atau <a href="tel:112" class="font-semibold underline underline-offset-2">112</a>.</span></p>
             <a href="#privasi" class="shrink-0 text-xs font-semibold hover:underline">Baca soal privasi</a>

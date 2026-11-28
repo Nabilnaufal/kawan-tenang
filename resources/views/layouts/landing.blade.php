@@ -17,6 +17,7 @@
         }
     </script>
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    <noscript><style>[data-reveal] { opacity: 1 !important; translate: none !important; }</style></noscript>
 </head>
 <body class="min-h-full overflow-x-hidden">
     <a href="#konten" class="sr-only rounded-full bg-primary px-4 py-2 font-semibold text-primary-foreground focus:not-sr-only focus:fixed focus:top-3 focus:left-3 focus:z-[60]">
@@ -25,13 +26,13 @@
 
     <div class="relative min-h-screen">
         <div class="pointer-events-none absolute inset-x-0 top-0 -z-10 h-[44rem] overflow-hidden" aria-hidden="true">
-            <div class="absolute -top-48 left-1/2 size-[34rem] -translate-x-1/2 rounded-full bg-secondary/20 blur-3xl"></div>
-            <div class="absolute top-48 -right-36 size-72 rounded-full bg-accent/80 blur-3xl"></div>
-            <div class="absolute top-72 -left-32 size-72 rounded-full bg-secondary/10 blur-3xl"></div>
+            <div class="animate-drift absolute -top-48 left-1/2 size-[34rem] -translate-x-1/2 rounded-full bg-secondary/20 blur-3xl"></div>
+            <div class="animate-drift-slow absolute top-48 -right-36 size-72 rounded-full bg-accent/80 blur-3xl"></div>
+            <div class="animate-drift absolute top-72 -left-32 size-72 rounded-full bg-secondary/10 blur-3xl [animation-delay:-6s]"></div>
         </div>
 
         <header x-data="{ open: false }" class="fixed inset-x-0 top-0 z-50 px-3 pt-3 sm:px-6 sm:pt-5">
-            <nav class="relative mx-auto flex w-full max-w-6xl items-center gap-3 rounded-full bg-card/90 px-3 py-2.5 backdrop-blur-xl neu-sm sm:px-4" aria-label="Navigasi utama">
+            <nav class="relative mx-auto flex w-full max-w-[86rem] items-center gap-3 rounded-full bg-card/90 px-3 py-2.5 backdrop-blur-xl neu-sm sm:px-4" aria-label="Navigasi utama">
                 <a href="{{ route('home') }}" class="flex shrink-0 items-center gap-2.5" aria-label="Kawan Tenang">
                     <img src="/assets/kawan-tenang-logo.png" alt="Kawan Tenang" width="118" height="58" class="h-10 w-auto sm:h-11">
                 </a>
@@ -76,7 +77,7 @@
             @yield('content')
         </main>
 
-        <footer class="mx-auto max-w-6xl px-5 pb-8 pt-14 sm:px-8 lg:px-10">
+        <footer class="mx-auto max-w-[86rem] px-5 pb-8 pt-14 sm:px-8 lg:px-10">
             <div class="flex flex-col gap-5 border-t border-border/70 pt-5 text-xs text-muted-foreground sm:flex-row sm:items-center sm:justify-between">
                 <p>© {{ date('Y') }} Kawan Tenang. Ruang aman untuk bertumbuh.</p>
                 <p class="flex items-center gap-1.5"><x-icon name="lock" :size="13" /> Anonim secara default</p>
