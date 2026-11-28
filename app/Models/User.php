@@ -34,6 +34,7 @@ class User extends Authenticatable implements MustVerifyEmailContract
         'prodi',
         'role',
         'is_available',
+        'is_active',
         'email',
         'password',
         'face_descriptor',
@@ -64,6 +65,11 @@ class User extends Authenticatable implements MustVerifyEmailContract
     public function isAvailable(): bool
     {
         return (bool) $this->is_available;
+    }
+
+    public function isActive(): bool
+    {
+        return (bool) $this->is_active;
     }
 
     /**
@@ -107,6 +113,7 @@ class User extends Authenticatable implements MustVerifyEmailContract
             'face_descriptor' => 'encrypted:array',
             'face_registered_at' => 'datetime',
             'is_available' => 'boolean',
+            'is_active' => 'boolean',
         ];
     }
 }

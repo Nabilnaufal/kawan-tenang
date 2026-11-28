@@ -23,10 +23,10 @@ class AdminDashboardTest extends TestCase
             ->assertSee('Anggota Dua');
 
         $this->actingAs($admin)
-            ->patch(route('admin.pengguna.peran', $member), ['role' => 'konselor'])
+            ->patch(route('admin.pengguna.status', $member))
             ->assertRedirect();
 
-        $this->assertSame('konselor', $member->fresh()->role);
+        $this->assertFalse($member->fresh()->is_active);
     }
 
     public function test_admin_cannot_change_own_role_or_reset_own_face(): void
@@ -34,7 +34,7 @@ class AdminDashboardTest extends TestCase
         $admin = User::factory()->create(['role' => 'admin', 'face_registered_at' => now()]);
 
         $this->actingAs($admin)
-            ->patch(route('admin.pengguna.peran', $admin), ['role' => 'pengguna'])
+            ->patch(route('admin.pengguna.status', $admin))
             ->assertForbidden();
 
         $this->actingAs($admin)

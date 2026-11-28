@@ -84,7 +84,7 @@ Route::middleware(['auth', 'verified', 'konselor'])->prefix('konselor')->name('k
 Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminDashboardController::class, 'index'])->name('dasbor');
     Route::get('/pengguna', [AdminUserController::class, 'index'])->name('pengguna');
-    Route::patch('/pengguna/{user}/peran', [AdminUserController::class, 'updateRole'])->name('pengguna.peran');
+    Route::patch('/pengguna/{user}/status', [AdminUserController::class, 'toggleActive'])->name('pengguna.status');
     Route::get('/laporan', [AdminReportController::class, 'index'])->name('laporan');
     Route::patch('/laporan/{report}', [AdminReportController::class, 'update'])->name('laporan.update');
     Route::get('/verifikasi', [AdminVerificationController::class, 'index'])->name('verifikasi');

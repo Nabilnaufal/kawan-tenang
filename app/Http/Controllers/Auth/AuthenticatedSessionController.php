@@ -24,6 +24,7 @@ class AuthenticatedSessionController extends Controller
             'email' => ['required', 'email'],
             'password' => ['required', 'string'],
         ]);
+        $credentials['is_active'] = true;
 
         if (! Auth::attempt($credentials, $request->boolean('remember'))) {
             throw ValidationException::withMessages([
@@ -51,6 +52,7 @@ class AuthenticatedSessionController extends Controller
         $wajah = Wajah::deskriptor($data['wajah']);
 
         $terdekat = User::query()
+            ->where('is_active', true)
             ->whereNotNull('face_descriptor')
             ->get()
             ->map(fn (User $user) => [$user, Wajah::jarak($user->face_descriptor, $wajah)])

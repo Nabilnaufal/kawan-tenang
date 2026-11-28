@@ -52,7 +52,7 @@
                         <th class="py-2.5 pr-3 font-medium">Peran</th>
                         <th class="py-2.5 pr-3 font-medium">Verifikasi</th>
                         <th class="py-2.5 pr-3 font-medium">Bergabung</th>
-                        <th class="py-2.5 font-medium">Ubah peran</th>
+                        <th class="py-2.5 font-medium">Status akun</th>
                     </tr>
                 </thead>
                 <tbody class="divide-y divide-border/60">
@@ -79,20 +79,25 @@
                             </td>
                             <td class="py-3 pr-3 text-muted-foreground">{{ $user->created_at->translatedFormat('d M Y') }}</td>
                             <td class="py-3 text-right">
-                                @if ($user->is(auth()->user()))
-                                    <span class="text-xs text-muted-foreground">Akun sendiri</span>
-                                @else
-                                    <form method="POST" action="{{ route('admin.pengguna.peran', $user) }}" class="flex items-center justify-end gap-2">
-                                        @csrf
-                                        @method('PATCH')
-                                        <select name="role" class="rounded-lg bg-input px-2.5 py-1.5 text-xs neu-inset">
-                                            @foreach ($roleLabel as $value => $label)
-                                                <option value="{{ $value }}" @selected($user->role === $value)>{{ $label }}</option>
-                                            @endforeach
-                                        </select>
-                                        <button type="submit" class="rounded-lg px-2.5 py-1.5 text-xs font-semibold text-foreground hover:bg-muted">Simpan</button>
-                                    </form>
-                                @endif
+                                <div class="flex items-center justify-end gap-2">
+                                    @if ($user->is_active)
+                                        <x-status tone="success">Aktif</x-status>
+                                    @else
+                                        <x-status tone="danger">Nonaktif</x-status>
+                                    @endif
+
+                                    @if ($user->is(auth()->user()))
+                                        <span class="text-xs text-muted-foreground">Akun sendiri</span>
+                                    @else
+                                        <form method="POST" action="{{ route('admin.pengguna.status', $user) }}">
+                                            @csrf
+                                            @method('PATCH')
+                                            <button type="submit" class="rounded-lg px-2.5 py-1.5 text-xs font-semibold {{ $user->is_active ? 'text-destructive hover:bg-destructive/10' : 'text-success hover:bg-success/10' }}">
+                                                {{ $user->is_active ? 'Nonaktifkan' : 'Aktifkan' }}
+                                            </button>
+                                        </form>
+                                    @endif
+                                </div>
                             </td>
                         </tr>
                     @empty

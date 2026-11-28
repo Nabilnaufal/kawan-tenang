@@ -121,4 +121,24 @@ class AuthTest extends TestCase
 
         $this->assertGuest();
     }
+
+    public function test_inactive_user_cannot_login_with_password_or_face(): void
+    {
+        $user = User::factory()->unverified()->create([
+            'is_active' => false,
+            'face_descriptor' => $this->wajah(0.25),
+        ]);
+
+        $this->post(route('masuk.store'), [
+            'email' => $user->email,
+            'password' => 'password',
+        ])->assertSessionHasErrors('email');
+
+        $this->post(route('masuk.wajah'), [
+            'wajah' => json_encode($this->wajah(0.25)),
+            'liveness' => '1',
+        ])->assertSessionHasErrors('wajah');
+
+        $this->assertGuest();
+    }
 }

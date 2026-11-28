@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
                 'role' => User::ROLE_ADMIN,
                 'nim' => 'ADMIN-001',
                 'prodi' => 'Administrasi',
+                'is_active' => true,
             ],
             [
                 'name' => 'Konselor Kawan Tenang',
@@ -27,6 +28,7 @@ class DatabaseSeeder extends Seeder
                 'nim' => 'KONSELOR-001',
                 'prodi' => 'Bimbingan Konseling',
                 'is_available' => true,
+                'is_active' => true,
             ],
         ];
 

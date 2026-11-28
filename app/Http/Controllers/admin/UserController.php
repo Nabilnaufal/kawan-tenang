@@ -6,7 +6,6 @@ use App\Http\Controllers\Controller;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Illuminate\View\View;
 
 class UserController extends Controller
@@ -29,16 +28,12 @@ class UserController extends Controller
         return view('admin.pengguna', compact('users', 'role', 'search'));
     }
 
-    public function updateRole(Request $request, User $user): RedirectResponse
+    public function toggleActive(Request $request, User $user): RedirectResponse
     {
-        abort_if($user->is($request->user()), 403, 'Tidak bisa mengubah peran sendiri.');
+        abort_if($user->is($request->user()), 403, 'Tidak bisa menonaktifkan akun sendiri.');
 
-        $data = $request->validate([
-            'role' => ['required', Rule::in(User::ROLES)],
-        ]);
+        $user->update(['is_active' => ! $user->is_active]);
 
-        $user->update($data);
-
-        return back()->with('status', 'Peran pengguna diperbarui.');
+        return back()->with('status', $user->is_active ? 'Akun pengguna diaktifkan.' : 'Akun pengguna dinonaktifkan.');
     }
 }
